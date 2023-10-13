@@ -17,20 +17,20 @@ Lukas Mayrhuber, Manuel Puchner, Michael E. Ruep, Michael Stenz, Jakob Schlager
 
 '''
 
-* Projektname
-* Ausgangssituation / Problemstellung / Vorgeschichte
-* Projektziele / Nicht-Ziele (quantifizierbare (messbare) und nicht quantifizierbare Ziele
-* Projektinhalte (Hauptaufgaben, inhaltliche Komponenten)
-* Kritische Erfolgsfaktoren
-* Termine
-** Projektstart: Ereignis (z.B. Erstgespräch oder Kick-off Meeting), Termin o Projektende: Ereignis (z.B. Abnahme durch Kunden, Termin
-** Meilensteine/Ecktermine
-* Kosten / Ressourcen
-* Projektorganisation (Rollen)
-** Projektauftraggeber
-** Projektleiter
-** Projektteammitglieder
-** Punktuelle Projektmitarbeiter
-* Unterschriften
-** Projektauftraggeber
-** Projektleiter
+== Projektname
+== Ausgangssituation / Problemstellung / Vorgeschichte
+== Projektziele / Nicht-Ziele (quantifizierbare (messbare) und nicht quantifizierbare Ziele
+== Projektinhalte (Hauptaufgaben, inhaltliche Komponenten)
+== Kritische Erfolgsfaktoren
+== Termine
+=== Projektstart: Ereignis (z.B. Erstgespräch oder Kick-off Meeting), Termin o Projektende: Ereignis (z.B. Abnahme durch Kunden, Termin
+=== Meilensteine/Ecktermine
+== Kosten / Ressourcen
+== Projektorganisation (Rollen)
+=== Projektauftraggeber
+=== Projektleiter
+=== Projektteammitglieder
+=== Punktuelle Projektmitarbeiter
+== Unterschriften
+=== Projektauftraggeber
+=== Projektleiter
