@@ -1,0 +1,36 @@
+= Projektauftrag
+Lukas Mayrhuber, Manuel Puchner, Michael E. Ruep, Michael Stenz, Jakob Schlager
+1.0.0, {docdate}: ITP
+//:toc-placement!: // prevents the generation of the doc at this position, so it can be printed afterwards
+:sourcedir: ../src/main/java
+:icons: font
+:sectnums: // Nummerierung der Überschriften / section numbering
+:toc: left
+:experimental:
+
+//Need this blank line after ifdef, don't know why...
+
+// print the toc here (not at the default position)
+//toc::[]
+
+
+
+'''
+
+== Projektname
+== Ausgangssituation / Problemstellung / Vorgeschichte
+== Projektziele / Nicht-Ziele (quantifizierbare (messbare) und nicht quantifizierbare Ziele
+== Projektinhalte (Hauptaufgaben, inhaltliche Komponenten)
+== Kritische Erfolgsfaktoren
+== Termine
+=== Projektstart: Ereignis (z.B. Erstgespräch oder Kick-off Meeting), Termin o Projektende: Ereignis (z.B. Abnahme durch Kunden, Termin
+=== Meilensteine/Ecktermine
+== Kosten / Ressourcen
+== Projektorganisation (Rollen)
+=== Projektauftraggeber
+=== Projektleiter
+=== Projektteammitglieder
+=== Punktuelle Projektmitarbeiter
+== Unterschriften
+=== Projektauftraggeber
+=== Projektleiter
