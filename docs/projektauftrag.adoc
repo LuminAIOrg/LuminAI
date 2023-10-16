@@ -27,7 +27,7 @@ LuminAI
 
 Die Menschen möchten schnell und einfach einen Überblick über den eigenen Stromverbrauch bekommen.
 
-== Projektziele / Nicht-Ziele (quantifizierbare (messbare) und nicht quantifizierbare Ziele
+== Projektziele / Nicht-Ziele (quantifizierbare (messbare) und nicht quantifizierbare Ziele)
 Folgende Ziele werden mit diesem Projekt erfüllt:
 
 * Energiesparen
@@ -50,8 +50,17 @@ Folgende Ziele werden mit diesem Projekt erfüllt:
 ** Ansprechende Web-Oberfläche
 
 == Kritische Erfolgsfaktoren
+- Zugriff zu Solaranlagen, und zugriff su Strompreisen.
+- kein Langzeitausfall von mehr als 2 Mitgliedern
+- Kenntnisse beim Anwenden von KI
+
 == Termine
-=== Projektstart: Ereignis (z.B. Erstgespräch oder Kick-off Meeting), Termin o Projektende: Ereignis (z.B. Abnahme durch Kunden, Termin
+- Projektstart: 11.10.2023
+- Projektende: Project-Award 2024
+
+=== Projektstart: Ereignis (z.B. Erstgespräch oder Kick-off Meeting), Termin o Projektende: Ereignis (z.B. Abnahme durch Kunden, Termin)
+
+
 === Meilensteine/Ecktermine
 |===
 |Phase |Meilenstein |Termin
@@ -83,6 +92,9 @@ Folgende Ziele werden mit diesem Projekt erfüllt:
 |===
 
 == Kosten / Ressourcen
+- Locales Hosting -> es werden nur geringfügige Stromkostenanfallen
+- Arbeitszeit
+
 == Projektorganisation (Rollen)
 === Projektauftraggeber
 === Projektleiter
