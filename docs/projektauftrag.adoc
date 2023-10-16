@@ -18,13 +18,70 @@ Lukas Mayrhuber, Manuel Puchner, Michael E. Ruep, Michael Stenz, Jakob Schlager
 '''
 
 == Projektname
+LuminAI
+
 == Ausgangssituation / Problemstellung / Vorgeschichte
+* 9 von 10 Menschen weltweit haben Zugang zu Strom
+* Nahezu jeder Haushalt in Österreich hat Zugang zu Strom
+* Viele Menschen haben Stromzähler im Haus
+
+Die Menschen möchten schnell und einfach einen Überblick über den eigenen Stromverbrauch bekommen.
+
 == Projektziele / Nicht-Ziele (quantifizierbare (messbare) und nicht quantifizierbare Ziele
+Folgende Ziele werden mit diesem Projekt erfüllt:
+
+* Energiesparen
+* Energie effizient einsetzen
+* Überblick über den Verbrauch behalten
+* Historische Werte vergleichen
+* Automatisierung
+* Eigen produzierten Strom selbst verbrauchen
+* Spenden, wodurch die Werbung wegfällt
+
+
 == Projektinhalte (Hauptaufgaben, inhaltliche Komponenten)
+* Vorgehensweise
+** Erstellung einer funktionierenden Datenbank
+** Erstellung von funktionierendem Servercode
+** Erstellung einer modernen Web-Oberfläche
+
+* Zu erwartende Qualität
+** Einwandfreie Funktionalität der Client-Server, Server-Datenbank Kommunikation
+** Ansprechende Web-Oberfläche
+
 == Kritische Erfolgsfaktoren
 == Termine
 === Projektstart: Ereignis (z.B. Erstgespräch oder Kick-off Meeting), Termin o Projektende: Ereignis (z.B. Abnahme durch Kunden, Termin
 === Meilensteine/Ecktermine
+|===
+|Phase |Meilenstein |Termin
+
+|Organisatorisches
+|Fertigstellung der organisatorischen Tätigkeiten
+|Vor Projektbeginn
+
+|Entwicklung Back-End
+|Funktionierende Datenbank
+|gegen Projektanfang
+
+|Testen von Back-End
+|Funktionierende Tests
+|gegen Projektmitte
+
+|UI Design
+|Grafiken erstellen
+|gegen Projektmitte
+
+|Entwicklung Front-End
+|Projektanfang
+|gegen Projektende
+
+|Testen von Front-End
+|Funktionierende Tests
+|gegen Projektende
+
+|===
+
 == Kosten / Ressourcen
 == Projektorganisation (Rollen)
 === Projektauftraggeber
