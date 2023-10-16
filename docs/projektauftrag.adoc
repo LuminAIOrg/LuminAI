@@ -71,7 +71,7 @@ Folgende Ziele werden mit diesem Projekt erfüllt:
 |Funktionierende Datenbank
 |gegen Projektanfang
 
-|Entwicklung einer Verküpfung von Hardware und Software
+|Entwicklung einer Verknüpfung von Hardware und Software
 |Funktionierende Einbindung
 |gegen Projektanfang
 
