@@ -44,6 +44,7 @@ Folgende Ziele werden mit diesem Projekt erfüllt:
 ** Erstellung einer funktionierenden Datenbank
 ** Erstellung von funktionierendem Servercode
 ** Erstellung einer modernen Web-Oberfläche
+** Optimierung durch KI
 
 * Zu erwartende Qualität
 ** Einwandfreie Funktionalität der Client-Server, Server-Datenbank Kommunikation
@@ -68,6 +69,10 @@ Folgende Ziele werden mit diesem Projekt erfüllt:
 
 |Entwicklung Back-End
 |Funktionierende Datenbank
+|gegen Projektanfang
+
+|Entwicklung einer Verküpfung von Hardware und Software
+|Funktionierende Einbindung
 |gegen Projektanfang
 
 |Testen von Back-End
@@ -96,6 +101,7 @@ Folgende Ziele werden mit diesem Projekt erfüllt:
 * Manuel Puchner
 ** Dev Ops
 ** Scrum Master
+** Full Stack Developer
 * Michael Stenz
 ** Full Stack Developer
 * Jakob Schlager
