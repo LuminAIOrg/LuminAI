@@ -64,7 +64,7 @@ Folgende Ziele werden mit diesem Projekt erfüllt:
 |Phase |Meilenstein |Termin
 
 |Organisatorisches
-|Fertigstellung der organisatorischen Tätigkeiten
+|Fertig mit organisatorischen Tätigkeiten
 |Vor Projektbeginn
 
 |Entwicklung Back-End
@@ -80,7 +80,7 @@ Folgende Ziele werden mit diesem Projekt erfüllt:
 |gegen Projektmitte
 
 |UI Design
-|Grafiken erstellen
+|Grafiken erstellt
 |gegen Projektmitte
 
 |Entwicklung Front-End
