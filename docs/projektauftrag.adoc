@@ -18,19 +18,105 @@ Lukas Mayrhuber, Manuel Puchner, Michael E. Ruep, Michael Stenz, Jakob Schlager
 '''
 
 == Projektname
+LuminAI
+
 == Ausgangssituation / Problemstellung / Vorgeschichte
-== Projektziele / Nicht-Ziele (quantifizierbare (messbare) und nicht quantifizierbare Ziele
+* 9 von 10 Menschen weltweit haben Zugang zu Strom
+* Nahezu jeder Haushalt in Österreich hat Zugang zu Strom
+* Viele Menschen haben Stromzähler im Haus
+
+Die Menschen möchten schnell und einfach einen Überblick über den eigenen Stromverbrauch bekommen.
+
+== Projektziele / Nicht-Ziele (quantifizierbare (messbare) und nicht quantifizierbare Ziele)
+Folgende Ziele werden mit diesem Projekt erfüllt:
+
+* Energiesparen
+* Energie effizient einsetzen
+* Überblick über den Verbrauch behalten
+* Historische Werte vergleichen
+* Automatisierung
+* Eigen produzierten Strom selbst verbrauchen
+* Spenden, wodurch die Werbung wegfällt
+
+
 == Projektinhalte (Hauptaufgaben, inhaltliche Komponenten)
+* Vorgehensweise
+** Erstellung einer funktionierenden Datenbank
+** Erstellung von funktionierendem Servercode
+** Erstellung einer modernen Web-Oberfläche
+** Optimierung durch KI
+
+* Zu erwartende Qualität
+** Einwandfreie Funktionalität der Client-Server, Server-Datenbank Kommunikation
+** Ansprechende Web-Oberfläche
+
 == Kritische Erfolgsfaktoren
+* Zugriff zu Solaranlagen, und zugriff su Strompreisen.
+* kein Langzeitausfall von mehr als 2 Mitgliedern
+* Kenntnisse beim Anwenden von KI
+
 == Termine
-=== Projektstart: Ereignis (z.B. Erstgespräch oder Kick-off Meeting), Termin o Projektende: Ereignis (z.B. Abnahme durch Kunden, Termin
+* Projektstart: 11.10.2023
+* Projektende: Project-Award 2024
+
 === Meilensteine/Ecktermine
+|===
+|Phase |Meilenstein |Termin
+
+|Organisatorisches
+|Fertig mit organisatorischen Tätigkeiten
+|Vor Projektbeginn
+
+|Entwicklung Back-End
+|Funktionierende Datenbank
+|gegen Projektanfang
+
+|Entwicklung einer Verknüpfung von Hardware und Software
+|Funktionierende Einbindung
+|gegen Projektanfang
+
+|Testen von Back-End
+|Funktionierende Tests
+|gegen Projektmitte
+
+|UI Design
+|Grafiken erstellt
+|gegen Projektmitte
+
+|Entwicklung Front-End
+|Projektanfang
+|gegen Projektende
+
+|Testen von Front-End
+|Funktionierende Tests
+|gegen Projektende
+
+|===
+
 == Kosten / Ressourcen
+- Locales Hosting
+- Arbeitszeit
+
 == Projektorganisation (Rollen)
+* Manuel Puchner
+** Dev Ops
+** Scrum Master
+** Full Stack Developer
+* Michael Stenz
+** Full Stack Developer
+* Jakob Schlager
+** Frontend Developer
+* Lukas Mayrhuber
+** Full Stack Developer
+* Michael Ruep
+** Full Stack Developer
+** API
+** Product-Owner/Communicator
+
 === Projektauftraggeber
-=== Projektleiter
-=== Projektteammitglieder
-=== Punktuelle Projektmitarbeiter
+* Prof. Christian Aberger
+* Prof. David Klewein
+
 == Unterschriften
-=== Projektauftraggeber
-=== Projektleiter
+* Prof. Christian Aberger:
+* Prof. David Klewein:
