@@ -50,16 +50,13 @@ Folgende Ziele werden mit diesem Projekt erfüllt:
 ** Ansprechende Web-Oberfläche
 
 == Kritische Erfolgsfaktoren
-- Zugriff zu Solaranlagen, und zugriff su Strompreisen.
-- kein Langzeitausfall von mehr als 2 Mitgliedern
-- Kenntnisse beim Anwenden von KI
+* Zugriff zu Solaranlagen, und zugriff su Strompreisen.
+* kein Langzeitausfall von mehr als 2 Mitgliedern
+* Kenntnisse beim Anwenden von KI
 
 == Termine
-- Projektstart: 11.10.2023
-- Projektende: Project-Award 2024
-
-=== Projektstart: Ereignis (z.B. Erstgespräch oder Kick-off Meeting), Termin o Projektende: Ereignis (z.B. Abnahme durch Kunden, Termin)
-
+* Projektstart: 11.10.2023
+* Projektende: Project-Award 2024
 
 === Meilensteine/Ecktermine
 |===
@@ -92,14 +89,28 @@ Folgende Ziele werden mit diesem Projekt erfüllt:
 |===
 
 == Kosten / Ressourcen
-- Locales Hosting -> es werden nur geringfügige Stromkostenanfallen
+- Locales Hosting
 - Arbeitszeit
 
 == Projektorganisation (Rollen)
+* Manuel Puchner
+** Dev Ops
+** Scrum Master
+* Michael Stenz
+** Full Stack Developer
+* Jakob Schlager
+** Frontend Developer
+* Lukas Mayrhuber
+** Full Stack Developer
+* Michael Ruep
+** Full Stack Developer
+** API
+** Product-Owner/Communicator
+
 === Projektauftraggeber
-=== Projektleiter
-=== Projektteammitglieder
-=== Punktuelle Projektmitarbeiter
+* Prof. Christian Aberger
+* Prof. David Klewein
+
 == Unterschriften
-=== Projektauftraggeber
-=== Projektleiter
+* Prof. Christian Aberger:
+* Prof. David Klewein:
