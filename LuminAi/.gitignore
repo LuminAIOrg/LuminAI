@@ -42,5 +42,6 @@ nb-configuration.xml
 # Plugin directory
 /.quarkus/cli/plugins/
 
-# compiled frontend
-src/main/resources/META-INF/resources
+# Recources
+/src/main/resources/META-INF/
+/src/test/resources/META-INF/*
