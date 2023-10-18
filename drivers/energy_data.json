@@ -1,0 +1,23 @@
+{
+  "production": [
+    {
+      "name": "Production_1",
+      "value": null
+    },
+    {
+      "name": "Production_2",
+      "value": null
+    }
+  ],
+  "consumption": [
+    {
+      "name": "Consumer_1",
+      "value": null
+    },
+    {
+      "name": "Consumer_2",
+      "value": null
+    }
+  ],
+  "grid": null
+}
