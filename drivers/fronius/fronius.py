@@ -25,7 +25,7 @@ def get_energy_data():
             }
         ],
         "grid": data["Body"]["Data"]["Site"]["P_Grid"],
-        "timestamp": data["Body"]["Head"]["Timestamp"]
+        "timestamp": data["Head"]["Timestamp"]
     }
 
     entries = data["Body"]["Data"]["SecondaryMeters"]
@@ -37,6 +37,11 @@ def get_energy_data():
 
     return energy_data
 
+energy_data = get_energy_data()
 
 # Print the formatted JSON
-print(json.dumps(get_energy_data(), indent=4))
+#print(json.dumps(energy_data, indent=4))
+
+# Write to JSON file
+with open('energy_data.json', 'w', encoding='utf-8') as f:
+    json.dump(energy_data, f, ensure_ascii=False, indent=4)
