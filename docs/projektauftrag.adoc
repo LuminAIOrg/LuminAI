@@ -104,17 +104,17 @@ image::project_structure.png[Projekt Struktur]
 == Projektorganisation (Rollen)
 * Manuel Puchner
 ** Dev Ops
-** Scrum Master
 ** Full Stack Developer
 * Michael Stenz
 ** Full Stack Developer
 * Jakob Schlager
+** Scrum Master
 ** Frontend Developer
 * Lukas Mayrhuber
 ** Full Stack Developer
 * Michael Ruep
 ** Full Stack Developer
-** API
+** API/Driver
 ** Product-Owner/Communicator
 
 === Projektauftraggeber
