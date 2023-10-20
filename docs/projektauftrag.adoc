@@ -50,6 +50,10 @@ Folgende Ziele werden mit diesem Projekt erfüllt:
 ** Einwandfreie Funktionalität der Client-Server, Server-Datenbank Kommunikation
 ** Ansprechende Web-Oberfläche
 
+== Projekt Struktur
+image::project_structure.png[Projekt Struktur]
+
+
 == Kritische Erfolgsfaktoren
 * Zugriff zu Solaranlagen, und zugriff su Strompreisen.
 * kein Langzeitausfall von mehr als 2 Mitgliedern
