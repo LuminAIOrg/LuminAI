@@ -1,23 +1,22 @@
 {
-  "production": [
+  "devices": [
     {
-      "name": "Production_1",
+      "name": "PV",
       "value": null
     },
     {
-      "name": "Production_2",
-      "value": null
-    }
-  ],
-  "consumption": [
-    {
-      "name": "Consumer_1",
+      "name": "PV-Balkon",
       "value": null
     },
     {
-      "name": "Consumer_2",
+      "name": "Wärmepumpe",
+      "value": null
+    },
+    {
+      "name": "Akku",
       "value": null
     }
   ],
-  "grid": null
+  "grid": null,
+  "timestamp": null
 }
