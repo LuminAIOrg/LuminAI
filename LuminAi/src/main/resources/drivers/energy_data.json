@@ -1,0 +1,22 @@
+{
+  "devices": [
+    {
+      "name": "PV",
+      "value": null
+    },
+    {
+      "name": "PV-Balkon",
+      "value": null
+    },
+    {
+      "name": "Wärmepumpe",
+      "value": null
+    },
+    {
+      "name": "Akku",
+      "value": null
+    }
+  ],
+  "grid": null,
+  "timestamp": null
+}
