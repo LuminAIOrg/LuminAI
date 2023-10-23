@@ -20,11 +20,14 @@ def get_energy_data():
                 "value": data["Body"]["Data"]["Site"]["P_PV"]
             },
             {
-            "name": "Akku",
+                "name": "Grid",
+                "value": data["Body"]["Data"]["Site"]["P_Grid"]
+            },
+            {
+                "name": "Akku",
                 "value": data["Body"]["Data"]["Site"]["P_Akku"]
             }
         ],
-        "grid": data["Body"]["Data"]["Site"]["P_Grid"],
         "timestamp": data["Head"]["Timestamp"]
     }
 

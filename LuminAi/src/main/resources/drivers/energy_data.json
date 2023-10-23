@@ -5,6 +5,10 @@
       "value": null
     },
     {
+      "name": "Grid",
+      "value": null
+    },
+    {
       "name": "PV-Balkon",
       "value": null
     },
@@ -17,6 +21,5 @@
       "value": null
     }
   ],
-  "grid": null,
   "timestamp": null
 }
