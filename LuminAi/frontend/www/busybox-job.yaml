@@ -1,0 +1,32 @@
+# this is our swiss army knife.
+# here we use it to copy our web-content to the persistent volume that is mounted by busybox.
+# after deployment busybox sleeps a while and we can use kubectl cp to copy files to the storage.
+# after some time the job stops 
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: knife
+
+spec:
+  backoffLimit: 1
+  activeDeadlineSeconds: 1800
+  template:
+    spec:
+      containers:
+      - name: busybox
+        image: busybox:latest
+        command: ["/bin/sh", "-c"]
+        args: 
+          - mkdir -p /srv/demo;
+            echo "<html><head></head><body>Copy your web app to this location on this persistent volume.<br/>To the api ==> <a href="./api/user">./api/user</a></body></html>" > /srv/demo/index.html;
+            sleep 900;
+            echo done;
+        volumeMounts:
+        - name: html
+          mountPath: /srv
+          readOnly: false
+      volumes:
+        - name: html
+          persistentVolumeClaim:
+            claimName: nginx-www
+      restartPolicy: Never
