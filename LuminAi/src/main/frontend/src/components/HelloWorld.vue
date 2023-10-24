@@ -1,17 +1,13 @@
 <template>
   <div class="hello">
-    <p>Name:</p>
-    <p>Akku</p>
-    <p>Value: </p>
-    <p>420</p>
+
   </div>
 
   <div id="energy-data"></div>
 
 </template>
 
-<script>
-  getUpdatedEnergyDevices()
+<script src="../services/PowerService.js">
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

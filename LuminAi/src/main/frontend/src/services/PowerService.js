@@ -1,5 +1,6 @@
 function getUpdatedEnergyDevices() {
-    fetch('http://localhost:5000/api/energy_data')
+
+    fetch('http://localhost:8080/api/devices/getData')
         .then(response => response.json())
         .then(data => {
 
@@ -19,6 +20,7 @@ function getUpdatedEnergyDevices() {
             energyDataContainer.appendChild(timestampElement);
 
         });
+
 }
 setInterval(getUpdatedEnergyDevices, 5000);
 getUpdatedEnergyDevices()
