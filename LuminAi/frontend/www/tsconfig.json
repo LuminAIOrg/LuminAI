@@ -18,7 +18,9 @@
     },
     "exclude": [
       "test/**/*",
-      "unused/**/*"],
+      "unused/**/*"
+    ],
     "include": [
-      "src/**/*"]
-    }
+      "src/**/*"
+    ]
+}
