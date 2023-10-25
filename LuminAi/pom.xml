@@ -68,7 +68,12 @@
       <artifactId>h2</artifactId>
       <version>2.2.220</version>
     </dependency>
-
+    <!-- https://mvnrepository.com/artifact/black.ninia/jep -->
+    <dependency>
+      <groupId>black.ninia</groupId>
+      <artifactId>jep</artifactId>
+      <version>3.9.1</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

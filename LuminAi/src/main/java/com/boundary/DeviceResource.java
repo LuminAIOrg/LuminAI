@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vertx.core.json.Json;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import utils.com.DeviceUtils;
 
 
 import java.io.File;
@@ -15,19 +16,20 @@ public class DeviceResource {
         @Produces(MediaType.APPLICATION_JSON)
         @Path("/getData")
         public String getData(){
-            try {
-                String pythonScript = "python";
+
                 URL scriptPath = DeviceResource.class.getResource("drivers/divers.py");
 
                 System.out.println(scriptPath);
 
-                ProcessBuilder processBuilder = new ProcessBuilder(pythonScript);
-                Process process = processBuilder.start();
-                int exitCode = process.waitFor();
-                System.out.println("Python script exit code: " + exitCode);
+            try {
+                DeviceUtils.runScript(scriptPath);
+            }
+            catch (Exception e){
+                return 500 + e.getMessage();
+            }
 
                 //TODO: map json file to object
-
+            try {
                 ObjectMapper objectMapper = new ObjectMapper();
 
                 URL filePath = DeviceResource.class.getResource("/drivers/energy_data.json");
