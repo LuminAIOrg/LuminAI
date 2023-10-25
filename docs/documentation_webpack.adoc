@@ -377,3 +377,198 @@ import "./input.css"
 
 
 == Backend
+=== api
+[source, http]
+----
+@BASE=http://localhost:4200/api
+
+### Users ###
+GET {{BASE}}/user
+
+### save ###
+POST {{BASE}}/user
+Content-Type: application/json
+
+{
+    "name": "Jane Doe"
+}
+----
+=== src
+==== boundary
+- works with DTOs (use the mapper to convert between DAOs and DTOs)
+[source, java]
+----
+@Path("/todos")
+public class TodoResource {
+    @Inject
+    TodoRepository todoRepository;
+    @Inject
+    TodoMapper todoMapper;
+
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<TodoDTO> getTodos() {
+        return todoRepository.getAll().stream().map(todo -> todoMapper.toResource(todo)).toList();
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public TodoDTO uploadTodo(TodoDTO todoDto) {
+        Todo createdTodo =  todoRepository.createTodo(todoMapper.fromResource(todoDto));
+        return todoMapper.toResource(createdTodo);
+    }
+
+
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public TodoDTO updateTodo(TodoDTO todoDto) {
+        Todo updatedTodo = todoRepository.updateTodo(todoMapper.fromResource(todoDto));
+        return todoMapper.toResource(updatedTodo);
+    }
+}
+----
+==== dto
+- use records for automatic constructor getter and setter
+[source, java]
+----
+public record TodoDTO(Long id,
+        String title,
+        String description,
+        boolean isDone) {
+}
+----
+==== mapper
+- mapper interface
+[source, java]
+----
+public interface Mapper<T, S> {
+    public S toResource(T entity);
+    public T fromResource(S dto);
+}
+----
+- mapper implementation
+[source, java]
+----
+@ApplicationScoped
+public class TodoMapper implements Mapper<Todo, TodoDTO> {
+
+    @Override
+    public TodoDTO toResource(Todo entity) {
+        return new TodoDTO(entity.getId(), entity.getTitle(), entity.getDescription(), entity.isDone());
+    }
+
+    @Override
+    public Todo fromResource(TodoDTO dto) {
+        return new Todo(dto.id(), dto.title(), dto.description(), dto.isDone());
+    }
+}
+----
+==== model
+- getter and setter (may be replaced by lombok)
+- Important: empty constructor
+- Important: @Id
+[source, java]
+----
+@Entity
+public class Todo {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    private String title;
+    private String description;
+    private boolean isDone;
+
+    public Todo() {
+    }
+
+    public Todo(Long id, String title, String description, boolean isDone) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.isDone = isDone;
+    }
+
+    //region getter & setter
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isDone() {
+        return isDone;
+    }
+
+    public void setDone(boolean done) {
+        isDone = done;
+    }
+
+
+    //endregion
+
+    @Override
+    public String toString() {
+        return "Todo{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", isDone=" + isDone +
+                '}';
+    }
+}
+----
+==== repository
+- repository accepts DAOs
+[source, java]
+----
+@ApplicationScoped
+public class TodoRepository {
+    @Inject
+    EntityManager em;
+
+    public List<Todo> getAll() {
+        return em.createQuery("select t from Todo t order by t.id", Todo.class).getResultList();
+    }
+
+    @Transactional
+    public Todo createTodo(Todo todo) {
+        em.persist(todo);
+        return todo;
+    }
+
+    @Transactional
+    public Todo updateTodo(Todo todo) {
+        System.out.println(todo);
+        Todo dbTodo = em.find(Todo.class, todo.getId());
+        dbTodo.setDescription(todo.getDescription());
+        dbTodo.setDone(todo.isDone());
+        dbTodo.setTitle(todo.getTitle());
+        em.persist(dbTodo);
+        return dbTodo;
+    }
+}
+----
