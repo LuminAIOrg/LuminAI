@@ -1,10 +1,24 @@
 <template>
-  <div id="energy-data"></div>
+
+  <li v-for="line in data" v-bind:key="line">
+    {{line}}
+  </li>
+    <Device name="hello" value=-1></Device>
+
 </template>
 
-<script src="../services/PowerService.js">
-</script>
+<script setup>
+  //import {getUpdatedEnergyDevices} from "@/services/PowerService";
+  //import {defineComponent} from "vue";
+  //import Device from "@/components/DeviceComponent.vue";
+//
+  //export default defineComponent({
+  //  components: {Device}
+  //})
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-</style>
+
+  import Device from "@/components/DeviceComponent.vue";
+
+  let data = [1,2]
+
+</script>
