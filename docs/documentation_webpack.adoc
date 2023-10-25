@@ -1,0 +1,379 @@
+= Webpack Documentation
+Lukas Mayrhuber, Manuel Puchner, Michael E. Ruep, Michael Stenz, Jakob Schlager
+written by Manuel Puchner
+//:toc-placement!: // prevents the generation of the doc at this position, so it can be printed afterwards
+:sourcedir: ../src/main/java
+:icons: font
+:sectnums: // Nummerierung der Überschriften / section numbering
+:toc: left
+:experimental:
+
+//Need this blank line after ifdef, don't know why...
+
+// print the toc here (not at the default position)
+//toc::[]
+
+== Project Structure
+* .github/workflows
+** build.yaml
+* k8s
+* backend
+** api - [testen von API endpoints]
+** src
+*** boundary - [API endpoints]
+*** dto - [Data Transfet Object (wird von Rest-Endpoint empfangen und versendet)]
+*** mapper - [Mapper Klassen zum transformieren zwischen DAOs und DTOs]
+*** model - [DAO (Data Access Object), Hibernate Datenbank Tabellen]
+*** repository - [Schnittstelle zu Datenbank (Repository Pattern)]
+* frontend
+** docker
+** www
+*** src
+**** components - [components used in the views]
+**** model
+***** **model.ts**
+****** _interface for the whole application states_
+***** **store.ts**
+****** _provides state_
+****** _provides functions to access and change the state_
+***** _type definitions_
+**** router
+***** **router.ts** - [Routing for the application]
+**** services - [Provides API access]
+**** views - [Pages of the Application]
+**** **app-component.ts**
+**** **index.ts** - [imports _app-component.ts_, _router.ts_, and _input.css_]
+**** **input.css** - [base css file for tailwind]
+*** test - [**undocumented**]
+
+== Frontend
+=== src
+==== components
+- Components must extend HTMLElement
+- using customElements.define the component then can be used in other components
+- private render() renders the template in the shadowRoot
+- private template(todo: Todo) accepts data which should be rendered and returns the html
+
+[source, ts]
+----
+import { html, render } from "lit-html";
+import { updateTodo} from "Model/store";
+import { Todo } from "Model/todo";
+
+class TodoComponent extends HTMLElement {
+  static observedAttributes = ["todo"]
+  private todo: Todo;
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+  }
+  attributeChangedCallback(name, oldValue, newValue) {
+    this.todo =  JSON.parse(decodeURI(newValue));
+    this.render(this.todo);
+  }
+  private render(todo: Todo): void {
+    render(this.template(todo), this.shadowRoot);
+  }
+  private template(todo: Todo) {  
+    return html`
+      <div>
+        <h2>${todo.title}</h2>
+        <p>${todo.description}</p>
+        <input type="checkbox" ?checked=${todo.isDone} @change=${(e) => this.changeDoneState()}/>
+      </div>
+    `;
+  }
+  private changeDoneState() {
+    let input: HTMLInputElement = this.shadowRoot.querySelector("input[type='checkbox']")
+    const newTodo: Todo = {
+      ...this.todo,
+      isDone: input.checked,
+    }
+   
+    updateTodo(newTodo)
+  
+  }
+}
+
+customElements.define("todo-component", TodoComponent);
+----
+
+==== model
+===== index.ts
+- imports the store (state) and the model
+[source, js]
+----
+console.log("index loaded")
+
+export { store } from "./store"
+export { Model } from "./model"
+----
+===== model.ts
+- important: currentRoute for the routing of the app
+- the addTodo function in this example is using optimistic updates
+[source, ts]
+----
+import { Todo } from "./todo";
+
+/** Our readonly single source of truth */
+export interface Model {
+  readonly currentRoute: string;
+  readonly currentTodoId?: number;
+  readonly todos: Todo[];
+}
+----
+===== store.ts
+- to update the components use store.next, this notifies the observers
+[source, ts]
+----
+import { produce } from "immer";
+import { BehaviorSubject } from "rxjs";
+import { Model } from "./model";
+import { Todo } from "./todo";
+import todoService from "../services/todo-service"
+
+
+const initialState: Model = {
+  currentRoute: "/",
+  todos: [],
+};
+const store = new BehaviorSubject<Model>(initialState);
+
+export const setCurrentRoute = (currentRoute: string) => {
+  store.next(
+    produce(store.getValue(), (model) => {
+      model.currentRoute = currentRoute;
+    })
+  );
+};
+
+export const addTodo = (todo: Todo) => {
+  // instant reaction on client, return to old state if http post was unsuccessful
+  const currentState = store.getValue();
+
+  const newState = produce(store.getValue(), (model) => {
+    model.todos.push(todo);
+  });
+
+  store.next(newState);
+
+  todoService.postTodo(todo).then(createdTodo => {
+    store.next(produce(store.getValue(), model => {
+      const index = model.todos.findIndex((_todo) => _todo.id === todo.id);
+      model.todos[index] = createdTodo;
+    }))
+    if(!createdTodo) {
+      store.next(currentState);
+    }
+  });
+};
+export { store };
+----
+===== todo.ts
+- type definition 
+[source, ts]
+----
+export interface Todo {
+    readonly id: number,
+    readonly title: string,
+    readonly description: string,
+    readonly isDone: boolean,
+}
+----
+
+==== router/router.ts
+- setCurrentRoute changes the route and renders a different view
+[source, ts]
+----
+import { setCurrentTodo, setCurrentRoute } from "Model/store";
+import Navigo, { Match } from "navigo";
+
+declare var process: {
+  env: {
+    BASE_HREF: string;
+  };
+};
+const baseHRef = process.env.BASE_HREF;
+if (baseHRef) {
+  const base = document.querySelector("base");
+  if (base) {
+    console.log("base=", baseHRef);
+    //base.setAttribute("href", baseHRef)
+  }
+}
+
+const router = new Navigo(baseHRef);
+
+router
+  .on({
+    "/todo/:id": (match: Match) => {
+      setCurrentRoute("/todo/:id");
+    },
+    "/todo": () => setCurrentRoute("/todo"),
+    "/": () => {
+      setCurrentRoute("/");
+    },
+    "/about": () => {
+      setCurrentRoute("/about");
+    },
+  })
+  .resolve();
+
+export { router };
+----
+
+==== services
+- a service is a class with methods to access the api endpoints
+[source, ts]
+----
+import { Todo } from "Model/todo";
+import { setTodos } from "../model/store";
+import { StatusCodes } from "http-status-codes"
+
+const TODO_URL = "./api/todos";
+
+class TodoService {
+  async fetchAll() {
+    const response = await fetch(TODO_URL)
+    const todos = await response.json()
+    setTodos(todos)
+    // setTodos([]);
+  }
+
+  async postTodo(todo: Todo): Promise<Todo> {
+    const res = await fetch(TODO_URL, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(todo)
+    });
+    const data = await res.json();
+
+    return data;
+  }
+
+
+  async updateTodo(todo: Todo): Promise<boolean> {
+    const res = await fetch(TODO_URL, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(todo)
+    });
+    return res.status == StatusCodes.OK;
+  }
+}
+
+const todoService = new TodoService();
+export default todoService;
+----
+
+==== views
+- views are very basic components
+[source, ts]
+----
+import { html, render } from "lit-html";
+
+class HomeView extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+  }
+  private render(): void {
+    render(this.template(), this.shadowRoot);
+  }
+  connectedCallback() {
+    this.render();
+  }
+  private template() {
+    return html`
+      <h1>Home</h1>
+    `;
+  }
+}
+
+customElements.define("home-view", HomeView);
+----
+===== index.ts
+import all your views here or in app-component.ts
+[source, ts]
+----
+import "./all-todo-view"
+import "./single-todo-view"
+import "./home-view"
+import "./about-view"
+----
+==== app-component.ts
+- the app-component handles the state change of the routes and renders the according view (see getView method)
+[source, ts]
+----
+import { html, render } from "lit-html";
+
+import "./components/todo/todo-component";
+import "./components/todo/todo-table-component";
+import "./views/index";
+import { store } from "Model/store";
+import { distinctUntilChanged } from "rxjs";
+import { Model } from "Model/model";
+import { router } from "./router/router";
+
+class AppComponent extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+  }
+  connectedCallback() {
+    store
+      .pipe(distinctUntilChanged(undefined, (model) => model.currentRoute))
+      .subscribe((model) => this.render(model));
+  }
+  private getView(model: Model) {
+    switch (model.currentRoute) {
+      case "/":
+        return html`<home-view></home-view>`;
+      case "/about":
+        return html`<about-view></about-view>`;
+      case "/todo":
+        return html`<todo-view></todo-view>`;
+    }
+  }
+  private template(model: Model) {
+    return html`
+      <p class="bg-red-400">test</p>
+      <nav>
+        <a @click=${() => router.navigate("/")}>to Home</a>
+        <a @click=${() => router.navigate("/about")}>to About</a>
+        <a @click=${() => router.navigate("/todo")}>to Todo</a>
+      </nav>
+
+      ${this.getView(model)}
+    `;
+  }
+  private render(model: Model) {
+    render(this.template(model), this.shadowRoot);
+  }
+}
+customElements.define("app-component", AppComponent);
+----
+
+==== index.ts
+[source, ts]
+----
+import "./app-component";
+import "./router/router";
+import "./input.css"
+----
+==== input.css
+- tailwind css file
+[source, ts]
+----
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+----
+=== test [not documented]
+
+
+== Backend
