@@ -16,6 +16,7 @@ public class DeviceResource {
         @Path("/getData")
         public String getData(){
             try {
+                /*
                 String pythonScript = "python";
                 URL scriptPath = DeviceResource.class.getResource("drivers/divers.py");
 
@@ -25,7 +26,7 @@ public class DeviceResource {
                 Process process = processBuilder.start();
                 int exitCode = process.waitFor();
                 System.out.println("Python script exit code: " + exitCode);
-
+*/
                 //TODO: map json file to object
 
                 ObjectMapper objectMapper = new ObjectMapper();
