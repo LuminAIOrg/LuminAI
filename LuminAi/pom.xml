@@ -68,11 +68,10 @@
       <artifactId>h2</artifactId>
       <version>2.2.220</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/black.ninia/jep -->
     <dependency>
-      <groupId>black.ninia</groupId>
-      <artifactId>jep</artifactId>
-      <version>3.9.1</version>
+      <groupId>org.python</groupId>
+      <artifactId>jython-standalone</artifactId>
+      <version>2.7.3</version>
     </dependency>
   </dependencies>
   <build>
@@ -190,6 +189,27 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>net.sf.mavenjython</groupId>
+        <artifactId>jython-compile-maven-plugin</artifactId>
+        <version>1.4</version>
+
+        <executions>
+          <execution>
+            <id>install-packages</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jython</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <libraries>
+            <param>requests</param>
+            <param>json</param>
+          </libraries>
+        </configuration>
       </plugin>
     </plugins>
   </build>

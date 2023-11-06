@@ -1,18 +1,18 @@
 package utils.com;
 
-import jep.Interpreter;
-import jep.JepException;
-import jep.SharedInterpreter;
+import org.python.util.PythonInterpreter;
 
-import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class DeviceUtils{
-    public static void runScript(URL pythonScriptFullPath) {
-        try (Interpreter interp = new SharedInterpreter()) {
-            interp.runScript(String.valueOf(pythonScriptFullPath));
-        } catch (JepException e) {
-            throw new RuntimeException("running driver script failed \n" + e.getMessage());
+    public static void run(String file) {
+        try (PythonInterpreter interpreter = new PythonInterpreter()){
+            String pythonCode = String.join("\n", Files.readAllLines(Path.of(file)));
+            interpreter.exec("import requests");
+            interpreter.exec(pythonCode);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
-
     }
 }
