@@ -16,17 +16,12 @@ public class DeviceResource {
         @Produces(MediaType.APPLICATION_JSON)
         @Path("/getData")
         public String getData(){
-
-                URL scriptPath = DeviceResource.class.getResource("drivers/divers.py");
-
-                System.out.println(scriptPath);
-
-            try {
-                DeviceUtils.runScript(scriptPath);
-            }
-            catch (Exception e){
-                return 500 + e.getMessage();
-            }
+            //try {
+            //  DeviceUtils.runScript("/drivers/execute");
+            //}
+            //catch (Exception e){
+            //    return 500 + e.getMessage();
+            //}
 
                 //TODO: map json file to object
             try {
