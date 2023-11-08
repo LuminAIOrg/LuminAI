@@ -17,10 +17,6 @@ import java.util.logging.Logger;
 @ServerEndpoint("/subscribeUpdates")
 @ApplicationScoped
 public class UpdateSocket {
-
-    @Inject
-    private Logger loger;
-
     Set<Session> sessions = new HashSet<>();
 
     @OnOpen
@@ -31,7 +27,7 @@ public class UpdateSocket {
     @OnError
     public void onError(Session session, Throwable throwable) {
         sessions.remove(session);
-        loger.log(java.util.logging.Level.SEVERE, "Error with user websocket", throwable);
+        throw new RuntimeException("error with user websocket", throwable);
     }
 
     @OnClose
@@ -39,11 +35,11 @@ public class UpdateSocket {
         sessions.remove(session);
     }
 
-    private void sendUpdates(String message) {
+    public void sendUpdates(String message) {
         sessions.forEach(session -> {
             session.getAsyncRemote().sendObject(message, result -> {
                 if (result.getException() != null) {
-                    loger.log(java.util.logging.Level.SEVERE, "Unable to send message: " + result.getException());
+                    System.out.println("Unable to send message: " + result.getException());
                 }
             });
         });
