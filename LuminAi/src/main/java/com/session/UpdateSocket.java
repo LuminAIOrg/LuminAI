@@ -1,17 +1,13 @@
 package com.session;
 
-
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnError;
 import jakarta.websocket.OnOpen;
 import jakarta.websocket.Session;
 import jakarta.websocket.server.ServerEndpoint;
-
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Logger;
 
 
 @ServerEndpoint("/subscribeUpdates")
@@ -39,7 +35,7 @@ public class UpdateSocket {
         sessions.forEach(session -> {
             session.getAsyncRemote().sendObject(message, result -> {
                 if (result.getException() != null) {
-                    System.out.println("Unable to send message: " + result.getException());
+                    throw new RuntimeException("error with user websocket", result.getException());
                 }
             });
         });
