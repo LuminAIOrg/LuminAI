@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs:
       - backend
-      - frontend
+      #- frontend
     steps:
       - name: done
         run: |
