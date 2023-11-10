@@ -30,7 +30,7 @@ jobs:
       - name: build backend
         run: |
           ./build.sh
-        working-directory: backend
+        working-directory: .
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
       - name: push backend docker image
