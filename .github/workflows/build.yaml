@@ -29,6 +29,7 @@ jobs:
 
       - name: build backend
         run: |
+          cd LuminAi
           ./build.sh
 #        working-directory: .
       - name: Log in to registry
