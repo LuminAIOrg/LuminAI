@@ -9,7 +9,7 @@ on:
 
 env:
   GITHUB_USER: ${{ github.repository_owner }}
-  IMAGE_NAME: "LuminAi"
+  IMAGE_NAME: "lumin-ai"
 
 permissions:
   packages: write
