@@ -37,9 +37,9 @@ jobs:
       - name: push backend docker image
         run: |
           IMAGE_ID=$(echo $IMGAE_ID | tr '[A-Z]' '[a-z]')
-          echo "tagging backend $BACKEND_IMAGE_NAME"
-          docker tag backend $BACKEND_IMAGE_NAME
-          docker push $BACKEND_IMAGE_NAME
+          echo "tagging backend $IMGAE_ID"
+          docker tag backend $IMGAE_ID
+          docker push $IMGAE_ID
   done:
     runs-on: ubuntu-22.04
     needs:
