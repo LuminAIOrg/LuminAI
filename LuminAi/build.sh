@@ -16,4 +16,4 @@ mkdir -p ./target/deploy
 cp ./target/quarkus-app/quarkus-run.jar ./target/deploy/
 
 # Build Docker image
-docker build --tag backend --file ./src/main/docker/Dockerfile.jvm .
+docker build --tag lumin-ai --file ./src/main/docker/Dockerfile.jvm .
