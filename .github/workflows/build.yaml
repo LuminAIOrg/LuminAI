@@ -9,8 +9,7 @@ on:
 
 env:
   GITHUB_USER: ${{ github.repository_owner }}
-  BACKEND_IMAGE_NAME: "ghcr.io/${{ github.repository_owner}}/backend:latest"
-  FRONTEND_IMAGE_NAME: "ghcr.io/${{ github.repository_owner}}/frontend:latest"
+  IMAGE_NAME: "LuminAi"
 
 permissions:
   packages: write
@@ -36,10 +35,13 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
       - name: push backend docker image
         run: |
-          IMAGE_ID=$(echo $BACKEND_IMAGE_NAME | tr '[A-Z]' '[a-z]')
-          echo "tagging backend $IMGAE_ID"
-          docker tag backend $IMGAE_ID
-          docker push $IMGAE_ID
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
   done:
     runs-on: ubuntu-22.04
     needs:
