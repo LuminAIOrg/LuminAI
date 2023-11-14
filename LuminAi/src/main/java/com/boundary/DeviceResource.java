@@ -2,6 +2,7 @@ package com.boundary;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vertx.core.json.Json;
+import jakarta.ejb.Schedule;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import utils.com.DeviceUtils;
@@ -15,26 +16,14 @@ public class DeviceResource {
         @GET
         @Produces(MediaType.APPLICATION_JSON)
         @Path("/getData")
+        //@Schedule()
         public String getData(){
-            //try {
-            //  DeviceUtils.runScript("/drivers/execute");
-            //}
-            //catch (Exception e){
-            //    return 500 + e.getMessage();
-            //}
-
-                //TODO: map json file to object
             try {
-                ObjectMapper objectMapper = new ObjectMapper();
-
-                URL filePath = DeviceResource.class.getResource("/drivers/energy_data.json");
-
-                Object object = objectMapper.readValue(filePath, Object.class);
-                return objectMapper.writeValueAsString(object);
-            }catch (Exception e) {
-                System.out.println(e.getMessage());
+              return DeviceUtils.runDriver();
             }
-            return null;
+            catch (Exception e){
+                return 500 + e.getMessage();
+            }
         }
 
 }
