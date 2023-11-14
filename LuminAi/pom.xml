@@ -50,6 +50,10 @@
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-websockets</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
       <artifactId>quarkus-junit5</artifactId>
       <scope>test</scope>
     </dependency>
@@ -61,14 +65,13 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.15.3</version> <!-- Replace with the latest version -->
+      <version>2.15.3</version>
     </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <version>2.2.220</version>
     </dependency>
-
   </dependencies>
   <build>
     <plugins>
@@ -129,10 +132,6 @@
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
         <version>1.6</version>
-        <configuration>
-          <workingDirectory>${project.basedir}/src/main/frontend</workingDirectory>
-          <installDirectory>target</installDirectory>
-        </configuration>
         <executions>
           <execution>
             <id>install node and npm</id>
@@ -163,6 +162,10 @@
             </configuration>
           </execution>
         </executions>
+        <configuration>
+          <workingDirectory>${project.basedir}/src/main/frontend</workingDirectory>
+          <installDirectory>target</installDirectory>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
