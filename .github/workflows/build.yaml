@@ -36,7 +36,7 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
       - name: push backend docker image
         run: |
-          IMAGE_ID=$(echo $IMGAE_ID | tr '[A-Z]' '[a-z]')
+          IMAGE_ID=$(echo $BACKEND_IMAGE_NAME | tr '[A-Z]' '[a-z]')
           echo "tagging backend $IMGAE_ID"
           docker tag backend $IMGAE_ID
           docker push $IMGAE_ID
