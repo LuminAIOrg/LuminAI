@@ -10,7 +10,7 @@ on:
 env:
   GITHUB_USER: ${{ github.repository_owner }}
   BACKEND_IMAGE_NAME: "ghcr.io/${{ github.repository_owner}}/backend:latest"
-  $FRONTEND_IMAGE_NAME: "ghcr.io/${{ github.repository_owner}}/frontend:latest"
+  FRONTEND_IMAGE_NAME: "ghcr.io/${{ github.repository_owner}}/frontend:latest"
 
 permissions:
   packages: write
@@ -36,6 +36,7 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
       - name: push backend docker image
         run: |
+          IMAGE_ID=$(echo $IMGAE_ID | tr '[A-Z]' '[a-z]')
           echo "tagging backend $BACKEND_IMAGE_NAME"
           docker tag backend $BACKEND_IMAGE_NAME
           docker push $BACKEND_IMAGE_NAME
