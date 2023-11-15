@@ -23,6 +23,7 @@ public class DeviceResource {
             }
             catch (Exception e){
                 return 500 + e.getMessage();
+
             }
         }
 
