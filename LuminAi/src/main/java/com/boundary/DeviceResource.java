@@ -1,30 +1,23 @@
 package com.boundary;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.vertx.core.json.Json;
-import jakarta.ejb.Schedule;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import utils.com.DeviceUtils;
 
-
-import java.io.File;
-import java.net.URL;
-
+@ApplicationScoped
 @Path("/api/devices")
 public class DeviceResource {
+        @ConfigProperty(name = "apiUrl")
+        String apiUrl;
+
         @GET
         @Produces(MediaType.APPLICATION_JSON)
         @Path("/getData")
         //@Schedule()
         public String getData(){
-            try {
-              return DeviceUtils.runDriver();
-            }
-            catch (Exception e){
-                return 500 + e.getMessage();
-
-            }
+                return DeviceUtils.runDriver(apiUrl);
         }
 
 }

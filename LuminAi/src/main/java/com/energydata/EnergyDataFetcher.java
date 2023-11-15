@@ -30,9 +30,8 @@ public class EnergyDataFetcher {
         }
     }
 
-    public static Map<String, Object> getEnergyData() throws IOException {
-        String powerflowUrl = "http://192.168.1.110/solar_api/v1/GetPowerFlowRealtimeData.fcgi";
-        String dataJson = fetchDataFromApi(powerflowUrl);
+    public static Map<String, Object> getEnergyData(String apiUrl) throws IOException {
+        String dataJson = fetchDataFromApi(apiUrl);
 
         Gson gson = new Gson();
         Map<String, Object> data = gson.fromJson(dataJson, Map.class);
