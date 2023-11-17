@@ -86,6 +86,11 @@ ARG DB_HOST
 ARG DB_NAME
 ARG DB_PORT
 
+ENV DB_USER=$DB_USER
+ENV DB_PASS=$DB_PASS
+ENV DB_HOST=$DB_HOST
+ENV DB_NAME=$DB_NAME
+ENV DB_PORT=$DB_PORT
 
 
 # We make four distinct layers so if there are application changes the library layers can be re-used
@@ -99,5 +104,5 @@ USER 185
 ENV JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Dquarkus.profile=prod"
 ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
 
-ENTRYPOINT [ "/opt/jboss/container/java/run/run-java.sh" ]
+ENTRYPOINT [ "echo ${DB_USER} && /opt/jboss/container/java/run/run-java.sh" ]
 
