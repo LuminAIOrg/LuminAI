@@ -11,3 +11,10 @@ set the default context
 get the pod name
 ``kubectl get pods``
 ``kubectl port-forward <pod-name> 6543:5432``
+
+
+
+### Apply deployment
+``kubectl apply -f ./k8s/luminai-deployment.yml``
+### Delete deployment
+``kubectl delete -n <namespace> deployment luminai``
