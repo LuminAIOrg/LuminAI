@@ -100,7 +100,7 @@ COPY log-env.sh /opt/jboss/container/java/run/log-env.sh
 EXPOSE 8080
 USER 185
 
-ENV JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Dquarkus.profile=prod"
+ENV JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Dquarkus.profile=prod -Dquarkus.datasource.jdbc.url=jdbc:postgresql://postgres:5432/${DB_NAME} -Dquarkus.datasource.username=${DB_USER} -Dquarkus.datasource.password=${DB_PASS} -Dquarkus.hibernate-orm.database.generation=update -Dquarkus.hibernate-orm.log.sql=true"
 ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
 
 ENTRYPOINT ["/opt/jboss/container/java/run/log-env.sh", "/opt/jboss/container/java/run/run-java.sh" ]
