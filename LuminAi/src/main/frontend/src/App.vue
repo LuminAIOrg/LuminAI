@@ -1,9 +1,11 @@
 <template>
   <DeviceList/>
+  <chartHTML/>
 </template>
 
 <script setup>
 import DeviceList from './components/DeviceList.vue'
+import chartHTML from "@/testChartJs/chartHTML.vue";
 </script>
 
 <style>
