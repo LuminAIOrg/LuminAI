@@ -443,3 +443,7 @@ Temporary Items
 .gitsecret/keys/random_seed
 !*.secret
 login_htl_fronius.txt
+
+
+
+*/*-secret.yml
