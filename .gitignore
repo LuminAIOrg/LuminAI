@@ -437,4 +437,13 @@ Temporary Items
 # iCloud generated files
 *.icloud
 
+*.pdf
+
 # End of https://www.toptal.com/developers/gitignore/api/macos
+.gitsecret/keys/random_seed
+!*.secret
+login_htl_fronius.txt
+
+
+
+*/*-secret.yml

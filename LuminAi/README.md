@@ -5,7 +5,7 @@
 ### Backend
 Run standard quarkus configuration
 ```Bash
-./mvnw quarkus:dev
+./mvnw quarkus:dev -Dquarkus.profile=dev
 ```
 
 ### Frontend
