@@ -10,68 +10,58 @@
 <script>
 import Chart from 'chart.js/auto';
 
-  // OLD CODE -- Working BUT hardcoded
 export default {
-  props: {
-    msg: String
-  },
-
   mounted() {
-    console.log('Component mounted.')
-    var options = {
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          stacked: true,
-          grid: {
-            display: true
-          }
-        },
-        x: {
-          grid: {
-            display: false
-          }
-        }
-      }
-    }
-    const energyOverviewChart = new Chart('energyOverviewChart', {
-      type: 'line',
-      options: options,
-      data: {
-        labels: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli"],
-        datasets: [{
-          label: 'PV',
-          data: [2273, 1536, 2650, 200, 350, 204, 546],
-          borderColor: 'rgb(255, 153, 51)',
-        },
-          {
-            label: 'Grid',
-            data: [1000, 899, 150, 2300, 390, -50, 222],
-            borderColor: 'rgb(250,74,74)',
-          },
-          {
-            label: 'Akku',
-            data: [1000, 899, 150, 2300, 390, -50, 222],
-            borderColor: 'rgb(153, 255, 255)',
-          },
-          {
-            label: 'Wärmepumpe',
-            data: [-600, -250, 20, 450, 2050, 800, 999],
-            borderColor: 'rgb(153, 255, 153)',
-          },
-          {
-            label: 'Balkonkraftwerk',
-            data: [300, 405, 1000, 2650, 200, -300, 50],
-            borderColor: 'rgb(255, 153, 204)',
-            tension: 0.1
+    this.updateChart();
+  },
+  methods: {
+    async fetchData() {
+      const fetchUrl = 'http://localhost:8080/api/devices/getData.json';
+      const res = await fetch(fetchUrl);
+      const datapoints = await res.json();
+      return datapoints;
+    },
+    updateChart() {
+      this.fetchData().then(datapoints => {
+        const name = datapoints.devices[0].map(element => element.name);
+        const value = datapoints.devices[0].map(element => element.value);
+        const data = {
+          labels: name,
+          datasets: [{
+            label: 'Weekly Energy Overview',
+            borderColor: [
+              'rgba(255, 102, 102)',
+              'rgba(255, 178, 102)',
+              'rgba(178, 255, 102)',
+              'rgba(102, 255, 255)',
+              'rgba(102, 102, 255)',
+              'rgba(255, 102, 255)',
+              'rgba(255, 102, 178)'
+            ],
+            data: value,
+            borderWidth: 1
           }]
-      }
-
-    });
-    energyOverviewChart;
+        };
+        const config = {
+          type: 'line',
+          data,
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        };
+        const energyOverviewChart = new Chart(
+            document.getElementById('energyOverviewChart'),
+            config
+        );
+        energyOverviewChart;
+      });
+    }
   }
-}
-
+};
   // NEW CODE -- NOT WORKING - can't test because url (http://localhost:8080/api/devices/getData) doesn't work
   /*
   props: {
