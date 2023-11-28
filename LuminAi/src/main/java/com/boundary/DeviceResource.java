@@ -4,7 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import utils.com.DeviceUtils;
+import com.utils.DeviceUtils;
 
 @ApplicationScoped
 @Path("/api/devices")
