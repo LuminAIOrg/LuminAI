@@ -1,13 +1,18 @@
 package com.mqtt;
 
-import io.quarkus.logging.Log;
+import com.session.UpdateSocket;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 
 @ApplicationScoped
 public class MqttConnection {
+
+    @Inject
+    UpdateSocket clients;
+
     @Incoming("mqtt-listener")
     public void consume(String message) {
-        Log.info("Message received: " + message);
+        clients.sendUpdates(message);
     }
 }
