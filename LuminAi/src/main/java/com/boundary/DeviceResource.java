@@ -1,23 +1,26 @@
 package com.boundary;
 
+import com.model.Data;
+import com.repository.DataRepository;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-import com.utils.DeviceUtils;
+
+import java.util.List;
+
 
 @ApplicationScoped
 @Path("/api/devices")
 public class DeviceResource {
-        @ConfigProperty(name = "apiUrl")
-        String apiUrl;
+        @Inject
+        DataRepository dataRepository;
 
         @GET
         @Produces(MediaType.APPLICATION_JSON)
         @Path("/getData")
-        //@Schedule()
-        public String getData(){
-                return DeviceUtils.runDriver(apiUrl);
+        public List<Data> getData(){
+            return dataRepository.getAllData();
         }
 
 }
