@@ -7,7 +7,7 @@ import io.quarkus.scheduler.Scheduler;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import java.util.List;
+import java.util.*;
 
 public abstract class Driver implements DataFetcher {
     @Inject
@@ -20,17 +20,8 @@ public abstract class Driver implements DataFetcher {
 
     @Override
     public void invoke() {
-        scheduler.newJob("runDriver")
-                .setCron("0/5 * * * * ?")
-                .setTask(executionContext -> {
-                    try {
-                        List<Data> data = runDriver();
-                        dataRepository.addData(data);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .schedule();
+        //TODO - add cronjob so that this is executed every x seconds
+        //TODO - add result of runDriver() to repository
     }
 
     public abstract List<Data> runDriver() throws Exception;
