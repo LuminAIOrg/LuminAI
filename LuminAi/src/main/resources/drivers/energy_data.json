@@ -1,25 +1,25 @@
 {
-  "devices": [
-    {
-      "name": "PV",
-      "value": null
-    },
-    {
-      "name": "Grid",
-      "value": null
-    },
-    {
-      "name": "PV-Balkon",
-      "value": null
-    },
-    {
-      "name": "Wärmepumpe",
-      "value": null
-    },
-    {
-      "name": "Akku",
-      "value": null
-    }
-  ],
-  "timestamp": null
+    "devices": [
+        {
+            "name": "PV",
+            "value": 563.9280738830566
+        },
+        {
+            "name": "Grid",
+            "value": -97.1
+        },
+        {
+            "name": "Akku",
+            "value": -1.012986421585083
+        },
+        {
+            "name": "Wärmepumpe",
+            "value": -242.2
+        },
+        {
+            "name": "Balkonkraftwerk",
+            "value": 63.0
+        }
+    ],
+    "timestamp": "2023-11-07T07:19:11+00:00"
 }
