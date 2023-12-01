@@ -9,23 +9,20 @@
 
 <script>
 import Chart from 'chart.js/auto';
+import {getUpdatedEnergyDevices} from "@/services/PowerService";
 
 export default {
   mounted() {
     this.updateChart();
   },
   methods: {
-    async fetchData() {
-      const fetchUrl = 'http://localhost:8080/api/devices/getData.json';
-      const res = await fetch(fetchUrl);
-      const datapoints = await res.json();
-      return datapoints;
-    },
-    updateChart() {
-      this.fetchData().then(datapoints => {
+
+    async updateChart() {
+      console.log("kasdkkasdjonasmdjansdkjhasnd")
+      console.log(await getUpdatedEnergyDevices())
+      getUpdatedEnergyDevices().then(datapoints => {
         const name = datapoints.devices[0].map(element => element.name);
         const value = datapoints.devices[0].map(element => element.value);
-
         const data = {
           labels: name,
           datasets: [{
@@ -43,7 +40,6 @@ export default {
             borderWidth: 1
           }]
         };
-
         const config = {
           type: 'line',
           data,
@@ -55,7 +51,6 @@ export default {
             }
           }
         };
-
         const energyOverviewChart = new Chart(
             document.getElementById('energyOverviewChart'),
             config
