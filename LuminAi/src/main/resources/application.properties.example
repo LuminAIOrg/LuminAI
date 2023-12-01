@@ -1,8 +1,0 @@
-apiUrl=API_URL
-
-mp.messaging.incoming.mqtt-listener.connector=smallrye-mqtt
-mp.messaging.incoming.mqtt-listener.host=YOUR_MQTT_HOST
-mp.messaging.incoming.mqtt-listener.port=1883
-mp.messaging.incoming.mqtt-listener.topic=#
-mp.messaging.incoming.mqtt-listener.username=AUTH_USERNAME
-mp.messaging.incoming.mqtt-listener.password=AUT_PASSWORD
