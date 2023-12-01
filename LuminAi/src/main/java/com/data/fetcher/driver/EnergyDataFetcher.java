@@ -1,19 +1,15 @@
-package com.energydata;
+package com.data.fetcher.driver;
+
+import com.google.gson.Gson;
+import com.model.Data;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
-import com.google.gson.Gson;
-
-public class EnergyDataFetcher {
-
-    public static String fetchDataFromApi(String apiUrl) throws IOException {
+public class EnergyDataFetcher extends Driver {
+    private static String fetchDataFromApi() throws IOException {
         URL url = new URL(apiUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -32,8 +28,8 @@ public class EnergyDataFetcher {
         }
     }
 
-    public static Map<String, Object> getEnergyData(String apiUrl) throws IOException {
-        String dataJson = fetchDataFromApi(apiUrl);
+    public List<Data> runDriver() throws IOException {
+        String dataJson = fetchDataFromApi();
 
         Gson gson = new Gson();
         Map<String, Object> data = gson.fromJson(dataJson, Map.class);
@@ -78,6 +74,7 @@ public class EnergyDataFetcher {
 
         energyData.put("timestamp", ((Map<String, Object>) data.get("Head")).get("Timestamp"));
 
-        return energyData;
+        //TODO Impliment Driver to return Data object
+        return new ArrayList<>();
     }
 }
