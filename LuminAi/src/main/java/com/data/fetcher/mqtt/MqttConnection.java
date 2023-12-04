@@ -10,6 +10,7 @@ import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 
 @ApplicationScoped
@@ -20,13 +21,18 @@ public class MqttConnection implements DataFetcher {
     @Inject
     DataRepository repository;
 
+    @ConfigProperty(name = "mp.messaging.incoming.mqtt-listener.topic")
+    String topicName;
+
     @Transactional
     @Incoming("mqtt-listener")
     public void consume(String message) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             Data dataObject = objectMapper.readValue(message, Data.class);
-            dataObject.setName("Solar");
+            String[] split = topicName.split("/");
+            dataObject.setName(split[split.length-2]);
+            dataObject.setUnit("°");
             repository.addData(dataObject);
             clients.publish(dataObject);
 
