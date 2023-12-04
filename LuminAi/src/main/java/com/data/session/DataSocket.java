@@ -1,18 +1,20 @@
-package com.session;
+package com.data.session;
 
+import com.model.Data;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnError;
 import jakarta.websocket.OnOpen;
 import jakarta.websocket.Session;
 import jakarta.websocket.server.ServerEndpoint;
+
 import java.util.HashSet;
 import java.util.Set;
 
 
 @ServerEndpoint("/subscribeUpdates")
 @ApplicationScoped
-public class UpdateSocket {
+public class DataSocket {
     Set<Session> sessions = new HashSet<>();
 
     @OnOpen
@@ -31,13 +33,11 @@ public class UpdateSocket {
         sessions.remove(session);
     }
 
-    public void sendUpdates(String message) {
-        sessions.forEach(session -> {
-            session.getAsyncRemote().sendObject(message, result -> {
-                if (result.getException() != null) {
-                    throw new RuntimeException("error with user websocket", result.getException());
-                }
-            });
-        });
+    public void publish(Data data) {
+        sessions.forEach(session -> session.getAsyncRemote().sendObject(data, result -> {
+            if (result.getException() != null) {
+                throw new RuntimeException("error with user websocket", result.getException());
+            }
+        }));
     }
 }
