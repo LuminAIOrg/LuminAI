@@ -1,13 +1,11 @@
-package com.energydata;import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+package com.data.energydata;
 
 import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.*;
 
 public class EnergyDataFetcher {
 
