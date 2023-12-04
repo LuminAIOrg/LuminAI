@@ -19,10 +19,13 @@ public class Data {
     private long timestamp;
     private Double value;
 
-    public Data(String name, Double value, long timestamp) {
-        setName(name);
-        setValue(value);
-        setTimestamp(timestamp);
+    private String unit;
+
+    public Data(String name, long timestamp, Double value, String unit) {
+        this.name = name;
+        this.timestamp = timestamp;
+        this.value = value;
+        this.unit = unit;
     }
 
     public Data() {}
@@ -51,16 +54,24 @@ public class Data {
         this.timestamp = timestamp;
     }
 
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Data data = (Data) o;
-        return timestamp == data.timestamp && Objects.equals(name, data.name) && Objects.equals(value, data.value);
+        return timestamp == data.timestamp && Objects.equals(name, data.name) && Objects.equals(value, data.value) && Objects.equals(unit, data.unit);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, timestamp, value);
+        return Objects.hash(name, timestamp, value, unit);
     }
 }
