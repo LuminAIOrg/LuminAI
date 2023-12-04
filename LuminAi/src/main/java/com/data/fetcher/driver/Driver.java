@@ -1,8 +1,8 @@
 package com.data.fetcher.driver;
 
 import com.data.fetcher.DataFetcher;
-import com.model.Data;
-import com.repository.DataRepository;
+import com.data.model.Data;
+import com.data.repository.DataRepository;
 import io.quarkus.scheduler.Scheduler;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;

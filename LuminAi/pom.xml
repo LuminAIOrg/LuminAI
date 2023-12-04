@@ -81,6 +81,16 @@
       <artifactId>gson</artifactId>
       <version>2.10.1</version>
     </dependency>
+      <dependency>
+          <groupId>io.smallrye.reactive</groupId>
+          <artifactId>smallrye-reactive-messaging-api</artifactId>
+          <version>4.9.0</version>
+      </dependency>
+      <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-scheduler-api</artifactId>
+          <version>3.4.3</version>
+      </dependency>
   </dependencies>
   <build>
     <plugins>

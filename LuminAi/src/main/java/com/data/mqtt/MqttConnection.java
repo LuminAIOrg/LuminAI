@@ -1,6 +1,8 @@
 package com.data.mqtt;
 
-import com.session.UpdateSocket;
+import com.data.model.Data;
+import com.data.session.DataSocket;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
@@ -9,10 +11,18 @@ import org.eclipse.microprofile.reactive.messaging.Incoming;
 public class MqttConnection {
 
     @Inject
-    UpdateSocket clients;
+    DataSocket clients;
 
     @Incoming("mqtt-listener")
     public void consume(String message) {
-        clients.sendUpdates(message);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            Data dataObject = objectMapper.readValue(message, Data.class);
+            clients.publish(dataObject);
+        } catch (Exception e) {
+            throw new RuntimeException("Error while parsing MQTT data", e);
+        }
+
+
     }
 }

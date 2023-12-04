@@ -1,7 +1,7 @@
 package com.data.fetcher.driver;
 
+import com.data.model.Data;
 import com.google.gson.Gson;
-import com.model.Data;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

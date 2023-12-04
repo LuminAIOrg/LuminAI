@@ -1,6 +1,6 @@
 package com.data.session;
 
-import com.model.Data;
+import com.data.model.Data;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnError;
