@@ -28,7 +28,6 @@ public class DataRepository {
 
 
     public List<Data> getAllData() {
-        addData(new Data("test", 1.0, Integer.toUnsignedLong(LocalTime.now().getNano())));
         return entityManager.createNamedQuery(Data.FIND_ALL, Data.class).getResultList();
     }
 }
