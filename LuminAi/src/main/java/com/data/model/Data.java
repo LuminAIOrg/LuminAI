@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedQuery;
 
+import java.util.Objects;
+
 @NamedQuery(name = Data.FIND_ALL, query = "SELECT d FROM Data d"    )
 
 @Entity
@@ -31,7 +33,7 @@ public class Data {
     public Double getValue() {
         return value;
     }
-    private void setName(String name) {
+    public void setName(String name) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Illegal data name:" + name);
         }
@@ -47,5 +49,18 @@ public class Data {
 
     private void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Data data = (Data) o;
+        return timestamp == data.timestamp && Objects.equals(name, data.name) && Objects.equals(value, data.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, timestamp, value);
     }
 }

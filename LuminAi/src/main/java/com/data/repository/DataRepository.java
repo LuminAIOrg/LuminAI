@@ -6,6 +6,7 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @ApplicationScoped
@@ -27,6 +28,7 @@ public class DataRepository {
 
 
     public List<Data> getAllData() {
+        addData(new Data("test", 1.0, Integer.toUnsignedLong(LocalTime.now().getNano())));
         return entityManager.createNamedQuery(Data.FIND_ALL, Data.class).getResultList();
     }
 }
