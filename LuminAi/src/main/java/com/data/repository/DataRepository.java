@@ -1,6 +1,6 @@
 package com.data.repository;
 
-import com.model.Data;
+import com.data.model.Data;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;

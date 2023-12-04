@@ -1,7 +1,7 @@
 package com.data.boundary;
 
-import com.model.Data;
-import com.repository.DataRepository;
+import com.data.model.Data;
+import com.data.repository.DataRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
