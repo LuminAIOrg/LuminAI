@@ -10,7 +10,8 @@
 <script>
 import Chart from 'chart.js/auto';
 import {getUpdatedEnergyDevices} from "@/services/PowerService";
-
+import store from '@/store/Store';
+import {computed} from "vue";
 export default {
   mounted() {
     this.updateChart();
@@ -18,15 +19,17 @@ export default {
   methods: {
 
     async updateChart() {
-      console.log("kasdkkasdjonasmdjansdkjhasnd")
-      console.log(await getUpdatedEnergyDevices())
+      console.log("jisbdfinapksbdin")
+
+      console.log(devices.value[0])
       getUpdatedEnergyDevices().then(datapoints => {
-        const name = datapoints.devices[0].map(element => element.name);
+        //const name = datapoints.devices[0].map(element => element.name);
         const value = datapoints.devices[0].map(element => element.value);
+        const timestamp = datapoints.devices[0].map(element => element.timestamp);
         const data = {
-          labels: name,
+          labels: timestamp,
           datasets: [{
-            label: 'Weekly Energy Overview',
+            label: "Energy Overview",
             borderColor: [
               'rgba(255, 102, 102)',
               'rgba(255, 178, 102)',
@@ -60,4 +63,7 @@ export default {
     }
   }
 };
+const devices = computed(() => {
+  return store.deviceData
+})
 </script>
