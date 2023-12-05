@@ -7,7 +7,6 @@ socket.on('connect', () => {
     console.log('Connected to server');
 
     socket.on('/subscribeUpdates', (data) => {
-        console.log('Received update:', data);
         store.deviceData = data;
     });
 });
