@@ -2,24 +2,24 @@
     "devices": [
         {
             "name": "PV",
-            "value": null
+            "value": 640.6168746948242
         },
         {
             "name": "Grid",
-            "value": null
+            "value": 854.4
         },
         {
             "name": "Akku",
-            "value": null
+            "value": -1.1813609600067139
         },
         {
             "name": "Wärmepumpe",
-            "value": null
+            "value": -1158.0
         },
         {
             "name": "Balkonkraftwerk",
-            "value": null
+            "value": 83.3
         }
     ],
-    "timestamp": null
+    "timestamp": "2023-10-24T06:36:39+00:00"
 }

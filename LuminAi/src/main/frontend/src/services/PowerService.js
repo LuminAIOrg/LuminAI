@@ -7,6 +7,6 @@ socket.on('connect', () =>{
     console.log(socket);
 });
 
-socket.on('/subscribeUpdates', (data) =>{
-    store.deviceData = data
+socket.on('connect_error', (error) => {
+    console.error('Connection error:', error);
 });
