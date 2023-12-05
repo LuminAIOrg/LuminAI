@@ -3,8 +3,13 @@ import {io} from "socket.io-client";
 
 const socket = io();
 
-socket.on('connect', () =>{
-    console.log(socket);
+socket.on('connect', () => {
+    console.log('Connected to server');
+
+    socket.on('/subscribeUpdates', (data) => {
+        console.log('Received update:', data);
+        store.deviceData = data;
+    });
 });
 
 socket.on('disconnect', () => {
