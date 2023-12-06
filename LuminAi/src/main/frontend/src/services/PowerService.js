@@ -8,9 +8,7 @@ export function startSocketClient() {
     };
 
     socket.onmessage = function (event) {
-        console.log(event.data);
-        const data = JSON.parse(event.data);
-        store.deviceData = data;
+        store.deviceData = JSON.parse(event.data);
     };
 
     socket.onclose = function (event) {
