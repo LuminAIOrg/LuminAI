@@ -1,4 +1,4 @@
-<template>
+  <template>
   <li v-for="device in devices" v-bind:key="device.name">
     <Device :name=device.name :value=device.value></Device>
   </li>
