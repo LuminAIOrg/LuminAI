@@ -1,6 +1,6 @@
 import { store } from "@/store/Store";
 
-const socket = new WebSocket('ws://localhost:8080/subscribeUpdates');
+const socket = new WebSocket(`ws://${process.env.BACKEND_BASE_URL}/subscribeUpdates`);
 
 export function startSocketClient() {
     socket.onopen = function (event) {
