@@ -1,20 +1,34 @@
 <template>
-  <DeviceList/>
-  <chartHtml/>
+  <div id="app">
+    <main>
+      <!-- Your main content goes here -->
+      <DeviceDataChart />
+    </main>
+  </div>
 </template>
 
-<script setup>
-import DeviceList from './components/DeviceList.vue'
-import chartHtml from '@/testingChartJs/chartHtml.vue'
+<script>
+
+import DeviceDataChart from "@/testingChartJs/DeviceDataChart.vue";
+import {getUpdatedEnergyDevices} from "@/services/PowerService";
+
+getUpdatedEnergyDevices()
+setInterval(getUpdatedEnergyDevices, 5000);
+export default {
+  name: 'App',
+  components: {
+    DeviceDataChart
+  },
+}
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
   margin-top: 60px;
+}
+
+main {
+  padding: 20px;
 }
 </style>
