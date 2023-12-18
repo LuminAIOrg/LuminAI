@@ -45,3 +45,6 @@ nb-configuration.xml
 # Recources
 /src/main/resources/META-INF/
 /src/test/resources/META-INF/*
+
+# Application Properties
+application.properties

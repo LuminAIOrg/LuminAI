@@ -1,0 +1,34 @@
+@startuml
+
+database db as "Postgres DB" {
+}
+folder backend{
+    rectangle quarkus{
+        rectangle DataFetcher as "Data Fetcher"
+        rectangle Driver
+        rectangle MqttHandler
+        rectangle FroniusDriver
+        rectangle HuaweiDriver
+    }
+
+}
+folder frontend{
+    rectangle Vue
+}
+
+cloud MqttServer
+cloud Inverter_api_fronius as "Inverter Api Fronius"
+cloud Inverter_api_huawei as "Inverter Api Huawei"
+
+quarkus -- db
+DataFetcher <|-- MqttHandler
+DataFetcher <|-- Driver
+Driver <|-- FroniusDriver
+Driver <|-- HuaweiDriver
+MqttServer --- MqttHandler
+HuaweiDriver --- Inverter_api_huawei
+FroniusDriver --- Inverter_api_fronius
+Vue -- quarkus: Apiy
+Vue -- quarkus: Websocket
+
+@enduml

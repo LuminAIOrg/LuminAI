@@ -31,15 +31,16 @@ public class MqttConnection implements DataFetcher {
         try {
             Data dataObject = objectMapper.readValue(message, Data.class);
             String[] split = topicName.split("/");
-            dataObject.setName(split[split.length-2]);
+            dataObject.setName(split[split.length - 2]);
             dataObject.setUnit("°");
             repository.addData(dataObject);
             clients.publish(dataObject);
 
         } catch (JsonProcessingException e) {
-            Log.error("error parsing into Data Object: "+message);
+            Log.error("error parsing into Data Object: " + message);
         }
     }
+
     @Override
     public void invoke() {
         System.out.println("Invoked MQTT Connection");
