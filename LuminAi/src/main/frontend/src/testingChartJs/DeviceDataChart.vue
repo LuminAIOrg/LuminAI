@@ -1,92 +1,59 @@
 <template>
-  <Chart
-      :size="{ width: 500, height: 400 }"
-      :data="data"
-      :margin="margin"
-      :direction="'horizontal'"
-  >
-    <template #layers>
-      <Grid strokeDasharray="2,2" />
-      <Line :dataKeys="['timestamp', 'value']" />
-    </template>
-  </Chart>
+  <div style="width: 100%; display: flex; justify-content: center">
+    <div style="height: 50vh;width: 30vw">
+      <LineChart
+        :chart-data="data"
+        :options="options"
+      ></LineChart>
+    </div>
+  </div>
 </template>
 
 
-<script>
-import { defineComponent } from 'vue'
-import { Chart, Grid, Line } from 'vue3-charts'
-import { computed } from 'vue'
-import {store} from "@/store/Store";
+<script setup>
+import { store } from "../store/Store"
+import { ref, computed } from "vue"
+import { LineChart } from "vue-chart-3"
+import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement} from "chart.js";
 
-/*
-import Chart from 'chart.js/auto'
-export default {
-  updateChart() {
-    console.log("bsihadbfojabsdb")
-    const name = computed(() => store.deviceData.map(entry => entry.name))
-    const timestamp = computed(() => store.deviceData.map(entry => entry.timestamp))
-    const value = computed(() => store.deviceData.map(entry => entry.value))
+Chart.register(
+    LineController,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement
+)
 
-    const data = {
-      labels: timestamp,
-      datasets: [{
-        label: name,
-        borderColor: [
-          'rgba(255, 102, 102)',
-          'rgba(255, 178, 102)',
-          'rgba(178, 255, 102)',
-          'rgba(102, 255, 255)',
-          'rgba(102, 102, 255)',
-          'rgba(255, 102, 255)',
-          'rgba(255, 102, 178)'
-        ],
-        data: value,
-        borderWidth: 1
-      }]
-    };
-    const config = {
-      type: 'line',
-      data,
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    };
-    const energyOverviewChart = new Chart(
-        document.getElementById('energyOverviewChart'),
-        config
-    );
-    energyOverviewChart;
-  }
-};
+const dataValues = computed(() =>store.deviceData.map(entry => entry.value))
+const timestamp = computed(() => store.deviceData.map(entry => new Date(parseInt(entry.timestamp) * 1000).toLocaleDateString('de-DE')))
 
-updateChart();
-*/
+const data = computed(() => ({
+  labels: timestamp.value,
 
-export default defineComponent({
-  name: 'DeviceDataChart',
-  components: {
-    Chart,
-    Grid,
-    Line,
+  datasets: [
+    {
+      label: store.deviceData.length > 0 ? store.deviceData[0].name : "",
+      data: dataValues.value,
+      borderColor: "#dc322f",
+    }
+  ]
+}))
+
+const options = ref({
+  responsive: true,
+  plugins: {
+    title: {
+      text: "Device Data"
+    },
   },
-  setup() {
-    const data = computed(() => store.deviceData.map(entry => ({
-      //date: new Date(parseInt(entry.timestamp) * 1000),
-      //formattedDate: date.toLocaleDateString('de-DE'),
-      timestamp: entry.timestamp,
-      value: entry.value,
-    })))
-
-    const margin = { top: 20, right: 20, bottom: 20, left: 20 }
-    const direction = 'horizontal'
-
-    return { data, margin, direction }
+  scales: {
+    x: {
+      type: 'linear',
+      position: 'bottom'
+    },
+    y: {
+      beginAtZero: true
+    }
   },
-});
-
+})
 </script>
