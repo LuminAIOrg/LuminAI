@@ -25,7 +25,7 @@ Chart.register(
 )
 
 const dataValues = computed(() =>store.deviceData.map(entry => entry.value))
-const timestamp = computed(() => store.deviceData.map(entry => entry.timestamp))
+const timestamp = computed(() => store.deviceData.map(entry => new Date(parseInt(entry.timestamp) * 1000).toLocaleDateString('de-DE')))
 
 const data = computed(() => ({
   labels: timestamp.value,
