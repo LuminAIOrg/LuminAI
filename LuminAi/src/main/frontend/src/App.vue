@@ -10,10 +10,9 @@
 <script>
 
 import DeviceDataChart from "@/testingChartJs/DeviceDataChart.vue";
-import {getUpdatedEnergyDevices} from "@/services/PowerService";
+import {startSocketClient} from "@/services/PowerService";
 
-getUpdatedEnergyDevices()
-setInterval(getUpdatedEnergyDevices, 5000);
+startSocketClient()
 export default {
   name: 'App',
   components: {
