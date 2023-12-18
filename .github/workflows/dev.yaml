@@ -1,0 +1,39 @@
+name: LuminAi
+run-name: "[dev] Build Project for ${{ github.repository_owner }} as actor ${{ github.actor }} 🚀"
+on:
+  workflow_dispatch:
+    
+  push:
+    branches:
+     - "dev"
+
+jobs:
+  backend: 
+    runs-on: ubuntu-22.04
+    env:
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASS: $${{ secrets.DB_PASS }}
+      DB_NAME: $${{ secrets.DB_NAME }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: build backend
+        run: |
+          cd LuminAi
+          set -e
+          rm -rf target
+          ./mvnw -B clean package
+  done:
+    runs-on: ubuntu-22.04
+    needs:
+      - backend
+      #- frontend
+    steps:
+      - name: done
+        run: |
+          echo "# Built the app (no pushing to docker registry)" >> $GITHUB_STEP_SUMMARY
