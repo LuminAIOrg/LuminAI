@@ -1,5 +1,6 @@
-package com.data.fetcher.driver;
+package com.data.fetcher.driver.fonius;
 
+import com.data.fetcher.driver.Driver;
 import com.data.model.Data;
 import com.google.gson.Gson;
 
