@@ -1,4 +1,4 @@
-import { store } from "@/store/Store";
+import { store } from "@/store/Store.ts";
 
 const socket = new WebSocket(`ws://${process.env.BACKEND_BASE_URL}/subscribeUpdates`);
 

@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 
 import DeviceDataChart from "@/testingChartJs/DeviceDataChart.vue";
 import {startSocketClient} from "@/services/PowerService";
