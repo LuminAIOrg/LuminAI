@@ -83,10 +83,22 @@ ENV LANGUAGE='en_US:en'
 ARG DB_USER
 ARG DB_PASS
 ARG DB_NAME
+ARG MQTT_CONNECTOR
+ARG MQTT_HOST
+ARG MQTT_PORT
+ARG MQTT_TOPIC
+ARG MQTT_USERNAME
+ARG MQTT_PASSWORD
 
 ENV DB_USER=$DB_USER
 ENV DB_PASS=$DB_PASS
 ENV DB_NAME=$DB_NAME
+ENV MQTT_CONNECTOR=$MQTT_CONNECTOR
+ENV MQTT_HOST=$MQTT_HOST  
+ENV MQTT_PORT=$MQTT_PORT
+ENV MQTT_TOPIC=$MQTT_TOPIC
+ENV MQTT_USERNAME=$MQTT_USERNAME
+ENV MQTT_PASSWORD=$MQTT_PASSWORD
 
 
 # We make four distinct layers so if there are application changes the library layers can be re-used
@@ -100,7 +112,7 @@ COPY log-env.sh /opt/jboss/container/java/run/log-env.sh
 EXPOSE 8080
 USER 185
 
-ENV JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Dquarkus.profile=prod -Dquarkus.datasource.db-kind=postgresql -Dquarkus.datasource.jdbc.url=jdbc:postgresql://postgres:5432/$DB_NAME -Dquarkus.datasource.username=$DB_USER -Dquarkus.datasource.password=$DB_PASS -Dquarkus.hibernate-orm.database.generation=update -Dquarkus.hibernate-orm.log.sql=true"
+ENV JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 -Dquarkus.mp.messaging.incoming.mqtt-listener.connector=$MQTT_CONNECTOR -Dquarkus.mp.messaging.incoming.mqtt-listener.host=$MQTT_HOST -Dquarkus.mp.messaging.incoming.mqtt-listener.port=$MQTT_PORT -Dquarkus.mp.messaging.incoming.mqtt-listener.topic=$MQTT_TOPIC -Dquarkus.mp.messaging.incoming.mqtt-listener.username=$MQTT_USERNAME -Dquarkus.mp.messaging.incoming.mqtt-listener.password=$MQTT_PASSWORD -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Dquarkus.profile=prod -Dquarkus.datasource.db-kind=postgresql -Dquarkus.datasource.jdbc.url=jdbc:postgresql://postgres:5432/$DB_NAME -Dquarkus.datasource.username=$DB_USER -Dquarkus.datasource.password=$DB_PASS -Dquarkus.hibernate-orm.database.generation=update -Dquarkus.hibernate-orm.log.sql=true"
 ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
 
 ENTRYPOINT ["/opt/jboss/container/java/run/log-env.sh", "/opt/jboss/container/java/run/run-java.sh" ]
