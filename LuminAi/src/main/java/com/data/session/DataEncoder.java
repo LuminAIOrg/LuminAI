@@ -21,4 +21,14 @@ public class DataEncoder implements Encoder.Text<Data> {
         }
     }
 
+    @Override
+    public void init(EndpointConfig config) {
+        // Initialization logic, if needed
+    }
+
+    @Override
+    public void destroy() {
+        // Cleanup logic, if needed
+    }
+
 }
