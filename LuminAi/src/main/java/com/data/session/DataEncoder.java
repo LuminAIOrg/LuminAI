@@ -14,7 +14,6 @@ public class DataEncoder implements Encoder.Text<Data> {
     @Override
     public String encode(Data data) throws EncodeException {
         try {
-
             return objectMapper.writeValueAsString(data);
         } catch (JsonProcessingException e) {
             throw new EncodeException(data, "Error encoding Data object to JSON", e);
@@ -23,12 +22,10 @@ public class DataEncoder implements Encoder.Text<Data> {
 
     @Override
     public void init(EndpointConfig config) {
-        // Initialization logic, if needed
     }
 
     @Override
     public void destroy() {
-        // Cleanup logic, if needed
     }
 
 }
