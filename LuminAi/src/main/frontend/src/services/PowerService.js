@@ -1,6 +1,6 @@
 import { store } from "@/store/Store";
 
-const socket = new WebSocket(`ws://${process.env.BACKEND_BASE_URL}/subscribeUpdates`);
+const socket = new WebSocket(`ws://localhost:8080/subscribeUpdates`);
 
 export function startSocketClient() {
     socket.onopen = function (event) {
@@ -8,7 +8,7 @@ export function startSocketClient() {
     };
 
     socket.onmessage = function (event) {
-        store.deviceData = JSON.parse(event.data);
+        store.deviceData.push(JSON.parse(event.data));
     };
 
     socket.onclose = function (event) {
