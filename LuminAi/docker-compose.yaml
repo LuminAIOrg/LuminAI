@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: luminai-postgres
+    environment:
+      POSTGRES_USER: luminai
+      POSTGRES_PASSWORD: luminai
+      POSTGRES_DB: luminai
+    ports:
+      - "5432:5432"
+    volumes:
+        - postgres-data:/var/lib/postgresql/data
+
+volumes:
+    postgres-data:

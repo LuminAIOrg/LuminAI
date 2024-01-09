@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: luminai
+  namespace: student-m-puchner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: luminai
+  template:
+    metadata:
+      labels:
+        app: luminai
+    spec:
+      containers:
+        - name: luminai
+          image: ghcr.io/michi4/lumin-ai:latest
+          envFrom:
+          - secretRef:
+              name: luminai-secret
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: luminai-svc
+  namespace: student-m-puchner
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+      name: http
+  selector:
+    app: luminai
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: luminai
+  namespace: student-m-puchner
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - host: student.cloud.htl-leonding.ac.at
+      http:
+        paths:
+          - path: /m.puchner/luminai(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: luminai-svc
+                port:
+                  number: 80

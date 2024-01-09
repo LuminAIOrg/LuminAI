@@ -1,0 +1,1 @@
+kubectl rollout restart deployment/luminai -n student-m-puchner

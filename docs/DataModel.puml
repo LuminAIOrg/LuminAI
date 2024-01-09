@@ -1,0 +1,32 @@
+@startuml
+class group{
+ id: number;
+ name: string;
+}
+
+class sensor{
+ id: number;
+ name: string;
+ device_id: number; FK
+ type_id: number; FK
+}
+
+class sensor_data{
+ id: number;
+ timestamp: number;
+ sensor_id: number; FK
+ value: number;
+ unit: string;
+}
+
+class type{
+id: number
+name: string
+
+}
+
+
+group "1" -- "*" sensor
+sensor "1" -- "*" sensor_data
+type "1" -- "*" sensor
+@enduml
