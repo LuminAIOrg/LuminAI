@@ -1,8 +1,8 @@
 package com.data.fetcher.mqtt;
 
 import com.data.fetcher.DataFetcher;
-import com.data.model.Data;
-import com.data.repository.DataRepository;
+import com.data.model.SensorData;
+import com.data.repository.SensorDataRepository;
 import com.data.session.DataSocket;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,7 +19,7 @@ public class MqttConnection implements DataFetcher {
     DataSocket clients;
 
     @Inject
-    DataRepository repository;
+    SensorDataRepository repository;
 
     @ConfigProperty(name = "mp.messaging.incoming.mqtt-listener.topic")
     String topicName;
@@ -29,10 +29,11 @@ public class MqttConnection implements DataFetcher {
     public void consume(String message) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            Data dataObject = objectMapper.readValue(message, Data.class);
+            // TODO: add data to Sensordata object and sensor
+            SensorData dataObject = objectMapper.readValue(message, SensorData.class);
             String[] split = topicName.split("/");
-            dataObject.setName(split[split.length - 2]);
-            dataObject.setUnit("°");
+//            dataObject.setName(split[split.length - 2]);
+//            dataObject.setUnit("°");
             repository.addData(dataObject);
             clients.publish(dataObject);
 

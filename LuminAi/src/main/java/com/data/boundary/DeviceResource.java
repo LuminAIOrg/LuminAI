@@ -1,7 +1,7 @@
 package com.data.boundary;
 
-import com.data.model.Data;
-import com.data.repository.DataRepository;
+import com.data.model.SensorData;
+import com.data.repository.SensorDataRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -16,13 +16,13 @@ import java.util.List;
 @Path("/api/devices")
 public class DeviceResource {
         @Inject
-        DataRepository dataRepository;
+        SensorDataRepository sensorDataRepository;
 
         @GET
         @Produces(MediaType.APPLICATION_JSON)
         @Path("/getData")
-        public List<Data> getData(){
-            return dataRepository.getAllData();
+        public List<SensorData> getData(){
+            return sensorDataRepository.getAllData();
         }
 
 }

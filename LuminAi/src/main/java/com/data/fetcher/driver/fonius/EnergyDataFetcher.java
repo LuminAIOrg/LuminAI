@@ -1,7 +1,7 @@
 package com.data.fetcher.driver.fonius;
 
 import com.data.fetcher.driver.Driver;
-import com.data.model.Data;
+import com.data.model.SensorData;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class EnergyDataFetcher extends Driver {
         }
     }
 
-    public List<Data> runDriver() throws IOException {
+    public List<SensorData> runDriver() throws IOException {
         String dataJson = fetchDataFromApi();
 
         Gson gson = new Gson();

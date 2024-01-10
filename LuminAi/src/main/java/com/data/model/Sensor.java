@@ -1,4 +1,4 @@
-package com.model;
+package com.data.model;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
@@ -10,7 +10,8 @@ import java.util.List;
 public class Sensor {
     @Id
     @GeneratedValue
-    private Long d_id;
+    @Column(name = "d_id")
+    private Long id;
 
     private String name;
 
@@ -41,5 +42,13 @@ public class Sensor {
 
     public void setGroup(@Nullable Group group) {
         this.group = group;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
