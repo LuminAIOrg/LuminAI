@@ -43,7 +43,7 @@ public class EnergyDataFetcher extends Driver {
         Map<String, Object> site = (Map<String, Object>) dataProperty.get("Site");
 
         // innit Group
-        //TODO: check if group already exists (i need repository :c)
+        //TODO: check if group already exists (i need repository :c) 
         Group fronius = new Group();
         fronius.setName("Fronius");
 
