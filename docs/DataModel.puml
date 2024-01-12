@@ -1,4 +1,5 @@
 @startuml
+'to group stuff
 class group{
  id: number;
  name: string;
@@ -9,20 +10,20 @@ class sensor{
  name: string;
  device_id: number; FK
  type_id: number; FK
+ unit: string;
 }
 
 class sensor_data{
  id: number;
- timestamp: number;
  sensor_id: number; FK
  value: number;
- unit: string;
+ timestamp: number;
 }
 
+'producer or consumer...
 class type{
-id: number
-name: string
-
+ id: number
+ name: string
 }
 
 
