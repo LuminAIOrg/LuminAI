@@ -10,15 +10,23 @@ public class Group {
     @Id
     @GeneratedValue
     @Column(name = "g_id")
-    private long id;
+    private Long id;
 
+    @Column(unique=true)
     private String name;
 
     @OneToMany
     @Nullable
     private ArrayList<Sensor> sensors;
 
-    //<editor-fold desc="Getter and Setter">
+    public Group(String name) {
+        this.name = name;
+    }
+
+    public Group() {
+
+    }
+
     public String getName() {
         return name;
     }
@@ -31,11 +39,6 @@ public class Group {
     public ArrayList<Sensor> getSensors() {
         return sensors;
     }
-
-    public long getId() {
-        return id;
-    }
-    //</editor-fold>
 
     public void addSensor(Sensor sensor){
         this.sensors.add(sensor);
