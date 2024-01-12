@@ -2,6 +2,7 @@ package com.data.fetcher;
 
 import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ public class Scheduler {
         invokableClasses.add(invokeable);
     }
 
-    @Scheduled(every = "10s", identity = "task-job")
+    @Scheduled(cron = "{interval.time.cron:disabled}")
     void yourScheduledTask() {
         invokableClasses.forEach(DataFetcher::invoke);
     }

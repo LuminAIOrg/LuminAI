@@ -24,7 +24,7 @@ public abstract class Driver implements DataFetcher {
     public void invoke() {
         try {
             List<Data> data = runDriver();
-            //6 dataRepository.addData(data);
+            // dataRepository.addData(data);
             data.forEach(d -> dataSocket.publish(d));
         } catch (Exception e) {
             Log.error("Error while invoking driver");

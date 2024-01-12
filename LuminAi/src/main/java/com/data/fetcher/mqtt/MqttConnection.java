@@ -27,18 +27,18 @@ public class MqttConnection implements DataFetcher {
     @Transactional
     @Incoming("mqtt-listener")
     public void consume(String message) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            Data dataObject = objectMapper.readValue(message, Data.class);
-            String[] split = topicName.split("/");
-            dataObject.setName(split[split.length - 2]);
-            dataObject.setUnit("°");
-            repository.addData(dataObject);
-            clients.publish(dataObject);
-
-        } catch (JsonProcessingException e) {
-            Log.error("error parsing into Data Object: " + message);
-        }
+        //ObjectMapper objectMapper = new ObjectMapper();
+        //try {
+        //    Data dataObject = objectMapper.readValue(message, Data.class);
+        //    String[] split = topicName.split("/");
+        //    dataObject.setName(split[split.length - 2]);
+        //    dataObject.setUnit("°");
+        //    repository.addData(dataObject);
+        //    clients.publish(dataObject);
+//
+        //} catch (JsonProcessingException e) {
+        //    Log.error("error parsing into Data Object: " + message);
+        //}
     }
 
     @Override
