@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class SensorData {
     @Id
     @GeneratedValue
-    @Column(name = "v_id")
+    @Column(name = "sd_id")
     private Long id;
 
     private Double value;

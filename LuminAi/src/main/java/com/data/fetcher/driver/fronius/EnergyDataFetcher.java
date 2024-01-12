@@ -26,7 +26,6 @@ public class EnergyDataFetcher extends Driver {
 
     List<SensorData> dataList;
 
-
     private static String fetchDataFromApi() throws IOException {
         URL url = new URL(apiUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
