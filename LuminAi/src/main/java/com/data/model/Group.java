@@ -1,10 +1,7 @@
-package com.model;
+package com.data.model;
 
 import jakarta.annotation.Nullable;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 
@@ -12,7 +9,8 @@ import java.util.ArrayList;
 public class Group {
     @Id
     @GeneratedValue
-    private long g_id;
+    @Column(name = "g_id")
+    private long id;
 
     private String name;
 
@@ -34,8 +32,8 @@ public class Group {
         return sensors;
     }
 
-    public long getG_id() {
-        return g_id;
+    public long getId() {
+        return id;
     }
     //</editor-fold>
 

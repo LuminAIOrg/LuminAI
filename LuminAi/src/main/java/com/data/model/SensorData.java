@@ -1,4 +1,4 @@
-package com.model;
+package com.data.model;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
@@ -7,7 +7,8 @@ import jakarta.persistence.*;
 public class SensorData {
     @Id
     @GeneratedValue
-    private Long v_id;
+    @Column(name = "v_id")
+    private Long id;
 
     private Double value;
 
@@ -17,8 +18,8 @@ public class SensorData {
     private Sensor sensor;
 
     //<editor-fold desc="Getter and Setter">
-    public Long getV_id() {
-        return v_id;
+    public Long getId() {
+        return id;
     }
 
     public Double getValue() {
