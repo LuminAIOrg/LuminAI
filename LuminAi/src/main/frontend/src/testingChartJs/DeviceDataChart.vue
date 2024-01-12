@@ -1,6 +1,6 @@
 <template>
   <div style="width: 100%; display: flex; justify-content: center">
-    <div style="height: 50vh;width: 30vw">
+    <div style="height: 90vh;width: 70vw">
       <LineChart
         :chart-data="data"
         :options="options"
@@ -11,10 +11,10 @@
 
 
 <script setup>
-import { store } from "../store/Store"
+import { store } from "@/store/Store"
 import { ref, computed } from "vue"
 import { LineChart } from "vue-chart-3"
-import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement} from "chart.js";
+import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement} from "chart.js"
 
 Chart.register(
     LineController,
@@ -24,23 +24,27 @@ Chart.register(
     LineElement
 )
 
+
 const dataValues = computed(() =>store.deviceData.map(entry => entry.value))
-const timestamp = computed(() => store.deviceData.map(entry => new Date(parseInt(entry.timestamp) * 1000).toLocaleDateString('de-DE')))
+const timestamp = computed(() => store.deviceData.map(entry => new Date(entry.timestamp * 1000)))
 
 const data = computed(() => ({
-  labels: timestamp.value,
+  labels: timestamp.value.map(date => date.toLocaleTimeString()),
 
   datasets: [
     {
       label: store.deviceData.length > 0 ? store.deviceData[0].name : "",
       data: dataValues.value,
-      borderColor: "#dc322f",
+      borderColor: "rgba(6,158,253,0.86)",
     }
   ]
 }))
 
 const options = ref({
+  type: 'line',
+  data: data,
   responsive: true,
+  tension: 0.2,
   plugins: {
     title: {
       text: "Device Data"
@@ -48,12 +52,13 @@ const options = ref({
   },
   scales: {
     x: {
-      type: 'linear',
-      position: 'bottom'
-    },
+      type: 'category',
+      position: 'bottom',
+      },
     y: {
-      beginAtZero: true
-    }
+      beginAtZero: false,
+      max: Math.max(...dataValues.value) + 10,
+    },
   },
 })
 </script>
