@@ -4,8 +4,6 @@ import com.data.fetcher.DataFetcher;
 import com.data.model.Data;
 import com.data.repository.DataRepository;
 import com.data.session.DataSocket;
-import io.quarkus.scheduler.Scheduled;
-import io.quarkus.scheduler.Scheduler;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
