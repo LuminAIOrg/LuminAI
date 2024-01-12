@@ -1,8 +1,7 @@
 package com.data.fetcher.mqtt;
 
 import com.data.fetcher.DataFetcher;
-import com.data.model.Data;
-import com.data.repository.DataRepository;
+import com.data.repository.SensorDataRepository;
 import com.data.session.DataSocket;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,7 +18,7 @@ public class MqttConnection implements DataFetcher {
     DataSocket clients;
 
     @Inject
-    DataRepository repository;
+    SensorDataRepository repository;
 
     @ConfigProperty(name = "mp.messaging.incoming.mqtt-listener.topic")
     String topicName;

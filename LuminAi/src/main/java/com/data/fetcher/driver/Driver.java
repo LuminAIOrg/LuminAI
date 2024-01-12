@@ -1,8 +1,8 @@
 package com.data.fetcher.driver;
 
 import com.data.fetcher.DataFetcher;
-import com.data.model.Data;
-import com.data.repository.DataRepository;
+import com.data.model.SensorData;
+import com.data.repository.SensorDataRepository;
 import com.data.session.DataSocket;
 import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public abstract class Driver implements DataFetcher {
     @Inject
-    DataRepository dataRepository;
+    SensorDataRepository dataRepository;
 
     @Inject
     DataSocket dataSocket;
@@ -23,7 +23,7 @@ public abstract class Driver implements DataFetcher {
     @Override
     public void invoke() {
         try {
-            List<Data> data = runDriver();
+            List<SensorData> data = runDriver();
             // dataRepository.addData(data);
             data.forEach(d -> dataSocket.publish(d));
         } catch (Exception e) {
@@ -32,5 +32,5 @@ public abstract class Driver implements DataFetcher {
         }
     }
 
-    public abstract List<Data> runDriver() throws Exception;
+    public abstract List<SensorData> runDriver() throws Exception;
 }
