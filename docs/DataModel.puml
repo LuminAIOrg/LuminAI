@@ -9,20 +9,19 @@ class sensor{
  name: string;
  device_id: number; FK
  type_id: number; FK
+ unit: string;
 }
 
 class sensor_data{
  id: number;
- timestamp: number;
  sensor_id: number; FK
  value: number;
- unit: string;
+ timestamp: number;
 }
 
 class type{
-id: number
-name: string
-
+ id: number
+ name: string
 }
 
 
