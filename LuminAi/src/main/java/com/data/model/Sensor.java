@@ -14,6 +14,7 @@ public class Sensor {
     @Column(name = "s_id")
     private Long id;
 
+    @Column(unique=true)
     private String name;
     private String unit;
 
@@ -26,6 +27,16 @@ public class Sensor {
     @OneToMany(mappedBy = "sensor")
     @JsonIgnoreProperties({"sensor"})
     private List<SensorData> values = new ArrayList<>();
+
+
+
+    public Sensor(String name) {
+        this.name = name;
+    }
+
+    public Sensor() {
+
+    }
 
     public void addValue(final SensorData value){
         this.values.add(value);
@@ -55,13 +66,5 @@ public class Sensor {
 
     public void setGroup(@Nullable Group group) {
         this.group = group;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }
