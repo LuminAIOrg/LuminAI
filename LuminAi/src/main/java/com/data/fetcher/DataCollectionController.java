@@ -1,5 +1,6 @@
 package com.data.fetcher;
 
+import com.data.fetcher.driver.Driver;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
@@ -23,13 +24,24 @@ public class DataCollectionController {
     void onStart(@Observes StartupEvent ev) {
         try {
             var classes = getClasses(dataCollectionMethod);
+            if (classes.length == 0) {
+                Log.warn("No classes were found for " + dataCollectionMethod);
+            }
             for (var c : classes) {
                 if (DataFetcher.class.isAssignableFrom(c)) {
                     DataFetcher fetcher = (DataFetcher) c.getConstructor().newInstance();
-                    Log.info("Invoking data fetcher class " + c);
-                    fetcher.invoke();
+
+                    if (Driver.class.isAssignableFrom(c)) {
+                        Log.info("Added " + c + "to scheduler");
+                        // add to scheduler
+                        Scheduler.addInvokeableClass(fetcher);
+                    }else{
+                        Log.info("Invoking data fetcher class " + c);
+                        // invoke once
+                        fetcher.invoke();
+                    }
                 } else {
-                    throw new RuntimeException("Data fetcher " + c + " does not a DataFetcher");
+                    throw new RuntimeException(c + " is not assignable to a DataFetcher");
                 }
             }
         } catch (Exception e) {
