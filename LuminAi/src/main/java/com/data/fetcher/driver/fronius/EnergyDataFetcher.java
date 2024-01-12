@@ -1,11 +1,15 @@
 package com.data.fetcher.driver.fronius;
 
 import com.data.fetcher.driver.Driver;
+import com.data.model.Group;
+import com.data.model.Sensor;
+import com.data.repository.GroupRepository;
+import com.data.repository.SensorRepository;
 import com.google.gson.Gson;
-import com.model.Group;
-import com.model.Sensor;
-import com.model.SensorData;
+import com.data.model.SensorData;
+import com.data.repository.SensorDataRepository;
 import io.quarkus.logging.Log;
+import jakarta.inject.Inject;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -13,6 +17,16 @@ import java.net.URL;
 import java.util.*;
 
 public class EnergyDataFetcher extends Driver {
+
+    @Inject
+    GroupRepository groupRepository;
+
+    @Inject
+    SensorRepository sensorRepository;
+
+    List<SensorData> dataList;
+
+
     private static String fetchDataFromApi() throws IOException {
         URL url = new URL(apiUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -32,7 +46,7 @@ public class EnergyDataFetcher extends Driver {
         }
     }
 
-    public SensorData runDriver() throws IOException {
+    public List<SensorData> runDriver() throws IOException {
         String dataJson = fetchDataFromApi();
 
         Gson gson = new Gson();
@@ -43,40 +57,40 @@ public class EnergyDataFetcher extends Driver {
         Map<String, Object> site = (Map<String, Object>) dataProperty.get("Site");
 
         // innit Group
-        //TODO: check if group already exists (i need repository :c) 
-        Group fronius = new Group();
-        fronius.setName("Fronius");
+        Group fronius = groupRepository.createOrGetGroup("Group");
 
-        //Sensors
-        Sensor pvSensor = new Sensor();
-        pvSensor.setName("PV");
+        // Create or Get ALL Sensors and set Group
+        Sensor pvSensor = sensorRepository.createOrGetSensor("PV");
+        Sensor gridSensor = sensorRepository.createOrGetSensor("Grid");
+        Sensor akkuSensor = sensorRepository.createOrGetSensor("Akku");
 
-        Sensor gridSensor = new Sensor();
-        gridSensor.setName("Grid");
-
-        Sensor akkuSensor = new Sensor();
-        akkuSensor.setName("Akku");
-
-        //TODO: i still need timestamp but there is no timestamp in
+        pvSensor.setGroup(fronius);
+        gridSensor.setGroup(fronius);
+        akkuSensor.setGroup(fronius);
 
         // PV
         SensorData pvData = new SensorData();
+        pvData.setDevice(pvSensor);
         try{
             pvData.setValue((Double) site.get("P_PV"));
+            dataList.add(pvData);
         }catch (Exception exception){
             Log.info("There is no PV-Data in this Fronius API!");
         }
 
         // Grid
         SensorData gridData = new SensorData();
+        gridData.setDevice(gridSensor);
         try{
             gridData.setValue((Double) site.get("P_Grid"));
+            dataList.add(gridData);
         }catch (Exception exception){
             Log.info("There is no Grid-Data in this Fronius API!");
         }
 
         //Akku
         SensorData akkuData = new SensorData();
+        akkuData.setDevice(akkuSensor);
         try{
             akkuData.setValue((Double) site.get("P_Akku"));
         }catch (Exception exception){
@@ -89,19 +103,16 @@ public class EnergyDataFetcher extends Driver {
                 Map<String, Object> entryData = (Map<String, Object>) entry.getValue();
                 Map<String, Object> deviceData = new HashMap<>();
 
-                //TODO: check if sensor already exists (i need repository :c)
-                Sensor sensor = new Sensor();
-                sensor.setName(String.valueOf(entryData.get("Label")));
+                //Create or Get Sensor
+                Sensor sensor = sensorRepository.createOrGetSensor(String.valueOf(entryData.get("Label")));
+                sensor.setGroup(fronius);
 
                 SensorData sensorData = new SensorData();
+                sensorData.setDevice(sensor);
                 sensorData.setValue((Double) entryData.get("P"));
-
-                fronius.addSensor(sensor);
-                sensor.addValue(sensorData);
+                dataList.add(sensorData);
         }
 
-        //TODO Impliment Driver to return Data object
-        //TODO: maybe return an feichtn schaß
-        return new SensorData();
+        return dataList;
     }
 }
