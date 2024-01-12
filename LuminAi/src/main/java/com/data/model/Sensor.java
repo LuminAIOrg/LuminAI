@@ -14,6 +14,7 @@ public class Sensor {
     private Long id;
 
     private String name;
+    private String unit;
 
     @ManyToOne
     @Nullable
@@ -25,6 +26,14 @@ public class Sensor {
     public void addValue(final SensorData value){
         this.values.add(value);
         value.setDevice(this);
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public String getName() {
