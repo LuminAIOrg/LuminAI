@@ -14,7 +14,7 @@ public class Scheduler {
         invokableClasses.add(invokeable);
     }
 
-    @Scheduled(cron = "*/10 * * * * ?") // Executes every 10 seconds
+    @Scheduled(every = "10s", identity = "task-job")
     void yourScheduledTask() {
         invokableClasses.forEach(DataFetcher::invoke);
     }

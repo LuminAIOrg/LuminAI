@@ -4,6 +4,7 @@ import com.data.fetcher.DataFetcher;
 import com.data.model.Data;
 import com.data.repository.DataRepository;
 import com.data.session.DataSocket;
+import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
@@ -21,14 +22,12 @@ public abstract class Driver implements DataFetcher {
 
     @Override
     public void invoke() {
-        System.out.println("Driver got invoked");
-        //TODO - add cronjob so that this is executed every x seconds
-        //TODO - add result of runDriver() to repository
         try {
             List<Data> data = runDriver();
-            dataRepository.addData(data);
+            //6 dataRepository.addData(data);
             data.forEach(d -> dataSocket.publish(d));
         } catch (Exception e) {
+            Log.error("Error while invoking driver");
             throw new RuntimeException(e);
         }
     }
