@@ -1,7 +1,7 @@
 
 <template>
   <div style="width: 100%; display: flex; justify-content: center">
-    <div style="height: 90vh;width: 35vw">
+    <div style="height: 90vh;width: 30vw">
       <div style="margin-bottom: 20px; font-size: 20px;"></div>
       <div style="margin-bottom: 20px; font-size: 20px; font-family: 'Montreux Branding',sans-serif;">{{ deviceName }}</div>
       <hr>
@@ -28,18 +28,18 @@ Chart.register(
     LineElement
 )
 
-
-const dataValues = computed(() =>store.deviceData.map(entry => entry.value))
-const timestamp = computed(() => store.deviceData.map(entry => new Date(entry.timestamp * 1000)))
+const filteredData = computed(() => store.deviceData.filter(entry => entry.name === "Solar"))
+const dataValues = computed(() => filteredData.value.map(entry => entry.value))
+const timestamp = computed(() => filteredData.value.map(entry => new Date(entry.timestamp * 1000)))
 //TODO: make a nicer code and not a div box please! :,)
-const deviceName = computed(() => store.deviceData.length > 0 ? store.deviceData[0].name : '')
+const deviceName = computed(() => filteredData.value.length > 0 ? filteredData.value[0].name : '')
 
 const data = computed(() => ({
   labels: timestamp.value.map(date => date.toLocaleTimeString()),
 
   datasets: [
     {
-      label: 'Solar',//deviceName.value,
+      label: deviceName.value,
       data: dataValues.value,
       borderColor: "rgba(6,158,253,0.86)",
     }
@@ -79,7 +79,7 @@ const options = ref({
 })
 
 watch(() => store.deviceData, () => {
-  // Update chart data when store.deviceData changes
+  filteredData.value = store.deviceData.filter(entry => entry.name === "Solar")
   data.value.labels = timestamp.value.map(date => date.toLocaleTimeString());
   data.value.datasets[0].data = dataValues.value;
   options.value.scales.y.max = Math.max(...dataValues.value) + 10;
