@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 
 @Entity
+@Table(name = "sensorGroup")
 public class Group {
     @Id
     @GeneratedValue
