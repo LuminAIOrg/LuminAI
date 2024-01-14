@@ -2,21 +2,21 @@
   <div id="app">
     <main>
       <!-- Your main content goes here -->
-      <DeviceDataChart />
+      <TemperatureChart />
     </main>
   </div>
 </template>
 
 <script>
 
-import DeviceDataChart from "@/testingChartJs/DeviceDataChart.vue";
+import TemperatureChart from "@/Charts/TemperatureChart.vue";
 import {startSocketClient} from "@/services/PowerService";
 
 startSocketClient()
 export default {
   name: 'App',
   components: {
-    DeviceDataChart
+    TemperatureChart
   },
 }
 </script>
