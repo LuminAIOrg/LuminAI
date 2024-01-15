@@ -27,7 +27,7 @@ public class DataCollectionController {
 
     void onStart(@Observes StartupEvent ev) {
         try {
-            mqttConnection.invoke();
+            mqttConnection.invokeAsync();
         }catch (Exception e){
             throw new RuntimeException("something went wrong while using mqtt fetcher: " + e);
         }

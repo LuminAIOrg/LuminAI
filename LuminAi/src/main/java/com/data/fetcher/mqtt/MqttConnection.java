@@ -8,6 +8,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.Startup;
+import io.quarkus.runtime.annotations.RegisterForReflection;
+import io.smallrye.common.annotation.Blocking;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -15,20 +17,26 @@ import jakarta.inject.Singleton;
 import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+import org.eclipse.microprofile.context.ThreadContext;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import java.io.IOException;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-@Singleton
+@ApplicationScoped
+@Blocking
+@RegisterForReflection
 public class MqttConnection implements DataFetcher {
     final String topicWildcard = "eg/#";
     @Inject
     DataSocket clients;
 
+    @Inject
+    ThreadContext threadContext;
     @Inject
     DataRepository repository;
 
@@ -46,6 +54,20 @@ public class MqttConnection implements DataFetcher {
     public String haxi;
 
     int qos = 0;
+
+    public CompletableFuture<Void> invokeAsync() {
+        System.out.println("Invoked MQTT Connection asynchronously");
+
+        return CompletableFuture.runAsync(() -> {
+            try {
+                invoke(); // Call your synchronous method
+            } catch (Exception e) {
+                // Handle exceptions if needed
+                e.printStackTrace();
+            }
+        });
+    }
+
 
     @Transactional
 
@@ -76,7 +98,7 @@ public class MqttConnection implements DataFetcher {
         String publisherId = "g:luminai";
         //Todo Only Start when this method is invoked
         try(MqttClient client = new MqttClient(String.format("tcp://%s:%s", this.host, this.port), publisherId, new MemoryPersistence())) {
-            //CountDownLatch latch = new CountDownLatch(30);
+            CountDownLatch latch = new CountDownLatch(30);
             MqttConnectOptions options = new MqttConnectOptions();
             options.setUserName(this.username);
             options.setPassword(this.password.toCharArray());
@@ -97,8 +119,8 @@ public class MqttConnection implements DataFetcher {
                     System.out.println("Qos: " + mqttMessage.getQos());
                     System.out.println("message content: " + new String(mqttMessage.getPayload()));
                     //TODO: add consume
-                    //consume(topic, mqttMessage);
-                    //latch.countDown();
+                    consume(topic, mqttMessage);
+                    latch.countDown();
                 }
 
                 @Override
@@ -112,12 +134,12 @@ public class MqttConnection implements DataFetcher {
 
             client.subscribe(topicWildcard, qos);
 
-            //latch.await();
+            latch.await();
 
         } catch (MqttException e){
             throw new IllegalArgumentException("an error occured while connecting: " + e);
-        } //catch (InterruptedException e) {
-            //throw new RuntimeException("an error occured while subscribing: " + e);
-        //}
+        } catch (InterruptedException e) {
+            throw new RuntimeException("an error occured while subscribing: " + e);
+        }
     }
 }
