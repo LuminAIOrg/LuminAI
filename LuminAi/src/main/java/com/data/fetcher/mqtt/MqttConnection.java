@@ -7,6 +7,7 @@ import com.data.model.SensorData;
 import com.data.repository.SensorDataRepository;
 import com.data.repository.SensorRepository;
 import com.data.session.DataSocket;
+import com.data.session.DataSocketTemp;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.logging.Log;
@@ -29,6 +30,10 @@ import java.util.concurrent.CountDownLatch;
 @RegisterForReflection
 public class MqttConnection implements DataFetcher {
     final String topicWildcard = "eg/#";
+
+    @Inject
+    DataSocketTemp socketTemp;
+
     @Inject
     DataSocket clients;
     @Inject
@@ -71,7 +76,8 @@ public class MqttConnection implements DataFetcher {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             String[] topicNameSplit = topicName.split("/");
-            Sensor sensor = sensorRepository.createOrGetSensor(topicNameSplit[topicNameSplit.length-2]);
+            //Sensor sensor = sensorRepository.createOrGetSensor(topicNameSplit[topicNameSplit.length-2]);
+            Sensor sensor = new Sensor("hawara");
 
             //This unit setting method is temporary
             sensor.setUnit("°");
@@ -83,9 +89,12 @@ public class MqttConnection implements DataFetcher {
             sensorData.setTimeStamp(dataObject.timestamp());
             sensorData.setValue(dataObject.value());
 
+            DataDto huso = new DataDto(topicNameSplit[topicNameSplit.length-2], dataObject.timestamp(), dataObject.value());
+            socketTemp.publish(huso);
+
             //dataRepository.addData(sensorData);
 
-            clients.publish(sensorData);
+            //clients.publish(sensorData);
 
         } catch (JsonProcessingException e) {
             Log.error("error parsing into Data Object: " + message);

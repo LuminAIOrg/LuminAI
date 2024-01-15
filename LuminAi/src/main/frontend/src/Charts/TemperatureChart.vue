@@ -28,7 +28,7 @@ Chart.register(
     LineElement
 )
 
-const filteredData = computed(() => store.deviceData.filter(entry => entry.name === "Solar"))
+const filteredData = computed(() => store.deviceData.filter(entry => entry.name === "noise"))
 const dataValues = computed(() => filteredData.value.map(entry => entry.value))
 const timestamp = computed(() => filteredData.value.map(entry => new Date(entry.timestamp * 1000)))
 //TODO: make a nicer code and not a div box please! :,)
@@ -70,7 +70,7 @@ const options = ref({
       },
     y: {
       beginAtZero: true,
-      max: Math.max(...dataValues.value) + 10,
+      max: 200,
       title: {
         display: true,
         text: 'Temperature in °C'
