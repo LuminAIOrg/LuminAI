@@ -1,14 +1,12 @@
 package com.model;
 
 import jakarta.annotation.Nullable;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 
 @Entity
+@Table(name = "my_groupe")
 public class Group {
     @Id
     @GeneratedValue

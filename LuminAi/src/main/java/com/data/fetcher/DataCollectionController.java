@@ -1,10 +1,12 @@
 package com.data.fetcher;
 
+import com.data.fetcher.mqtt.MqttConnection;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 
 import io.quarkus.runtime.StartupEvent;
+import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.io.File;
@@ -20,8 +22,17 @@ public class DataCollectionController {
     @ConfigProperty(name = "dataCollectionMethod")
     String dataCollectionMethod;
 
+    @Inject
+    MqttConnection mqttConnection;
+
     void onStart(@Observes StartupEvent ev) {
         try {
+            mqttConnection.invoke();
+        }catch (Exception e){
+            throw new RuntimeException("something went wrong while using mqtt fetcher: " + e);
+        }
+
+        /*try {
             var classes = getClasses(dataCollectionMethod);
             for (var c : classes) {
                 if (DataFetcher.class.isAssignableFrom(c)) {
@@ -34,7 +45,7 @@ public class DataCollectionController {
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
     private static Class[] getClasses(String packageName)
