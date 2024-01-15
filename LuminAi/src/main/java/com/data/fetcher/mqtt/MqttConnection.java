@@ -1,8 +1,11 @@
 package com.data.fetcher.mqtt;
 
+import com.data.dto.DataDto;
 import com.data.fetcher.DataFetcher;
-import com.data.model.Data;
-import com.data.repository.DataRepository;
+import com.data.model.Sensor;
+import com.data.model.SensorData;
+import com.data.repository.SensorDataRepository;
+import com.data.repository.SensorRepository;
 import com.data.session.DataSocket;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,7 +17,6 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import org.eclipse.microprofile.context.ThreadContext;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
@@ -29,11 +31,11 @@ public class MqttConnection implements DataFetcher {
     final String topicWildcard = "eg/#";
     @Inject
     DataSocket clients;
+    @Inject
+    SensorDataRepository dataRepository;
 
     @Inject
-    ThreadContext threadContext;
-    @Inject
-    DataRepository repository;
+    SensorRepository sensorRepository;
 
     @ConfigProperty(name = "mqtt.host")
     String host;
@@ -68,12 +70,22 @@ public class MqttConnection implements DataFetcher {
     public void consume(String topicName, MqttMessage message) throws InterruptedException {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            Data dataObject = objectMapper.readValue(message.getPayload(), Data.class);
-            dataObject.setName(topicName);
-            dataObject.setUnit("°");
+            String[] topicNameSplit = topicName.split("/");
+            Sensor sensor = sensorRepository.createOrGetSensor(topicNameSplit[topicNameSplit.length-2]);
 
-            repository.addData(dataObject);
-            clients.publish(dataObject);
+            //This unit setting method is temporary
+            sensor.setUnit("°");
+
+            SensorData sensorData = new SensorData();
+            sensorData.setDevice(sensor);
+
+            DataDto dataObject = objectMapper.readValue(message.getPayload(), DataDto.class);
+            sensorData.setTimeStamp(dataObject.timestamp());
+            sensorData.setValue(dataObject.value());
+
+            //dataRepository.addData(sensorData);
+
+            clients.publish(sensorData);
 
         } catch (JsonProcessingException e) {
             Log.error("error parsing into Data Object: " + message);
@@ -84,11 +96,6 @@ public class MqttConnection implements DataFetcher {
 
     @Override
     public void invoke()  {
-        System.out.println("Invoked MQTT Connection");
-        System.out.println("PPPPPPPPPPPPPPPPPASSWORD:");
-        System.out.println(haxi);
-        System.out.println(this.password);
-        System.out.println(this.host);
         String publisherId = "g:luminai";
         //Todo Only Start when this method is invoked
         try(MqttClient client = new MqttClient(String.format("tcp://%s:%s", this.host, this.port), publisherId, new MemoryPersistence())) {
@@ -104,7 +111,7 @@ public class MqttConnection implements DataFetcher {
                 @Override
                 public void connectionLost(Throwable throwable) {
                     System.out.println("connection lost: " + throwable.getMessage());
-                    //latch.countDown();
+                    latch.countDown();
                 }
 
                 @Override
