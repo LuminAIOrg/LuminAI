@@ -1,4 +1,4 @@
-package com.model;
+package com.data.model;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
@@ -6,11 +6,12 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 
 @Entity
-@Table(name = "my_groupe")
+@Table(name = "sensorGroup")
 public class Group {
     @Id
     @GeneratedValue
-    private long g_id;
+    @Column(name = "g_id")
+    private long id;
 
     private String name;
 
@@ -32,8 +33,8 @@ public class Group {
         return sensors;
     }
 
-    public long getG_id() {
-        return g_id;
+    public long getId() {
+        return id;
     }
     //</editor-fold>
 
