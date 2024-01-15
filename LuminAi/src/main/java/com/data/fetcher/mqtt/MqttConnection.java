@@ -7,13 +7,10 @@ import com.data.session.DataSocket;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.logging.Log;
-import io.quarkus.runtime.Startup;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import io.smallrye.common.annotation.Blocking;
-import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
 import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
@@ -22,10 +19,8 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import java.io.IOException;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 @ApplicationScoped
 @Blocking
@@ -60,9 +55,8 @@ public class MqttConnection implements DataFetcher {
 
         return CompletableFuture.runAsync(() -> {
             try {
-                invoke(); // Call your synchronous method
+                invoke();
             } catch (Exception e) {
-                // Handle exceptions if needed
                 e.printStackTrace();
             }
         });
