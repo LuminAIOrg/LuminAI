@@ -16,7 +16,7 @@
 
 <script setup>
 import { store } from "@/store/Store"
-import {ref, computed, watch} from "vue"
+import {ref, computed } from "vue"
 import { LineChart } from "vue-chart-3"
 import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement} from "chart.js"
 
@@ -59,6 +59,7 @@ const options = ref({
     },
   },
   scales: {
+    responsive: true,
     x: {
       type: 'category',
       position: 'bottom',
@@ -78,11 +79,5 @@ const options = ref({
   },
 })
 
-watch(() => store.deviceData, () => {
-  filteredData.value = store.deviceData.filter(entry => entry.name === "Solar")
-  data.value.labels = timestamp.value.map(date => date.toLocaleTimeString());
-  data.value.datasets[0].data = dataValues.value;
-  options.value.scales.y.max = Math.max(...dataValues.value) + 10;
-})
 
 </script>
