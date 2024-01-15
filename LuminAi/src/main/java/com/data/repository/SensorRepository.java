@@ -17,19 +17,22 @@ public class SensorRepository {
 
     @Transactional
     public Sensor createOrGetSensor(String sensorName) {
-        Sensor sensor = entityManager.createQuery("SELECT s FROM Sensor s WHERE s.name = :sensorName", Sensor.class)
-                .setParameter("sensorName", sensorName)
-                .getSingleResult();
-        if(sensor == null) {
-            sensor = new Sensor(sensorName);
-            entityManager.persist(sensor);
+        //PLEASE CLEAN THIS UP NEXT SPRINT
+        //hawara wens ihr amoi eichare tasks on time mochn würdets dann miasat i ned imma im a öfi aufd nacht nu eichan bullshit fixn
+        try {
+            return entityManager.createQuery("SELECT s FROM Sensor s WHERE s.name = :sensorName", Sensor.class)
+                    .setParameter("sensorName", sensorName)
+                    .getSingleResult();
+        } catch (Exception e) {
+            Sensor newSensor = new Sensor(sensorName);
+            entityManager.persist(newSensor);
+            return newSensor;
         }
-        return sensor;
     }
 
     @Transactional
     public void addData(List<SensorData> data) {
-        if (data != null)  {
+        if (data != null) {
             data.forEach(d -> entityManager.persist(d));
         }
     }
