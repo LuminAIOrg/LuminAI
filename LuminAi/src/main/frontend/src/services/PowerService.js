@@ -8,6 +8,7 @@ export function startSocketClient() {
     };
 
     socket.onmessage = function (event) {
+        console.log(event.data)
         store.deviceData.push(JSON.parse(event.data));
     };
 

@@ -1,3 +1,4 @@
 package com.data.dto;
 
-public record DataDto(double value, long timestamp) { }
+public record DataDto(String name, long timestamp, double value) {
+}
