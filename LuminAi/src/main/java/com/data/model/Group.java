@@ -1,5 +1,7 @@
 package com.data.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
@@ -15,11 +17,22 @@ public class Group {
 
     private String name;
 
-    @OneToMany
+    @ManyToOne
     @Nullable
+    @JoinColumn(name = "id", referencedColumnName = "g_id")
+    @JsonIgnoreProperties({"groups"})
+    private Group group;
+
+    @OneToMany(mappedBy = "group")
+    @Nullable
+    @JsonIgnoreProperties({"group"})
+    private ArrayList<Group> groups;
+
+    @OneToMany(mappedBy = "group")
+    @Nullable
+    @JsonIgnoreProperties({"group"})
     private ArrayList<Sensor> sensors;
 
-    //<editor-fold desc="Getter and Setter">
     public String getName() {
         return name;
     }
@@ -36,7 +49,6 @@ public class Group {
     public long getId() {
         return id;
     }
-    //</editor-fold>
 
     public void addSensor(Sensor sensor){
         this.sensors.add(sensor);

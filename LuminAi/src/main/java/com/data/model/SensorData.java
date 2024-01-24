@@ -7,17 +7,16 @@ import jakarta.persistence.*;
 public class SensorData {
     @Id
     @GeneratedValue
-    @Column(name = "v_id")
+    @Column(name = "sd_id")
     private Long id;
 
     private Double value;
 
     @ManyToOne
     @Nullable
-    @JoinColumn(name = "d_id")
+    @JoinColumn(name = "s_id")
     private Sensor sensor;
 
-    //<editor-fold desc="Getter and Setter">
     public Long getId() {
         return id;
     }
@@ -37,5 +36,4 @@ public class SensorData {
     public void setDevice(Sensor sensor) {
         this.sensor = sensor;
     }
-    //</editor-fold>
 }
