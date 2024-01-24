@@ -17,7 +17,6 @@ public class SensorData {
     @JoinColumn(name = "s_id")
     private Sensor sensor;
 
-    //<editor-fold desc="Getter and Setter">
     public Long getId() {
         return id;
     }
@@ -37,5 +36,4 @@ public class SensorData {
     public void setDevice(Sensor sensor) {
         this.sensor = sensor;
     }
-    //</editor-fold>
 }

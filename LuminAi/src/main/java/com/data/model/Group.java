@@ -33,7 +33,6 @@ public class Group {
     @JsonIgnoreProperties({"group"})
     private ArrayList<Sensor> sensors;
 
-    //<editor-fold desc="Getter and Setter">
     public String getName() {
         return name;
     }
@@ -50,7 +49,6 @@ public class Group {
     public long getId() {
         return id;
     }
-    //</editor-fold>
 
     public void addSensor(Sensor sensor){
         this.sensors.add(sensor);
