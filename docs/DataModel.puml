@@ -28,6 +28,7 @@ class type{
 }
 
 
+group "1" -- "*" group
 group "1" -- "*" sensor
 sensor "1" -- "*" sensor_data
 type "1" -- "*" sensor
