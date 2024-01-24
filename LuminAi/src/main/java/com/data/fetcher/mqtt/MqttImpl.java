@@ -5,9 +5,15 @@ import com.data.spi.FetcherType;
 import com.data.spi.ServiceInterface;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MqttImpl implements ServiceInterface {
+
+    @Override
+    public void setProps(HashMap<String, String> props) {
+        //TODO
+    }
 
     @Override
     public List<SensorData> fetchData() {
