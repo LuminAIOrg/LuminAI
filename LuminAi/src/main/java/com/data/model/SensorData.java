@@ -7,14 +7,14 @@ import jakarta.persistence.*;
 public class SensorData {
     @Id
     @GeneratedValue
-    @Column(name = "v_id")
+    @Column(name = "sd_id")
     private Long id;
 
     private Double value;
 
     @ManyToOne
     @Nullable
-    @JoinColumn(name = "d_id")
+    @JoinColumn(name = "s_id")
     private Sensor sensor;
 
     //<editor-fold desc="Getter and Setter">
