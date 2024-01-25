@@ -1,5 +1,6 @@
 package com.data.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
@@ -19,9 +20,12 @@ public class Sensor {
 
     @ManyToOne
     @Nullable
+    @JoinColumn(name = "g_id")
+    @JsonIgnoreProperties({"sensors"})
     private Group group;
 
-    @OneToMany
+    @OneToMany(mappedBy = "sensor")
+    @JsonIgnoreProperties({"sensor"})
     private List<SensorData> values = new ArrayList<>();
 
 

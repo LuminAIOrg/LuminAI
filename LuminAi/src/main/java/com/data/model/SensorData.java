@@ -12,14 +12,11 @@ public class SensorData {
 
     private Double value;
 
-    private long timeStamp;
-
     @ManyToOne
     @Nullable
-    @JoinColumn(name = "d_id")
+    @JoinColumn(name = "s_id")
     private Sensor sensor;
 
-    //<editor-fold desc="Getter and Setter">
     public Long getId() {
         return id;
     }
@@ -39,14 +36,4 @@ public class SensorData {
     public void setDevice(Sensor sensor) {
         this.sensor = sensor;
     }
-
-    public long getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(long timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-
-    //</editor-fold>
 }
