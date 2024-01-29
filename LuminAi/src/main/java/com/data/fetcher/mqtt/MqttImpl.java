@@ -17,6 +17,7 @@ public class MqttImpl implements ServiceInterface {
 
     @Override
     public List<SensorData> fetchData() {
+        System.out.println("MQTT got Invoked");
         SensorData tempData = new SensorData();
         tempData.setValue(100.0);
         ArrayList<SensorData> sensorDataArrayList = new ArrayList<>();

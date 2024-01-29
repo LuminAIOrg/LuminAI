@@ -15,6 +15,7 @@ public class DriverImpl implements ServiceInterface {
 
     @Override
     public List<SensorData> fetchData() {
+        System.out.println("Driver got Invoked");
         return null;
     }
 
