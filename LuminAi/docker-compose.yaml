@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:latest
+    image: timescale/timescaledb-ha:pg16
     container_name: luminai-postgres
     environment:
       POSTGRES_USER: luminai
