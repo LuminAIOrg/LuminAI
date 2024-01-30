@@ -3,11 +3,10 @@
   <div style="width: 100%; display: flex; justify-content: center">
     <div style="height: 90vh;width: 30vw">
       <div style="margin-bottom: 20px; font-size: 20px;"></div>
-      <div style="margin-bottom: 20px; font-size: 20px; font-family: 'Montreux Branding',sans-serif;">{{ deviceName }}</div>
-      <hr>
+      <div style="margin-bottom: 20px; font-size: 20px; font-family: 'Montreux Branding',sans-serif;"> {{device_name}}</div>
       <LineChart
-        :chart-data="data"
-        :options="options"
+          :chart-data="data"
+          :options="options"
       ></LineChart>
     </div>
   </div>
@@ -15,10 +14,12 @@
 
 
 <script setup>
-import { store } from "@/store/Store"
-import {ref, computed } from "vue"
-import { LineChart } from "vue-chart-3"
-import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement} from "chart.js"
+import {store} from "@/store/Store";
+import {defineProps, ref, computed} from "vue"
+import {LineChart} from "vue-chart-3"
+import {Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement} from "chart.js"
+
+const props = defineProps(['device_name', 'device_unit', 'border_color'])
 
 Chart.register(
     LineController,
@@ -28,7 +29,7 @@ Chart.register(
     LineElement
 )
 
-const filteredData = computed(() => store.deviceData.filter(entry => entry.name === "Solar"))
+const filteredData = computed(() => store.deviceData.filter(entry => entry.name === props.device_name))
 const dataValues = computed(() => filteredData.value.map(entry => entry.value))
 const timestamp = computed(() => filteredData.value.map(entry => new Date(entry.timestamp * 1000)))
 //TODO: make a nicer code and not a div box please! :,)
@@ -41,7 +42,7 @@ const data = computed(() => ({
     {
       label: deviceName.value,
       data: dataValues.value,
-      borderColor: "rgba(6,158,253,0.86)",
+      borderColor: props.border_color,
     }
   ]
 }))
@@ -49,13 +50,13 @@ const data = computed(() => ({
 const options = ref({
   type: 'line',
   data: data,
-  title: {text: deviceName.value},
+  title: props.device_name,
   responsive: true,
   tension: 0.2,
   plugins: {
     title: {
       display: true,
-      text: 'Solar',
+      text: props.device_name,
     },
   },
   scales: {
@@ -67,17 +68,16 @@ const options = ref({
         display: true,
         text: 'Time'
       }
-      },
+    },
     y: {
       beginAtZero: true,
       max: Math.max(...dataValues.value) + 10,
       title: {
         display: true,
-        text: 'Temperature in °C'
+        text: props.device_unit
       }
     },
   },
 })
-
 
 </script>

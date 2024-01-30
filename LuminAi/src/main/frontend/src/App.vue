@@ -2,8 +2,8 @@
   <div id="app">
     <main>
       <div style="display: flex">
-        <TemperatureChart />
-        <WPTestChart/>
+        <ChartComponent device_name="Solar"></ChartComponent>
+        <ChartComponent device_name="Wärmepumpe"></ChartComponent>
       </div>
     </main>
   </div>
@@ -11,16 +11,15 @@
 
 <script>
 
-import TemperatureChart from "@/Charts/TemperatureChart.vue";
-import WPTestChart from "@/Charts/WPTestChart.vue";
+
 import {startSocketClient} from "@/services/PowerService";
+import ChartComponent from "@/components/ChartComponent.vue";
 
 startSocketClient()
 export default {
   name: 'App',
   components: {
-    TemperatureChart,
-    WPTestChart
+    ChartComponent,
   },
 }
 </script>
