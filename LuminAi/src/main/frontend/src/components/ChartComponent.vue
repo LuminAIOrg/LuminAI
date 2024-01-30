@@ -32,7 +32,6 @@ Chart.register(
 const filteredData = computed(() => store.deviceData.filter(entry => entry.name === props.device_name))
 const dataValues = computed(() => filteredData.value.map(entry => entry.value))
 const timestamp = computed(() => filteredData.value.map(entry => new Date(entry.timestamp * 1000)))
-//TODO: make a nicer code and not a div box please! :,)
 const deviceName = computed(() => filteredData.value.length > 0 ? filteredData.value[0].name : '')
 
 const data = computed(() => ({
