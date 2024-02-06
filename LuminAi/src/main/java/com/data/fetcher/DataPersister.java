@@ -1,21 +1,8 @@
-package com.data.fetcher.driver.fronius;
+package com.data.fetcher;
 
-import com.data.fetcher.driver.DriverImpl;
-import com.data.model.Group;
-import com.data.model.Sensor;
-import com.data.repository.GroupRepository;
-import com.data.repository.SensorRepository;
-import com.google.gson.Gson;
-import com.data.model.SensorData;
-import io.quarkus.logging.Log;
-import jakarta.inject.Inject;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.*;
-
-public class EnergyDataFetcher extends DriverImpl {
+public class DataPersister {
+    /* // code from my fronius driver (delte all the request thinks but you still need the repos!)
+    // then just use the repos and put the data from the store in
 
     @Inject
     GroupRepository groupRepository;
@@ -113,4 +100,5 @@ public class EnergyDataFetcher extends DriverImpl {
 
         return dataList;
     }
+     */
 }
