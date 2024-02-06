@@ -1,4 +1,4 @@
-import { store } from "@/store/Store.ts";
+import { store } from "@/store/Store";
 
 const socket = new WebSocket(`ws://localhost:8080/subscribeUpdates`);
 
