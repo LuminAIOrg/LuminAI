@@ -448,4 +448,4 @@ login_htl_fronius.txt
 
 */*-secret.yml
 
-application.properties
+*application.properties

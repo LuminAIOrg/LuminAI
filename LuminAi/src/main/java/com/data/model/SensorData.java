@@ -1,4 +1,4 @@
-package com.model;
+package com.data.model;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
@@ -7,18 +7,20 @@ import jakarta.persistence.*;
 public class SensorData {
     @Id
     @GeneratedValue
-    private Long v_id;
+    @Column(name = "sd_id")
+    private Long id;
 
     private Double value;
 
+    private long timestamp;
+
     @ManyToOne
     @Nullable
-    @JoinColumn(name = "d_id")
+    @JoinColumn(name = "s_id")
     private Sensor sensor;
 
-    //<editor-fold desc="Getter and Setter">
-    public Long getV_id() {
-        return v_id;
+    public Long getId() {
+        return id;
     }
 
     public Double getValue() {
@@ -36,5 +38,12 @@ public class SensorData {
     public void setDevice(Sensor sensor) {
         this.sensor = sensor;
     }
-    //</editor-fold>
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
 }

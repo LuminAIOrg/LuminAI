@@ -1,31 +1,34 @@
 @startuml
+'to group stuff
 class group{
- id: number;
+ id: number; PK
+ group_id: number; FK
  name: string;
 }
 
 class sensor{
- id: number;
+ id: number; PK
  name: string;
- device_id: number; FK
+ group_id: number; FK
  type_id: number; FK
-}
-
-class sensor_data{
- id: number;
- timestamp: number;
- sensor_id: number; FK
- value: number;
  unit: string;
 }
 
-class type{
-id: number
-name: string
+class sensor_data{
+ id: number; PK
+ sensor_id: number; FK
+ value: number;
+ timestamp: number;
+}
 
+'producer or consumer...
+class type{
+ id: number; PK
+ name: string
 }
 
 
+group "1" -- "*" group
 group "1" -- "*" sensor
 sensor "1" -- "*" sensor_data
 type "1" -- "*" sensor
