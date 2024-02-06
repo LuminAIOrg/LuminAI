@@ -64,4 +64,8 @@ public class Sensor {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public List<SensorData> getValues() {
+        return values;
+    }
 }
