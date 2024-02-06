@@ -1,9 +1,8 @@
 
 <template>
-  <div style="width: 100%; display: flex; justify-content: center">
-    <div style="height: 90vh;width: 30vw">
-      <div style="margin-bottom: 20px; font-size: 20px;"></div>
-      <div style="margin-bottom: 20px; font-size: 20px; font-family: 'Montreux Branding',sans-serif;"> {{device_name}}</div>
+  <div class="w-full flex justify-center">
+    <div class="h-full w-96 inline-grid">
+      <h3 class="text-center relative text-2xl font-montreux-branding">{{device_name}}</h3>
       <LineChart
           :chart-data="data"
           :options="options"
