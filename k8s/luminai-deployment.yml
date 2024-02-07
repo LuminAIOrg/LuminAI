@@ -17,8 +17,8 @@ spec:
         - name: luminai
           image: ghcr.io/michi4/lumin-ai:latest
           envFrom:
-          - secretRef:
-              name: luminai-secret
+            - configMapRef:
+                name: luminai-configmap
           ports:
             - containerPort: 8080
 ---
