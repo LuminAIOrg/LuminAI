@@ -10,11 +10,8 @@
 </template>
 
 <script>
-
-
 import {startSocketClient} from "@/services/PowerService";
 import ChartComponent from "@/components/ChartComponent.vue";
-
 startSocketClient()
 export default {
   name: 'App',
@@ -29,7 +26,6 @@ export default {
   text-align: center;
   margin-top: 60px;
 }
-
 main {
   padding: 20px;
 }
