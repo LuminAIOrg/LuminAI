@@ -34,18 +34,6 @@ public class MqttConnection implements ServiceInterface {
 
     int qos = 0;
 
-    public CompletableFuture<Void> invokeAsync() {
-        System.out.println("Invoked MQTT Connection asynchronously");
-
-        return CompletableFuture.runAsync(() -> {
-            try {
-                invoke();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
 
     @Transactional
 
@@ -64,10 +52,11 @@ public class MqttConnection implements ServiceInterface {
             //create SensorData
             SensorData newSensorData = new SensorData();
             newSensorData.setValue(dataObject.value());
-            newSensorData.setTimeStamp(dataObject.timestamp());
+            //newSensorData.setTimeStamp(dataObject.timestamp());
 
             //create Sensor
-            Sensor newSensor = new Sensor(sensorName);
+            Sensor newSensor = new Sensor();
+            newSensor.setName(sensorName);
             newSensor.addValue(newSensorData);
 
             //create group
@@ -86,61 +75,62 @@ public class MqttConnection implements ServiceInterface {
 
     }
 
-    public void invoke()  {
-        PropLoader propLoader = new PropLoader();
-        propLoader.setType(FetcherType.MQTT);
+    public CompletableFuture<Void> invoke()  {
+        return CompletableFuture.runAsync(() -> {
+            try {
+                System.out.println(this.properties.getProperty("host"));
 
-        this.properties = propLoader.getProperties();
+                String publisherId = "g:luminai";
+                //Todo Only Start when this method is invoked
+                try(MqttClient client = new MqttClient(String.format("tcp://%s:%s", this.properties.getProperty("host"), this.properties.getProperty("port")), publisherId, new MemoryPersistence())) {
+                    CountDownLatch latch = new CountDownLatch(30);
+                    MqttConnectOptions options = new MqttConnectOptions();
+                    options.setUserName(this.properties.getProperty("username").toString());
+                    options.setPassword(this.properties.getProperty("password").toString().toCharArray());
+                    options.setConnectionTimeout(60);
+                    options.setKeepAliveInterval(60);
+
+                    //set callback
+                    client.setCallback(new MqttCallback() {
+                        @Override
+                        public void connectionLost(Throwable throwable) {
+                            System.out.println("connection lost: " + throwable.getMessage());
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
+                            System.out.println("topic: " + topic);
+                            System.out.println("Qos: " + mqttMessage.getQos());
+                            System.out.println("message content: " + new String(mqttMessage.getPayload()));
+                            //TODO: add consume
+                            consume(topic, mqttMessage);
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
+                            System.out.println("deliveryComplete---------" + iMqttDeliveryToken.isComplete());
+                        }
+                    });
+
+                    client.connect(options);
 
 
-        System.out.println(this.properties.getProperty("host"));
+                    client.subscribe(properties.getProperty("topic"), qos);
 
-        String publisherId = "g:luminai";
-        //Todo Only Start when this method is invoked
-        try(MqttClient client = new MqttClient(String.format("tcp://%s:%s", this.properties.getProperty("host"), this.properties.getProperty("port")), publisherId, new MemoryPersistence())) {
-            CountDownLatch latch = new CountDownLatch(30);
-            MqttConnectOptions options = new MqttConnectOptions();
-            options.setUserName(this.properties.getProperty("username").toString());
-            options.setPassword(this.properties.getProperty("password").toString().toCharArray());
-            options.setConnectionTimeout(60);
-            options.setKeepAliveInterval(60);
+                    latch.await();
 
-            //set callback
-            client.setCallback(new MqttCallback() {
-                @Override
-                public void connectionLost(Throwable throwable) {
-                    System.out.println("connection lost: " + throwable.getMessage());
-                    latch.countDown();
+                } catch (MqttException e){
+                    throw new IllegalArgumentException("an error occured while connecting: " + e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException("an error occured while subscribing: " + e);
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
-                @Override
-                public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-                    System.out.println("topic: " + topic);
-                    System.out.println("Qos: " + mqttMessage.getQos());
-                    System.out.println("message content: " + new String(mqttMessage.getPayload()));
-                    //TODO: add consume
-                    consume(topic, mqttMessage);
-                    latch.countDown();
-                }
-
-                @Override
-                public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-                    System.out.println("deliveryComplete---------" + iMqttDeliveryToken.isComplete());
-                }
-            });
-
-            client.connect(options);
-
-
-            client.subscribe(properties.getProperty("topic"), qos);
-
-            latch.await();
-
-        } catch (MqttException e){
-            throw new IllegalArgumentException("an error occured while connecting: " + e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException("an error occured while subscribing: " + e);
-        }
     }
 
     @Override
@@ -151,5 +141,12 @@ public class MqttConnection implements ServiceInterface {
     @Override
     public void setSubject(BehaviorSubject<SensorData> subject) {
         this.subject = subject;
+    }
+
+    @Override
+    public void setProperties() {
+        PropLoader propLoader = new PropLoader();
+        propLoader.setType(this.getType());
+        this.properties = propLoader.getProperties();
     }
 }

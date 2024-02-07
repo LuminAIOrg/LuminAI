@@ -24,25 +24,12 @@ public class StartUp {
     public BehaviorSubject<SensorData> subject;
 
     public void init(@Observes StartupEvent ev) {
-        //ServiceInterface service = serviceLoader.provider();
-
-        /*HashMap<String, String> props = new HashMap<>();
-        switch (service.getType()) {
-            //TODO: The correct properties have to be set here
-            case MQTT:
-                props.put("foo", "bar");
-                break;
-            case DRIVER:
-                props.put("foo", "bar");
-                break;
-        }*/
         subject = BehaviorSubject.createDefault(new SensorData());
-        MqttConnection aasdf = new MqttConnection();
-        aasdf.setSubject(subject);
-        aasdf.invokeAsync();
-        System.out.println(subject.getValue());
 
-        //service.setProps(props);
+        ServiceInterface service = serviceLoader.provider();
+        service.setSubject(subject);
+        service.setProperties();
+        service.invoke();
 
         //List<SensorData> sensorData = service.fetchData();
         //TODO: Process and persist the data here
