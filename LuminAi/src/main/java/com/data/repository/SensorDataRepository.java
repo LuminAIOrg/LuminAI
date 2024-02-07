@@ -31,9 +31,9 @@ public class SensorDataRepository {
         return entityManager.createQuery("SELECT d FROM SensorData d", SensorData.class).getResultList();
     }
 
-    public List<SensorData> getAllDataFromSensor(Sensor sensor) {
-        return entityManager.createQuery("SELECT d FROM SensorData d WHERE d.sensor = :sensor", SensorData.class)
-                .setParameter("sensor", sensor)
+    public List<SensorData> getAllDataFromSensor(long sensorId) {
+        return entityManager.createQuery("SELECT d FROM SensorData d WHERE d.sensor.id = :sensorId", SensorData.class)
+                .setParameter("sensorId", sensorId)
                 .getResultList();
     }
 }
