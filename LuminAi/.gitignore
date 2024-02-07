@@ -43,8 +43,8 @@ nb-configuration.xml
 /.quarkus/cli/plugins/
 
 # Recources
-/src/main/resources/META-INF/
-/src/test/resources/META-INF/*
+/src/test/resources/META-INF/resources/
+/src/test/resources/META-INF/resources/*
 
 # Application Properties
 *application.properties
