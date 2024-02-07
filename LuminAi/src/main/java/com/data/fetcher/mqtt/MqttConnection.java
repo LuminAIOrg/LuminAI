@@ -1,17 +1,15 @@
 package com.data.fetcher.mqtt;
 
-import com.data.dto.DataDto;
-import com.data.fetcher.DataFetcher;
+import com.data.model.Group;
 import com.data.model.Sensor;
 import com.data.model.SensorData;
-import com.data.repository.SensorDataRepository;
-import com.data.repository.SensorRepository;
-import com.data.session.DataSocket;
-import com.data.session.DataSocketTemp;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.data.spi.FetcherType;
+import com.data.spi.ServiceInterface;
+import com.data.utils.PropLoader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.annotations.RegisterForReflection;
+import io.reactivex.rxjava3.subjects.BehaviorSubject;
 import io.smallrye.common.annotation.Blocking;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -21,39 +19,18 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import java.io.IOException;
+import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 
 @ApplicationScoped
 @Blocking
 @RegisterForReflection
-public class MqttConnection implements DataFetcher {
-    final String topicWildcard = "eg/#";
+public class MqttConnection implements ServiceInterface {
 
-    @Inject
-    DataSocketTemp socketTemp;
+    private Properties properties;
 
-    @Inject
-    DataSocket clients;
-    @Inject
-    SensorDataRepository dataRepository;
-
-    @Inject
-    SensorRepository sensorRepository;
-
-    @ConfigProperty(name = "mqtt.host")
-    String host;
-    @ConfigProperty(name = "mqtt.port")
-    String port;
-    @ConfigProperty(name = "mqtt.username")
-    String username;
-    @ConfigProperty(name = "mqtt.password")
-    String password;
-
-    @Inject
-    @ConfigProperty(name = "haxi")
-    public String haxi;
+    private BehaviorSubject<SensorData> subject;
 
     int qos = 0;
 
@@ -72,46 +49,59 @@ public class MqttConnection implements DataFetcher {
 
     @Transactional
 
-    public void consume(String topicName, MqttMessage message) throws InterruptedException {
+    public void consume(String topicName, MqttMessage message){
         ObjectMapper objectMapper = new ObjectMapper();
+        String[] topicNameSplit = topicName.split("/");
+        String sensorName = topicNameSplit[topicNameSplit.length-2];
+        String groupName = topicNameSplit[topicNameSplit.length-3];
+
+        //This unit setting method is temporary
+        //sensor.setUnit("°");
         try {
-            String[] topicNameSplit = topicName.split("/");
-            //Sensor sensor = sensorRepository.createOrGetSensor(topicNameSplit[topicNameSplit.length-2]);
-            Sensor sensor = new Sensor("hawara");
 
-            //This unit setting method is temporary
-            sensor.setUnit("°");
+            ParserDto dataObject = objectMapper.readValue(message.getPayload(), ParserDto.class);
 
-            SensorData sensorData = new SensorData();
-            sensorData.setDevice(sensor);
+            //create SensorData
+            SensorData newSensorData = new SensorData();
+            newSensorData.setValue(dataObject.value());
+            newSensorData.setTimeStamp(dataObject.timestamp());
 
-            DataDto dataObject = objectMapper.readValue(message.getPayload(), DataDto.class);
-            sensorData.setTimeStamp(dataObject.timestamp());
-            sensorData.setValue(dataObject.value());
+            //create Sensor
+            Sensor newSensor = new Sensor(sensorName);
+            newSensor.addValue(newSensorData);
 
-            DataDto huso = new DataDto(topicNameSplit[topicNameSplit.length-2], dataObject.timestamp(), dataObject.value());
-            socketTemp.publish(huso);
+            //create group
+            Group newGroup = new Group();
+            newGroup.setName(groupName);
 
-            //dataRepository.addData(sensorData);
+            //set connections
+            newSensor.setGroup(newGroup);
+            newSensorData.setDevice(newSensor);
+            newGroup.addSensor(newSensor);
 
-            //clients.publish(sensorData);
-
-        } catch (JsonProcessingException e) {
-            Log.error("error parsing into Data Object: " + message);
-        } catch (IOException e) {
-            throw new InterruptedException(e.getMessage());
+            subject.onNext(newSensorData);
+        }catch (Exception e){
+            Log.warn("This format is not excepted: " + e.getMessage());
         }
+
     }
 
-    @Override
     public void invoke()  {
+        PropLoader propLoader = new PropLoader();
+        propLoader.setType(FetcherType.MQTT);
+
+        this.properties = propLoader.getProperties();
+
+
+        System.out.println(this.properties.getProperty("host"));
+
         String publisherId = "g:luminai";
         //Todo Only Start when this method is invoked
-        try(MqttClient client = new MqttClient(String.format("tcp://%s:%s", this.host, this.port), publisherId, new MemoryPersistence())) {
+        try(MqttClient client = new MqttClient(String.format("tcp://%s:%s", this.properties.getProperty("host"), this.properties.getProperty("port")), publisherId, new MemoryPersistence())) {
             CountDownLatch latch = new CountDownLatch(30);
             MqttConnectOptions options = new MqttConnectOptions();
-            options.setUserName(this.username);
-            options.setPassword(this.password.toCharArray());
+            options.setUserName(this.properties.getProperty("username").toString());
+            options.setPassword(this.properties.getProperty("password").toString().toCharArray());
             options.setConnectionTimeout(60);
             options.setKeepAliveInterval(60);
 
@@ -142,7 +132,7 @@ public class MqttConnection implements DataFetcher {
             client.connect(options);
 
 
-            client.subscribe(topicWildcard, qos);
+            client.subscribe(properties.getProperty("topic"), qos);
 
             latch.await();
 
@@ -151,5 +141,15 @@ public class MqttConnection implements DataFetcher {
         } catch (InterruptedException e) {
             throw new RuntimeException("an error occured while subscribing: " + e);
         }
+    }
+
+    @Override
+    public FetcherType getType() {
+        return FetcherType.MQTT;
+    }
+
+    @Override
+    public void setSubject(BehaviorSubject<SensorData> subject) {
+        this.subject = subject;
     }
 }

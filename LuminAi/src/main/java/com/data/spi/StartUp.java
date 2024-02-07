@@ -1,8 +1,11 @@
 package com.data.spi;
 
+import com.data.fetcher.mqtt.MqttConnection;
 import com.data.model.SensorData;
 import com.data.session.DataSocket;
+import com.data.utils.Store;
 import io.quarkus.runtime.StartupEvent;
+import io.reactivex.rxjava3.subjects.BehaviorSubject;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
@@ -18,10 +21,12 @@ public class StartUp {
     @Inject
     DataSocket dataSocket;
 
-    public void init(@Observes StartupEvent ev) {
-        ServiceInterface service = serviceLoader.provider();
+    public BehaviorSubject<SensorData> subject;
 
-        HashMap<String, String> props = new HashMap<>();
+    public void init(@Observes StartupEvent ev) {
+        //ServiceInterface service = serviceLoader.provider();
+
+        /*HashMap<String, String> props = new HashMap<>();
         switch (service.getType()) {
             //TODO: The correct properties have to be set here
             case MQTT:
@@ -30,12 +35,18 @@ public class StartUp {
             case DRIVER:
                 props.put("foo", "bar");
                 break;
-        }
-        service.setProps(props);
+        }*/
+        subject = BehaviorSubject.createDefault(new SensorData());
+        MqttConnection aasdf = new MqttConnection();
+        aasdf.setSubject(subject);
+        aasdf.invokeAsync();
+        System.out.println(subject.getValue());
 
-        List<SensorData> sensorData = service.fetchData();
+        //service.setProps(props);
+
+        //List<SensorData> sensorData = service.fetchData();
         //TODO: Process and persist the data here
 
-        sensorData.forEach(data->dataSocket.publish(data));
+        //sensorData.forEach(data->dataSocket.publish(data));
     }
 }

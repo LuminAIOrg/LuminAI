@@ -14,6 +14,8 @@ public class SensorData {
 
     private long timestamp;
 
+    private long timeStamp;
+
     @ManyToOne
     @Nullable
     @JoinColumn(name = "s_id")
@@ -29,6 +31,14 @@ public class SensorData {
 
     public void setValue(Double value) {
         this.value = value;
+    }
+
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     public Sensor getDevice() {
