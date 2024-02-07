@@ -1,36 +1,27 @@
 <template>
-  <div id="app">
-    <main>
-      <div style="display: flex">
-        <ChartComponent device_name="Solar" border_color="rgb(255, 0, 0, 1)" device_unit="Temperature in °C"></ChartComponent>
-        <ChartComponent device_name="Wärmepumpe" border_color="rgb(0, 0, 255, 1)" device_unit="kW"></ChartComponent>
-      </div>
-    </main>
-  </div>
+  <img alt="Vue logo" src="./assets/logo.png">
+  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue';
+import HelloWorld from './components/HelloWorld.vue';
 
-
-import {startSocketClient} from "@/services/PowerService";
-import ChartComponent from "@/components/ChartComponent.vue";
-
-startSocketClient()
-export default {
+export default defineComponent({
   name: 'App',
   components: {
-    ChartComponent,
-  },
-}
+    HelloWorld
+  }
+});
 </script>
 
 <style>
 #app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  color: #2c3e50;
   margin-top: 60px;
-}
-
-main {
-  padding: 20px;
 }
 </style>
