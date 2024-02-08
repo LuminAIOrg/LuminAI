@@ -1,6 +1,6 @@
 package com.data.session;
 
-import com.data.model.Data;
+import com.data.model.SensorData;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnError;
@@ -11,8 +11,7 @@ import jakarta.websocket.server.ServerEndpoint;
 import java.util.HashSet;
 import java.util.Set;
 
-
-@ServerEndpoint("/subscribeUpdates")
+@ServerEndpoint(value = "/subscribeUpdates", encoders = { DataEncoder.class })
 @ApplicationScoped
 public class DataSocket {
     Set<Session> sessions = new HashSet<>();
@@ -33,7 +32,7 @@ public class DataSocket {
         sessions.remove(session);
     }
 
-    public void publish(Data data) {
+    public void publish(SensorData data) {
         sessions.forEach(session -> session.getAsyncRemote().sendObject(data, result -> {
             if (result.getException() != null) {
                 throw new RuntimeException("error with user websocket", result.getException());

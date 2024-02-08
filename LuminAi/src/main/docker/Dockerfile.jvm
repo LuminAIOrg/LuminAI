@@ -80,13 +80,23 @@
 FROM registry.access.redhat.com/ubi8/openjdk-17:1.16
 
 ENV LANGUAGE='en_US:en'
-ARG DB_USER
+ARG DB_USERNAME
 ARG DB_PASS
 ARG DB_NAME
+ARG MQTT_CONNECTOR_TEST
+ARG MQTT_HOST
+ARG MQTT_PORT
+ARG MQTT_USERNAME
+ARG MQTT_PASSWORD
 
-ENV DB_USER=$DB_USER
+ENV DB_USERNAME=$DB_USERNAME
 ENV DB_PASS=$DB_PASS
 ENV DB_NAME=$DB_NAME
+ENV MQTT_CONNECTOR_TEST=$MQTT_CONNECTOR_TEST
+ENV MQTT_HOST=$MQTT_HOST  
+ENV MQTT_PORT=$MQTT_PORT
+ENV MQTT_USERNAME=$MQTT_USERNAME
+ENV MQTT_PASSWORD=$MQTT_PASSWORD
 
 
 # We make four distinct layers so if there are application changes the library layers can be re-used
@@ -100,7 +110,7 @@ COPY log-env.sh /opt/jboss/container/java/run/log-env.sh
 EXPOSE 8080
 USER 185
 
-ENV JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Dquarkus.profile=prod -Dquarkus.datasource.db-kind=postgresql -Dquarkus.datasource.jdbc.url=jdbc:postgresql://postgres:5432/$DB_NAME -Dquarkus.datasource.username=$DB_USER -Dquarkus.datasource.password=$DB_PASS -Dquarkus.hibernate-orm.database.generation=update -Dquarkus.hibernate-orm.log.sql=true"
+ENV JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 -Dmp.messaging.incoming.mqtt-listener.connector=$MQTT_CONNECTOR_TEST -Dmp.messaging.incoming.mqtt-listener.host=$MQTT_HOST -Dmp.messaging.incoming.mqtt-listener.port=$MQTT_PORT -Dmp.messaging.incoming.mqtt-listener.topic=eg/e58_2/temperature/state -Dmp.messaging.incoming.mqtt-listener.username=$MQTT_USERNAME -Dmp.messaging.incoming.mqtt-listener.password=$MQTT_PASSWORD -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Dquarkus.profile=prod -Dquarkus.datasource.db-kind=postgresql -Dquarkus.datasource.jdbc.url=jdbc:postgresql://postgres:5432/$DB_NAME -Dquarkus.datasource.username=$DB_USERNAME -Dquarkus.datasource.password=$DB_PASS -Dquarkus.hibernate-orm.database.generation=update -Dquarkus.hibernate-orm.log.sql=true"
 ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
 
 ENTRYPOINT ["/opt/jboss/container/java/run/log-env.sh", "/opt/jboss/container/java/run/run-java.sh" ]

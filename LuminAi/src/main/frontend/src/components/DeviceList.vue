@@ -4,7 +4,7 @@
   </li>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Device from "@/components/DeviceComponent.vue";
 import {startSocketClient} from "@/services/PowerService";
 import {store} from "@/store/Store";
