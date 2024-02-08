@@ -19,16 +19,24 @@ public class Store {
         this.subject = BehaviorSubject.createDefault(new SensorData());
     }
     Consumer<SensorData> recipient;
+
+    public BehaviorSubject<SensorData> getSubject() {
+        return subject;
+    }
+
     public void next(){
         SensorData sensorData = subject.getValue();
         if (sensorData != null) {
             System.out.println(sensorData.getValue());
         }
-        try {
-            recipient.accept(sensorData);
-        }catch (Throwable e) {
-           throw new RuntimeException("can't pe accepted by recipient \n" + e.getMessage());
-        }
+        //try {
+        //    TODO: get Recipient
+        //    recipient.accept(sensorData);
+        //}catch (Throwable e) {
+        //    throw new RuntimeException("can't pe accepted by recipient \n" + e.getMessage());
+        //}
+
+
 
     }
 }

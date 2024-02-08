@@ -6,6 +6,7 @@ import com.data.model.SensorData;
 import com.data.spi.FetcherType;
 import com.data.spi.ServiceInterface;
 import com.data.utils.PropLoader;
+import com.data.utils.Store;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.annotations.RegisterForReflection;
@@ -30,7 +31,7 @@ public class MqttConnection implements ServiceInterface {
 
     private Properties properties;
 
-    private BehaviorSubject<SensorData> subject;
+    private Store store;
 
     int qos = 0;
 
@@ -67,8 +68,9 @@ public class MqttConnection implements ServiceInterface {
             newSensor.setGroup(newGroup);
             newSensorData.setDevice(newSensor);
             newGroup.addSensor(newSensor);
+            store.getSubject().onNext(newSensorData);
 
-            subject.onNext(newSensorData);
+            store.next();
         }catch (Exception e){
             Log.warn("This format is not excepted: " + e.getMessage());
         }
@@ -101,8 +103,8 @@ public class MqttConnection implements ServiceInterface {
                         @Override
                         public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                             System.out.println("topic: " + topic);
-                            System.out.println("Qos: " + mqttMessage.getQos());
-                            System.out.println("message content: " + new String(mqttMessage.getPayload()));
+                            //System.out.println("Qos: " + mqttMessage.getQos());
+                            //System.out.println("message content: " + new String(mqttMessage.getPayload()));
                             //TODO: add consume
                             consume(topic, mqttMessage);
                             latch.countDown();
@@ -139,8 +141,8 @@ public class MqttConnection implements ServiceInterface {
     }
 
     @Override
-    public void setSubject(BehaviorSubject<SensorData> subject) {
-        this.subject = subject;
+    public void setStore(Store store) {
+        this.store = store;
     }
 
     @Override

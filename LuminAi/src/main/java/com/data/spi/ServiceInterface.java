@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 public interface ServiceInterface {
     FetcherType getType();
 
-    void setSubject(BehaviorSubject<SensorData> subject);
+    void setStore(Store store);
 
     void setProperties();
 

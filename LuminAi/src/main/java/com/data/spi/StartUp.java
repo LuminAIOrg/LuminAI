@@ -21,13 +21,12 @@ public class StartUp {
     @Inject
     DataSocket dataSocket;
 
-    public BehaviorSubject<SensorData> subject;
+    @Inject
+    Store store;
 
     public void init(@Observes StartupEvent ev) {
-        subject = BehaviorSubject.createDefault(new SensorData());
-
         ServiceInterface service = serviceLoader.provider();
-        service.setSubject(subject);
+        service.setStore(store);
         service.setProperties();
         service.invoke();
 
