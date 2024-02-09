@@ -1,10 +1,8 @@
 package com.data.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.quarkus.runtime.annotations.IgnoreProperty;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+
 
 @Entity
 public class SensorData {

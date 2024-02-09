@@ -45,12 +45,4 @@ public class SensorDataRepository {
         }
         return new PageDto(pageId, sensors);
     }
-
-
-    public List<DataDto> getAllDataFromSensor(long sensorId) {
-        return entityManager
-                .createQuery("SELECT new com.data.dto.DataDto(d.sensorDataId.timestamp, d.value) FROM SensorData d WHERE d.sensor.id = :sensorId", DataDto.class)
-                .setParameter("sensorId", sensorId)
-                .getResultList();
-    }
 }

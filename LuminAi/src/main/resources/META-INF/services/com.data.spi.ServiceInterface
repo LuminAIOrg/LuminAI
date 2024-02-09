@@ -1,2 +1,2 @@
 com.data.fetcher.driver.DriverImpl
-com.data.fetcher.mqtt.MqttImpl
+com.data.fetcher.mqtt.MqttConnection
