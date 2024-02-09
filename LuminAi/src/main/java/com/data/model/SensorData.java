@@ -1,26 +1,38 @@
 package com.data.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.quarkus.runtime.annotations.IgnoreProperty;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 @Entity
 public class SensorData {
     @Id
-    @GeneratedValue
-    @Column(name = "sd_id")
-    private Long id;
+    SensorDataId sensorDataId;
 
     private Double value;
-
-    private long timestamp;
 
     @ManyToOne
     @Nullable
     @JoinColumn(name = "s_id")
     private Sensor sensor;
 
-    public Long getId() {
-        return id;
+    public SensorDataId getSensorDataId() {
+        return sensorDataId;
+    }
+
+    public void setSensorDataId(SensorDataId sensorDataId) {
+        this.sensorDataId = sensorDataId;
+    }
+
+    @Nullable
+    public Sensor getSensor() {
+        return sensor;
+    }
+
+    public void setSensor(@Nullable Sensor sensor) {
+        this.sensor = sensor;
     }
 
     public Double getValue() {
@@ -37,13 +49,5 @@ public class SensorData {
 
     public void setDevice(Sensor sensor) {
         this.sensor = sensor;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
     }
 }
