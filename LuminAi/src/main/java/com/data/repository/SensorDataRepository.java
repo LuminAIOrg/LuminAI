@@ -4,9 +4,7 @@ import com.data.dto.DataDto;
 import com.data.dto.PageDto;
 import com.data.dto.SensorDto;
 import com.data.dto.SensorWithoutDataDto;
-import com.data.model.Sensor;
 import com.data.model.SensorData;
-import com.data.utils.Store;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -22,7 +20,6 @@ public class SensorDataRepository {
 
     @Transactional
     public void addData(SensorData data) {
-
         entityManager.persist(data);
     }
 

@@ -2,7 +2,6 @@ package com.data.repository;
 
 import com.data.dto.DataDto;
 import com.data.dto.SensorWithoutDataDto;
-import com.data.model.Group;
 import com.data.model.Sensor;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

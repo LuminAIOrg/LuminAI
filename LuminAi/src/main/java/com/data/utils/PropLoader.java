@@ -2,7 +2,6 @@ package com.data.utils;
 
 import com.data.spi.FetcherType;
 import io.quarkus.logging.Log;
-import org.eclipse.microprofile.config.ConfigProvider;
 
 import java.io.File;
 import java.io.FileInputStream;

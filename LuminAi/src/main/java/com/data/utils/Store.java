@@ -13,7 +13,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.context.ManagedExecutor;
 
-import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
 @ApplicationScoped
@@ -61,8 +60,8 @@ public class Store {
 
     private void checkAndPersistData(SensorData sensorData){
         System.out.println(sensorData.getValue());
-        //Sensor mergedSensor = this.sensorRepository.createOrGetSensor(sensorData.getSensor().getName());
-        //sensorData.setSensor(mergedSensor);
+        Sensor mergedSensor = this.sensorRepository.createOrGetSensor(sensorData.getSensor().getName());
+        sensorData.setSensor(mergedSensor);
         //Group mergedGroup = this.groupRepository.createOrGetGroup(sensorData.getSensor().getGroup().getName());
         //sensorData.getSensor().setGroup(mergedGroup);
         //this.sensorDataRepository.addData(sensorData);
