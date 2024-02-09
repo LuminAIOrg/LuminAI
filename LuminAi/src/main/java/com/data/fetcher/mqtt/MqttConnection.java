@@ -3,6 +3,7 @@ package com.data.fetcher.mqtt;
 import com.data.model.Group;
 import com.data.model.Sensor;
 import com.data.model.SensorData;
+import com.data.model.SensorDataId;
 import com.data.spi.FetcherType;
 import com.data.spi.ServiceInterface;
 import com.data.utils.PropLoader;
@@ -50,9 +51,14 @@ public class MqttConnection implements ServiceInterface {
 
             ParserDto dataObject = objectMapper.readValue(message.getPayload(), ParserDto.class);
 
+            //create composite Key for SensorData
+            SensorDataId sensorDataId = new SensorDataId();
+            sensorDataId.setTimestamp(dataObject.timestamp());
+
             //create SensorData
             SensorData newSensorData = new SensorData();
             newSensorData.setValue(dataObject.value());
+            newSensorData.setSensorDataId(sensorDataId);
             //newSensorData.setTimeStamp(dataObject.timestamp());
 
             //create Sensor

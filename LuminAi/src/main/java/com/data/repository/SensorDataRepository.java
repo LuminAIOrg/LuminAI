@@ -4,7 +4,9 @@ import com.data.dto.DataDto;
 import com.data.dto.PageDto;
 import com.data.dto.SensorDto;
 import com.data.dto.SensorWithoutDataDto;
+import com.data.model.Sensor;
 import com.data.model.SensorData;
+import com.data.utils.Store;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -20,6 +22,7 @@ public class SensorDataRepository {
 
     @Transactional
     public void addData(SensorData data) {
+
         entityManager.persist(data);
     }
 
@@ -44,13 +47,5 @@ public class SensorDataRepository {
              sensors.add(new SensorDto(sensor.id(), sensor.name(), sensor.unit(), data));
         }
         return new PageDto(pageId, sensors);
-    }
-
-
-    public List<DataDto> getAllDataFromSensor(long sensorId) {
-        return entityManager
-                .createQuery("SELECT new com.data.dto.DataDto(d.sensorDataId.timestamp, d.value) FROM SensorData d WHERE d.sensor.id = :sensorId", DataDto.class)
-                .setParameter("sensorId", sensorId)
-                .getResultList();
     }
 }

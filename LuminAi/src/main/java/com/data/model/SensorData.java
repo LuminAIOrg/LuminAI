@@ -6,6 +6,7 @@ import io.quarkus.runtime.annotations.IgnoreProperty;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
+
 @Entity
 public class SensorData {
     @Id
