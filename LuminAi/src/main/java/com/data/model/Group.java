@@ -15,6 +15,7 @@ public class Group {
     @Column(name = "g_id")
     private long id;
 
+    @Column(unique=true)
     private String name;
 
     @ManyToOne
@@ -32,6 +33,13 @@ public class Group {
     @Nullable
     @JsonIgnoreProperties({"group"})
     private ArrayList<Sensor> sensors;
+
+    public Group(String name) {
+        this.name = name;
+    }
+
+    public Group() {
+    }
 
     public String getName() {
         return name;
@@ -51,7 +59,9 @@ public class Group {
     }
 
     public void addSensor(Sensor sensor){
+        if (this.sensors == null){
+            this.sensors = new ArrayList<>();
+        }
         this.sensors.add(sensor);
-        sensor.setGroup(this);
     }
 }

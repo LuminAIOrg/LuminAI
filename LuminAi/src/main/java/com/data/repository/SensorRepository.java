@@ -1,7 +1,8 @@
 package com.data.repository;
 
+import com.data.dto.DataDto;
+import com.data.dto.SensorWithoutDataDto;
 import com.data.model.Sensor;
-import com.data.model.SensorData;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -11,36 +12,36 @@ import java.util.List;
 
 @ApplicationScoped
 public class SensorRepository {
+
     @Inject
     EntityManager entityManager;
 
+    public List<SensorWithoutDataDto> getAllSensors() {
+        return this.entityManager
+                .createQuery("select new com.data.dto.SensorWithoutDataDto(s.id, s.name, s.unit) from Sensor s", SensorWithoutDataDto.class)
+                .getResultList();
+    }
+
+    public List<DataDto> getAllDataFromSensor(long sensorId) {
+        return entityManager
+                .createQuery("SELECT new com.data.dto.DataDto(d.sensorDataId.timestamp, d.value) FROM SensorData d WHERE d.sensor.id = :sensorId", DataDto.class)
+                .setParameter("sensorId", sensorId)
+                .getResultList();
+    }
 
     @Transactional
     public Sensor createOrGetSensor(String sensorName) {
-        Sensor sensor = entityManager.createQuery("SELECT s FROM Sensor s WHERE s.name = :sensorName", Sensor.class)
+        List<Sensor> sensor = entityManager.createQuery("SELECT s FROM Sensor s WHERE s.name = :sensorName", Sensor.class)
                 .setParameter("sensorName", sensorName)
-                .getSingleResult();
-        if(sensor == null) {
-            sensor = new Sensor(sensorName);
-            entityManager.persist(sensor);
-        }
-        return sensor;
-    }
-
-    @Transactional
-    public void addData(List<SensorData> data) {
-        if (data != null)  {
-            data.forEach(d -> entityManager.persist(d));
-        }
-    }
-
-    public List<Sensor> getAllSensors() {
-        return entityManager.createQuery("SELECT s FROM Sensor s", Sensor.class).getResultList();
-    }
-
-    public List<SensorData> getAllDataFromSensor(Sensor sensor) {
-        return entityManager.createQuery("SELECT d FROM SensorData d WHERE d.sensor = :sensor", SensorData.class)
-                .setParameter("sensor", sensor)
                 .getResultList();
+
+        if(sensor.isEmpty()) {
+            Sensor newSensor = new Sensor();
+            newSensor.setName(sensorName);
+            entityManager.merge(newSensor);
+            entityManager.flush();
+            return newSensor;
+        }
+        return sensor.get(0);
     }
 }

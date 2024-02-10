@@ -17,14 +17,18 @@ public class GroupRepository {
 
     @Transactional
     public Group createOrGetGroup(String groupName) {
-        Group group = em.createQuery("SELECT g FROM Group g WHERE g.name = :groupName", Group.class)
+        List<Group> group = em.createQuery("SELECT s FROM Group s WHERE s.name = :groupName", Group.class)
                 .setParameter("groupName", groupName)
-                .getSingleResult();
-        if(group == null) {
-            group = new Group(groupName);
-            em.persist(group);
+                .getResultList();
+
+        if(group.isEmpty()) {
+            Group newGroup = new Group();
+            newGroup.setName(groupName);
+            em.merge(newGroup);
+            em.flush();
+            return newGroup;
         }
-        return group;
+        return group.get(0);
     }
 
     public List<Group> getAllGroups() {
