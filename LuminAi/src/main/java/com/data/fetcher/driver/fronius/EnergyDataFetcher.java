@@ -5,6 +5,10 @@ import com.data.model.Group;
 import com.data.model.Sensor;
 import com.data.repository.GroupRepository;
 import com.data.repository.SensorRepository;
+import com.data.spi.FetcherType;
+import com.data.spi.ServiceInterface;
+import com.data.utils.PropLoader;
+import com.data.utils.Store;
 import com.google.gson.Gson;
 import com.data.model.SensorData;
 import io.quarkus.logging.Log;
@@ -14,18 +18,17 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 public class EnergyDataFetcher extends DriverImpl {
 
-    @Inject
-    GroupRepository groupRepository;
+    private Store store;
 
-    @Inject
-    SensorRepository sensorRepository;
+    private Properties properties;
 
     List<SensorData> dataList;
 
-    private static String fetchDataFromApi() throws IOException {
+    private static String fetchDataFromApi(String apiUrl) throws IOException {
         URL url = new URL(apiUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -45,7 +48,15 @@ public class EnergyDataFetcher extends DriverImpl {
     }
 
     public List<SensorData> runDriver() throws IOException {
-        String dataJson = fetchDataFromApi();
+        //TODO: muaß i a so an init spaß mochn? und wie use i den ganzen spaß so WARUM is des ned in da DriverImpl?
+        /*
+        ServiceInterface service = serviceLoader.provider();
+        service.setStore(store);
+        service.setProperties();
+        service.invoke();
+        */
+        String apiURL = properties.getProperty("apiURL");
+        String dataJson = fetchDataFromApi(apiURL);
 
         Gson gson = new Gson();
         Map<String, Object> data = gson.fromJson(dataJson, Map.class);
@@ -55,13 +66,14 @@ public class EnergyDataFetcher extends DriverImpl {
         Map<String, Object> site = (Map<String, Object>) dataProperty.get("Site");
 
         // innit Group
-        Group fronius = groupRepository.createOrGetGroup("Group");
+        Group fronius = new Group("Fronius");
 
         // Create or Get ALL Sensors and set Group
-        Sensor pvSensor = sensorRepository.createOrGetSensor("PV");
-        Sensor gridSensor = sensorRepository.createOrGetSensor("Grid");
-        Sensor akkuSensor = sensorRepository.createOrGetSensor("Akku");
+        Sensor pvSensor = new Sensor("PV");
+        Sensor gridSensor = new Sensor("Grid");
+        Sensor akkuSensor = new Sensor("Akku");
 
+        //TODO: fragen
         pvSensor.setGroup(fronius);
         gridSensor.setGroup(fronius);
         akkuSensor.setGroup(fronius);
@@ -102,7 +114,7 @@ public class EnergyDataFetcher extends DriverImpl {
                 Map<String, Object> deviceData = new HashMap<>();
 
                 //Create or Get Sensor
-                Sensor sensor = sensorRepository.createOrGetSensor(String.valueOf(entryData.get("Label")));
+                Sensor sensor = new Sensor(String.valueOf(entryData.get("Label")));
                 sensor.setGroup(fronius);
 
                 SensorData sensorData = new SensorData();
