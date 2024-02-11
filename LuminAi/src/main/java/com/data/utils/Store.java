@@ -12,6 +12,7 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.context.ManagedExecutor;
+import org.postgresql.util.PSQLException;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -62,9 +63,10 @@ public class Store {
         System.out.println(sensorData.getValue());
         Sensor mergedSensor = this.sensorRepository.createOrGetSensor(sensorData.getSensor().getName());
         sensorData.setSensor(mergedSensor);
+        //TODO: Add group support
         //Group mergedGroup = this.groupRepository.createOrGetGroup(sensorData.getSensor().getGroup().getName());
         //sensorData.getSensor().setGroup(mergedGroup);
-        //this.sensorDataRepository.addData(sensorData);
+        this.sensorDataRepository.addData(sensorData);
     }
 
     private CompletableFuture<Void> persistData(SensorData sensorData){
