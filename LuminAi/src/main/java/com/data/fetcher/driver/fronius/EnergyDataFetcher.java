@@ -20,7 +20,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
-public class EnergyDataFetcher extends DriverImpl {
+public class EnergyDataFetcher implements ServiceInterface{
 
     private Store store;
 
@@ -47,14 +47,7 @@ public class EnergyDataFetcher extends DriverImpl {
         }
     }
 
-    public List<SensorData> runDriver() throws IOException {
-        //TODO: muaß i a so an init spaß mochn? und wie use i den ganzen spaß so WARUM is des ned in da DriverImpl?
-        /*
-        ServiceInterface service = serviceLoader.provider();
-        service.setStore(store);
-        service.setProperties();
-        service.invoke();
-        */
+    public /*List<SensorData>*/ void runDriver() throws IOException {
         String apiURL = properties.getProperty("apiURL");
         String dataJson = fetchDataFromApi(apiURL);
 
@@ -73,7 +66,7 @@ public class EnergyDataFetcher extends DriverImpl {
         Sensor gridSensor = new Sensor("Grid");
         Sensor akkuSensor = new Sensor("Akku");
 
-        //TODO: fragen
+        //TODO:
         pvSensor.setGroup(fronius);
         gridSensor.setGroup(fronius);
         akkuSensor.setGroup(fronius);
@@ -121,8 +114,43 @@ public class EnergyDataFetcher extends DriverImpl {
                 sensorData.setDevice(sensor);
                 sensorData.setValue((Double) entryData.get("P"));
                 dataList.add(sensorData);
-        }
 
-        return dataList;
+                //set connections
+                store.getSubject().onNext(sensorData);
+                store.next();
+        }
+        //return dataList;
+    }
+
+    @Override
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
+    @Override
+    public void setProperties() {
+        PropLoader propLoader = new PropLoader();
+        propLoader.setType(this.getType());
+        this.properties = propLoader.getProperties();
+    }
+
+    @Override
+    public CompletableFuture<Void> invoke() {
+        System.out.println("Driver got Invoked");
+        if (properties != null){
+            System.out.println("properties set");
+            return CompletableFuture.runAsync(() -> {
+                try {
+                    runDriver();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+        return null;
+    }
+    @Override
+    public FetcherType getType() {
+        return FetcherType.DRIVER;
     }
 }
