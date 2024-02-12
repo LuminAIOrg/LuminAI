@@ -1,20 +1,13 @@
 package com.data.model;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 
 @Entity
 public class SensorData {
-    @Id
+    @EmbeddedId
     SensorDataId sensorDataId;
-
     private Double value;
-
-    @ManyToOne
-    @Nullable
-    @JoinColumn(name = "s_id")
-    private Sensor sensor;
 
     public SensorDataId getSensorDataId() {
         return sensorDataId;
@@ -22,15 +15,6 @@ public class SensorData {
 
     public void setSensorDataId(SensorDataId sensorDataId) {
         this.sensorDataId = sensorDataId;
-    }
-
-    @Nullable
-    public Sensor getSensor() {
-        return sensor;
-    }
-
-    public void setSensor(@Nullable Sensor sensor) {
-        this.sensor = sensor;
     }
 
     public Double getValue() {
@@ -41,11 +25,11 @@ public class SensorData {
         this.value = value;
     }
 
-    public Sensor getDevice() {
-        return sensor;
+    public void setSensor(Sensor sensor) {
+        this.sensorDataId.setSensor(sensor);
     }
 
-    public void setDevice(Sensor sensor) {
-        this.sensor = sensor;
+    public Sensor getSensor() {
+        return this.sensorDataId.getSensor();
     }
 }

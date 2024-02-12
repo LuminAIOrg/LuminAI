@@ -69,7 +69,7 @@ public class MqttConnection implements ServiceInterface {
 
             //set connections
             newSensor.setGroup(newGroup);
-            newSensorData.setDevice(newSensor);
+            newSensorData.setSensor(newSensor);
             newGroup.addSensor(newSensor);
             store.getSubject().onNext(newSensorData);
 
