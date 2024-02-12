@@ -29,6 +29,7 @@ Chart.register(
     LineElement
 )
 
+console
 const filteredData = computed(() => store.deviceData.filter(entry => entry.name === props.device_name))
 const dataValues = computed(() => filteredData.value.map(entry => entry.value))
 const timestamp = computed(() => filteredData.value.map(entry => new Date(entry.timestamp * 1000)))

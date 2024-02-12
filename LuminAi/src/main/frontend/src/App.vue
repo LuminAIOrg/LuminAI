@@ -2,21 +2,38 @@
   <div id="app">
     <main>
       <div style="display: flex">
-        <ChartComponent device_name="Solar" border_color="rgb(255, 0, 0, 1)" device_unit="Temperature in °C"></ChartComponent>
-        <ChartComponent device_name="Wärmepumpe" border_color="rgb(0, 0, 255, 1)" device_unit="kW"></ChartComponent>
+        <div v-for="sensor in sensors" :key="sensor.id">
+          <TempComponent
+
+
+              device_name="{{sensor.name}}"
+              device_unit="{{sensor.unit}}"
+              border_color="#ff00ff"
+          ></TempComponent>
+        </div>
       </div>
     </main>
   </div>
 </template>
 
-<script>
-import {startSocketClient} from "@/services/PowerService";
-import ChartComponent from "@/components/ChartComponent.vue";
+<script async>
+import {getHistoryData, startSocketClient} from "@/services/PowerService";
+import {store} from "@/store/Store";
+import TempComponent from "@/components/TempComponent.vue";
+
+
 startSocketClient()
+
+let _sensors = await getHistoryData()
+store.sensors.push(_sensors)
+
 export default {
   name: 'App',
+  computed: {
+    sensors: _sensors
+  },
   components: {
-    ChartComponent,
+    TempComponent,
   },
 }
 </script>
