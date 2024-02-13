@@ -8,18 +8,26 @@
   </div>
 </template>
 
-<script>
-
+<script async>
+import {getHistoryData, startSocketClient} from "@/services/PowerService";
+import {store} from "@/store/Store";
 
 import {startSocketClient} from "@/services/PowerService";
-import ChartComponent from "@/components/ChartComponent.vue";
+import TempComponent from "@/components/TempComponent.vue";
 
 
 startSocketClient()
+
+let _sensors = await getHistoryData()
+store.sensors.push(_sensors)
+
 export default {
   name: 'App',
+  computed: {
+    sensors: _sensors
+  },
   components: {
-    ChartComponent,
+    TempComponent,
   },
 }
 </script>

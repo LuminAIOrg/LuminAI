@@ -1,36 +1,86 @@
 import { reactive } from 'vue'
+import {Sensor} from "@/types/Sensor";
 
-export const store = reactive({
-    deviceData: [
+export const store = reactive<{
+    sensors: Sensor[]
+}>({
+    "sensors": [
         {
-            "name":"Solar",
-            "timestamp":1701715050,
-            "value":21.52
+            "id": 1,
+            "name": "noise",
+            "unit": null,
+            "data": [
+                {
+                    "timestamp": 1707392649,
+                    "value": 331
+                }
+            ]
         },
         {
-            "name":"Solar",
-            "timestamp":1701715051,
-            "value":25
+            "id": 2,
+            "name": "co2",
+            "unit": null,
+            "data": [
+                {
+                    "timestamp": 1707392647,
+                    "value": 736.17
+                }
+            ]
         },
         {
-            "name":"Solar",
-            "timestamp":1701715052,
-            "value":15
+            "id": 3,
+            "name": "pressure",
+            "unit": null,
+            "data": [
+                {
+                    "timestamp": 1707392338,
+                    "value": 971.69
+                }
+            ]
         },
         {
-            "name":"Wärmepumpe",
-            "timestamp":1701725052,
-            "value":102
+            "id": 4,
+            "name": "humidity",
+            "unit": null,
+            "data": [
+                {
+                    "timestamp": 1707392647,
+                    "value": 44.68
+                }
+            ]
         },
         {
-            "name":"Wärmepumpe",
-            "timestamp":1301715052,
-            "value":29
+            "id": 5,
+            "name": "neopixel",
+            "unit": null,
+            "data": [
+                {
+                    "timestamp": 1707390664,
+                    "value": 1
+                }
+            ]
         },
         {
-            "name":"Wärmepumpe",
-            "timestamp":1701717052,
-            "value":-10
+            "id": 6,
+            "name": "temperature",
+            "unit": null,
+            "data": [
+                {
+                    "timestamp": 1707392233,
+                    "value": 23.29
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "name": "motion",
+            "unit": null,
+            "data": [
+                {
+                    "timestamp": 1707392361,
+                    "value": 0
+                }
+            ]
         }
-    ],
+    ]
 })
