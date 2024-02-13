@@ -1,14 +1,20 @@
 
 <template>
-  <div class="w-full flex justify-center">
-    <div class="h-full w-96 inline-grid">
-      <h3 class="text-center relative text-2xl font-montreux-branding">{{device_name}}</h3>
-      <LineChart
-          :chart-data="data"
-          :options="options"
-      ></LineChart>
+    <div class="w-2/5 inline-grid relative">
+      <h3 class="w-full text-center relative text-2xl font-bold">{{device_name}}</h3>
+      <div class="relative bg-white drop-shadow-xl rounded-lg p-4 top-4">
+        <LineChart
+            :chart-data="data"
+            :options="options"
+        ></LineChart>
+      </div>
+      <div class="w-full h-56 relative top-8">
+        <div class="flex justify-evenly">
+          <button class="bg-white pt-3 pb-3 pl-14 pr-14 rounded-lg drop-shadow-lg hover:drop-shadow-xl duration-150 ease-in-out" type="button" @click="moveForward">←</button>
+          <button class="bg-white pt-3 pb-3 pl-14 pr-14 rounded-lg drop-shadow-lg hover:drop-shadow-xl duration-150 ease-in-out" type="button" @click="moveBackward">→</button>
+        </div>
+      </div>
     </div>
-  </div>
 </template>
 
 
@@ -78,4 +84,12 @@ const options = ref({
   },
 })
 
+
+function moveForward() {
+
+}
+
+function moveBackward() {
+
+}
 </script>
