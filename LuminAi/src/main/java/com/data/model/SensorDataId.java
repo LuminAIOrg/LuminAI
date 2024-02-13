@@ -1,22 +1,19 @@
 package com.data.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.GeneratedValue;
+import jakarta.annotation.Nullable;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
 public class SensorDataId implements Serializable {
-    @GeneratedValue
-    @Column(name = "sd_id")
-    private Long id;
-    private long timestamp;
+    @ManyToOne
+    @Nullable
+    @JoinColumn(name = "s_id")
+    private Sensor sensor;
 
-    public Long getId() {
-        return id;
-    }
+    private long timestamp;
 
     public long getTimestamp() {
         return timestamp;
@@ -26,16 +23,25 @@ public class SensorDataId implements Serializable {
         this.timestamp = timestamp;
     }
 
+    @Nullable
+    public Sensor getSensor() {
+        return sensor;
+    }
+
+    public void setSensor(@Nullable Sensor sensor) {
+        this.sensor = sensor;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SensorDataId that = (SensorDataId) o;
-        return timestamp == that.timestamp && Objects.equals(id, that.id);
+        return timestamp == that.timestamp && Objects.equals(sensor, that.sensor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, timestamp);
+        return Objects.hash(sensor, timestamp);
     }
 }
