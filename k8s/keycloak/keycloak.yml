@@ -1,0 +1,38 @@
+# Quarkus Application Server
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: quay.io/keycloak/keycloak:21.0.0
+          ports:
+            - containerPort: 8180
+              name: keycloak
+          readinessProbe:
+            tcpSocket:
+              port: 8180
+            initialDelaySeconds: 5
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+spec:
+  ports:
+    - port: 8180
+      targetPort: 8180
+      protocol: TCP
+  selector:
+    app: keycloak
