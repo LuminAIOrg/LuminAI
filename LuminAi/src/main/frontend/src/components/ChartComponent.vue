@@ -1,3 +1,4 @@
+
 <template>
     <div class="w-2/5 inline-grid relative">
       <h3 class="w-full text-center relative text-2xl font-bold">{{device_name}}</h3>
