@@ -1,5 +1,6 @@
 package com.data.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
@@ -14,6 +15,7 @@ public class Group {
     @Column(name = "g_id")
     private long id;
 
+    @Column(unique=true)
     private String name;
 
     @ManyToOne
