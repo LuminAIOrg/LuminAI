@@ -15,6 +15,22 @@ public class GroupRepository {
     @Inject
     EntityManager em;
 
+    @Transactional
+    public Group createOrGetGroup(String groupName) {
+        List<Group> group = em.createQuery("SELECT s FROM Group s WHERE s.name = :groupName", Group.class)
+                .setParameter("groupName", groupName)
+                .getResultList();
+
+        if(group.isEmpty()) {
+            Group newGroup = new Group();
+            newGroup.setName(groupName);
+            em.merge(newGroup);
+            em.flush();
+            return newGroup;
+        }
+        return group.get(0);
+    }
+
     public List<Group> getAllGroups() {
         return em.createQuery("SELECT g FROM Group g", Group.class).getResultList();
     }

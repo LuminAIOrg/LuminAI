@@ -23,13 +23,13 @@ public class Sensor {
     @JsonIgnoreProperties({"sensors"})
     private Group group;
 
-    @OneToMany(mappedBy = "sensor")
-    @JsonIgnoreProperties({"sensor"})
+    @OneToMany(mappedBy = "sensorDataId.sensor")
+    @JsonIgnoreProperties({"sensorDataId.sensor"})
     private List<SensorData> values = new ArrayList<>();
 
     public void addValue(final SensorData value){
         this.values.add(value);
-        value.setDevice(this);
+        value.setSensor(this);
     }
 
     public String getUnit() {
