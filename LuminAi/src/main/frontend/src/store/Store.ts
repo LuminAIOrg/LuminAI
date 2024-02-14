@@ -1,3 +1,5 @@
+
+
 import { reactive } from 'vue'
 import {Sensor} from "@/types/Sensor";
 
@@ -13,6 +15,14 @@ export const store = reactive<{
                 {
                     "timestamp": 1707392649,
                     "value": 331
+                },
+                {
+                    "timestamp": 17073956649,
+                    "value": 204
+                },
+                {
+                    "timestamp": 1707398649,
+                    "value": 502
                 }
             ]
         },
@@ -81,6 +91,7 @@ export const store = reactive<{
                     "value": 0
                 }
             ]
-        }
+        },
+
     ]
 })

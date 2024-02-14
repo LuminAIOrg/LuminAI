@@ -1,35 +1,53 @@
 
 <template>
   <div>
+    <div v-for="(sensor, index) in sensors" :key="index">
+      <div class="w-screen relative top-12">
+        <ChartComponent
+            :device_name="sensor.name"
+            :device_unit="sensor.unit"
+            :border_color="borderColors[index % borderColors.length]"
+            :chart_data="sensor.data"
+        ></ChartComponent>
+      </div>
+      <p> {{sensor.name}}: {{sensor.data[0].value}}</p>
+    </div>
   </div>
-  <div class="w-screen flex justify-evenly relative top-12">
-    <ChartComponent device_name="Solar" border_color="rgb(255, 0, 0, 1)" device_unit="Temperature in °C"></ChartComponent>
-    <ChartComponent device_name="Wärmepumpe" border_color="rgb(0, 0, 255, 1)" device_unit="kW"></ChartComponent>
-  </div>
+
 </template>
 
 <script async>
 import {getHistoryData, startSocketClient} from "@/services/PowerService";
 import {store} from "@/store/Store";
 
-import {startSocketClient} from "@/services/PowerService";
-import TempComponent from "@/components/TempComponent.vue";
+//import TempComponent from "@/components/TempComponent.vue";
+import ChartComponent from "@/components/ChartComponent.vue";
+import {defineComponent} from "vue";
 
 
-startSocketClient()
-
-let _sensors = await getHistoryData()
-store.sensors.push(_sensors)
-
-export default {
+export default defineComponent({
   name: 'App',
-  computed: {
-    sensors: _sensors
+  data() {
+    return {
+      sensors: store.sensors
+    };
+  },
+  async created() {
+    startSocketClient()
+    let _sensors = await getHistoryData()
+    store.sensors.push(_sensors)
+    this.sensors = store.sensors;
   },
   components: {
-    TempComponent,
+    ChartComponent,
+    //TempComponent,
   },
-}
+  computed: {
+    borderColors() {
+      return ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF']
+    }
+  }
+})
 </script>
 
 <style>
