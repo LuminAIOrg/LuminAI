@@ -23,6 +23,54 @@ export const store = reactive<{
                 {
                     "timestamp": 1707398649,
                     "value": 502
+                },
+                {
+                    "timestamp": 1707392649,
+                    "value": 89
+                },
+                {
+                    "timestamp": 17073956649,
+                    "value": 482
+                },
+                {
+                    "timestamp": 1707398649,
+                    "value": 142
+                },
+                {
+                    "timestamp": 1707392649,
+                    "value": 74
+                },
+                {
+                    "timestamp": 17073956649,
+                    "value": 11
+                },
+                {
+                    "timestamp": 1707398649,
+                    "value": 205
+                },
+                {
+                    "timestamp": 1707392649,
+                    "value": 12
+                },
+                {
+                    "timestamp": 17073956649,
+                    "value": 538
+                },
+                {
+                    "timestamp": 1707398649,
+                    "value": 295
+                },
+                {
+                    "timestamp": 1707392649,
+                    "value": 842
+                },
+                {
+                    "timestamp": 17073956649,
+                    "value": 569
+                },
+                {
+                    "timestamp": 1707398649,
+                    "value": 427
                 }
             ]
         },

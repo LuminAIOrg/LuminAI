@@ -1,16 +1,18 @@
 
 <template>
-  <div>
+  <div class="columns-2">
     <div v-for="(sensor, index) in sensors" :key="index">
-      <div class="w-screen relative top-12">
+      <div class="w-screen h-full relative top-12">
         <ChartComponent
             :device_name="sensor.name"
             :device_unit="sensor.unit"
             :border_color="borderColors[index % borderColors.length]"
             :chart_data="sensor.data"
         ></ChartComponent>
+        <div class="">
+          <p> {{sensor.name}}: {{sensor.data[0].value}}</p>
+        </div>
       </div>
-      <p> {{sensor.name}}: {{sensor.data[0].value}}</p>
     </div>
   </div>
 
