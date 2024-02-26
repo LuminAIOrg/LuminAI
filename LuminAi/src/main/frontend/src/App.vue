@@ -6,7 +6,7 @@
   </div>
   <div class="w-screen relative flex justify-center">
     <div class="columns-2 w-4/5">
-      <div v-for="(sensor, index) in sensors" :key="index">
+      <div v-for="(sensor, index) in store.sensors" :key="index">
         <div class="relative top-16">
           <ChartComponent
               :device_name="sensor.name"
@@ -31,16 +31,10 @@ import ChartComponentNew from "@/components/ChartComponentNew.vue";
 
 export default defineComponent({
   name: 'App',
-  data() {
-    return {
-      sensors: store.sensors
-    };
-  },
   async created() {
     startSocketClient()
     let _sensors = await getHistoryData()
-    store.sensors.push(_sensors)
-    this.sensors = store.sensors;
+    store.sensors = _sensors
   },
   components: {
     ChartComponentNew,
@@ -48,6 +42,9 @@ export default defineComponent({
     //TempComponent,
   },
   computed: {
+    store() {
+      return store
+    },
     borderColors() {
       return ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF']
     }

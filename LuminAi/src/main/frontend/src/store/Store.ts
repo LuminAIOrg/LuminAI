@@ -7,7 +7,7 @@ export const store = reactive<{
     sensors: Sensor[]
 }>({
     "sensors": [
-        {
+        /* {
             "id": 1,
             "name": "noise",
             "unit": null,
@@ -140,6 +140,6 @@ export const store = reactive<{
                 }
             ]
         },
-
+*/
     ]
 })
