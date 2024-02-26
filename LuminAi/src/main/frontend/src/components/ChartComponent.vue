@@ -1,29 +1,27 @@
 
 <template>
-  <div>
-  </div>
-  <div class="w-2/5 inline-grid relative">
-    <h3 class="w-full text-center relative text-2xl font-bold">{{device_name}}</h3>
-    <div class="relative bg-white drop-shadow-xl rounded-lg p-4 top-4">
+  <div class="w-full inline-grid relative pb-10">
+    <div class="relative bg-white drop-shadow-xl rounded-lg p-4">
       <LineChart
           :chart-data="currentChartData"
           :options="chartOptions"
       ></LineChart>
-    </div>
-    <div class="w-full h-56 relative top-8">
-      <div class="flex justify-evenly">
-        <button class="cursor-pointer bg-white pt-3 pb-3 pl-14 pr-14 rounded-lg drop-shadow-lg hover:drop-shadow-xl duration-150 ease-in-out" type="button" @click="moveBackward" :disabled="isFirstPage">←</button>
-        <button class=" cursor-pointer bg-white pt-3 pb-3 pl-14 pr-14 rounded-lg drop-shadow-lg hover:drop-shadow-xl duration-150 ease-in-out" type="button" @click="moveForward" :disabled="isLastPage">→</button>
+
+        <div class=" flex justify-evenly">
+          <button class="cursor-pointer pt-3 text-2xl hover:text-blue-600 duration-150 ease-in-out" type="button" @click="moveBackward" :disabled="isFirstPage">←</button>
+          <button class=" cursor-pointer pt-3 text-2xl hover:text-blue-600 duration-150 ease-in-out" type="button" @click="moveForward" :disabled="isLastPage">→</button>
+        </div>
       </div>
     </div>
-  </div>
+
 </template>
 
 
 <script setup>
 import {defineProps, ref, computed} from "vue";
 import { LineChart } from "vue-chart-3";
-import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement } from "chart.js";
+import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement } from "chart.js/auto";
+
 
 const props = defineProps(['device_name', 'device_unit', 'border_color', 'chart_data']);
 
@@ -58,20 +56,11 @@ const chartData = computed(() => {
 });
 
 const chartOptions = computed(() => {
-  const maxY = Math.max(...chartData.value.datasets[0].data);
-  const maxYRounded = Math.ceil(maxY / 100) * 100;
   return {
     type: 'line',
     data: chartData.value,
-    title: props.device_name,
     responsive: true,
     tension: 0.2,
-    plugins: {
-      title: {
-        display: true,
-        text: props.device_name,
-      },
-    },
 
     scales: {
       x: {
@@ -79,12 +68,11 @@ const chartOptions = computed(() => {
         position: 'bottom',
         title: {
           display: true,
-          text: 'Time'
+          text: 'Date'
         }
       },
       y: {
         beginAtZero: true,
-        max: maxYRounded + 100,
         title: {
           display: true,
           text: props.device_unit
