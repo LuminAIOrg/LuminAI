@@ -1,10 +1,7 @@
 package com.data.fetcher.driver.fronius;
 
-import com.data.fetcher.driver.DriverImpl;
 import com.data.model.Group;
 import com.data.model.Sensor;
-import com.data.repository.GroupRepository;
-import com.data.repository.SensorRepository;
 import com.data.spi.FetcherType;
 import com.data.spi.ServiceInterface;
 import com.data.utils.PropLoader;
@@ -12,7 +9,6 @@ import com.data.utils.Store;
 import com.google.gson.Gson;
 import com.data.model.SensorData;
 import io.quarkus.logging.Log;
-import jakarta.inject.Inject;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

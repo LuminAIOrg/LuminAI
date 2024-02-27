@@ -447,6 +447,7 @@ login_htl_fronius.txt
 
 
 */*-secret.yml
+keycloak-secret.yml
 */luminai-configmap.yml
 
 *application.properties

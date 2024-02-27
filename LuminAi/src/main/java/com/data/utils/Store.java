@@ -1,6 +1,5 @@
 package com.data.utils;
 
-import com.data.model.Group;
 import com.data.model.Sensor;
 import com.data.model.SensorData;
 import com.data.repository.GroupRepository;
@@ -12,7 +11,6 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.context.ManagedExecutor;
-import org.postgresql.util.PSQLException;
 
 import java.util.concurrent.CompletableFuture;
 

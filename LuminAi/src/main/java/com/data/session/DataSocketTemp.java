@@ -1,7 +1,6 @@
 package com.data.session;
 
 import com.data.dto.DataDto;
-import com.data.model.SensorData;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnError;

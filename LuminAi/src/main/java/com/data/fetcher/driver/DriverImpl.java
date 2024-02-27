@@ -1,14 +1,9 @@
 package com.data.fetcher.driver;
 
-import com.data.model.SensorData;
 import com.data.spi.FetcherType;
 import com.data.spi.ServiceInterface;
 import com.data.utils.PropLoader;
 import com.data.utils.Store;
-import io.reactivex.rxjava3.subjects.BehaviorSubject;
-
-import java.util.HashMap;
-import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 
