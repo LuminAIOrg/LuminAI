@@ -17,6 +17,13 @@ public class Sensor {
     private String name;
     private String unit;
 
+    public Sensor(String name) {
+        this.name = name;
+    }
+
+    public Sensor() {
+    }
+
     @ManyToOne
     @Nullable
     @JoinColumn(name = "g_id")
