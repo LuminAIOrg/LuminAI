@@ -1,25 +1,29 @@
 
 <template>
-  <div style="width: 100%; display: flex; justify-content: center">
-    <div style="height: 90vh;width: 30vw">
-      <div style="margin-bottom: 20px; font-size: 20px;"></div>
-      <div style="margin-bottom: 20px; font-size: 20px; font-family: 'Montreux Branding',sans-serif;"> {{device_name}}</div>
+  <div class="w-full inline-grid relative pb-10">
+    <div class="relative bg-white drop-shadow-xl rounded-lg p-4">
       <LineChart
-          :chart-data="data"
-          :options="options"
+          :chart-data="currentChartData"
+          :options="chartOptions"
       ></LineChart>
+
+        <div class=" flex justify-evenly">
+          <button class="cursor-pointer pt-3 text-2xl hover:text-blue-600 duration-150 ease-in-out" type="button" @click="moveBackward" :disabled="isFirstPage">←</button>
+          <button class=" cursor-pointer pt-3 text-2xl hover:text-blue-600 duration-150 ease-in-out" type="button" @click="moveForward" :disabled="isLastPage">→</button>
+        </div>
+      </div>
     </div>
-  </div>
+
 </template>
 
 
 <script setup>
-import {store} from "@/store/Store";
-import {defineProps, ref, computed} from "vue"
-import {LineChart} from "vue-chart-3"
-import {Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement} from "chart.js"
+import {defineProps, ref, computed} from "vue";
+import { LineChart } from "vue-chart-3";
+import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement } from "chart.js/auto";
 
-const props = defineProps(['device_name', 'device_unit', 'border_color'])
+
+const props = defineProps(['device_name', 'device_unit', 'border_color', 'chart_data']);
 
 Chart.register(
     LineController,
@@ -27,56 +31,86 @@ Chart.register(
     LinearScale,
     PointElement,
     LineElement
-)
+);
 
-const filteredData = computed(() => store.deviceData.filter(entry => entry.name === props.device_name))
-const dataValues = computed(() => filteredData.value.map(entry => entry.value))
-const timestamp = computed(() => filteredData.value.map(entry => new Date(entry.timestamp * 1000)))
-const deviceName = computed(() => filteredData.value.length > 0 ? filteredData.value[0].name : '')
+const currentPage = ref(0);
+const pageSize = 10;
 
-const data = computed(() => ({
-  labels: timestamp.value.map(date => date.toLocaleTimeString()),
+const chartData = computed(() => {
+  const startIndex = currentPage.value * pageSize;
+  const data = props.chart_data.slice(startIndex, startIndex + pageSize).map(item => ({
+    timestamp: new Date(item.timestamp * 1000).toLocaleTimeString(),
+    value: item.value
+  }));
 
-  datasets: [
-    {
-      label: deviceName.value,
-      data: dataValues.value,
-      borderColor: props.border_color,
-    }
-  ]
-}))
+  return {
+    labels: data.map(item => item.timestamp),
+    datasets: [
+      {
+        label: props.device_name,
+        data: data.map(item => item.value),
+        borderColor: props.border_color,
+      }
+    ]
+  };
+});
 
-const options = ref({
-  type: 'line',
-  data: data,
-  title: props.device_name,
-  responsive: true,
-  tension: 0.2,
-  plugins: {
-    title: {
-      display: true,
-      text: props.device_name,
-    },
-  },
-  scales: {
+const chartOptions = computed(() => {
+  return {
+    type: 'line',
+    data: chartData.value,
     responsive: true,
-    x: {
-      type: 'category',
-      position: 'bottom',
-      title: {
-        display: true,
-        text: 'Time'
-      }
-    },
-    y: {
-      beginAtZero: true,
-      max: Math.max(...dataValues.value) + 10,
-      title: {
-        display: true,
-        text: props.device_unit
-      }
-    },
-  },
-})
+    tension: 0.2,
 
+    scales: {
+      x: {
+        type: 'category',
+        position: 'bottom',
+        title: {
+          display: true,
+          text: 'Date'
+        }
+      },
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: props.device_unit
+        }
+      },
+    },
+  };
+});
+
+const moveForward = () => {
+  currentPage.value++;
+};
+
+const moveBackward = () => {
+  currentPage.value--;
+};
+
+const isFirstPage = computed(() => currentPage.value === 0);
+const isLastPage = computed(() => (currentPage.value + 1) * pageSize >= props.chart_data.length);
+
+const currentChartData = computed(() => {
+  const startIndex = currentPage.value * pageSize;
+  const data = props.chart_data.slice(startIndex, startIndex + pageSize).map(item => ({
+    timestamp: new Date(item.timestamp * 1000).toLocaleTimeString(),
+    value: item.value
+  }));
+
+  return {
+    ...chartData.value,
+    labels: data.map(item => item.timestamp),
+    datasets: [
+      {
+        ...chartData.value.datasets[0],
+        data: data.map(item => item.value),
+      }
+    ]
+  };
+});
 </script>
+
+

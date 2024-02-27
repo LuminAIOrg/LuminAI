@@ -1,4 +1,5 @@
-import { store } from "@/store/Store";
+import {fetchBackend} from "@/utils";
+import {Page} from "@/types/Page";
 
 const socket = new WebSocket(`ws://localhost:8080/subscribeUpdates`);
 
@@ -9,7 +10,8 @@ export function startSocketClient() {
 
     socket.onmessage = function (event) {
         console.log(event.data)
-        store.deviceData.push(JSON.parse(event.data));
+        //TODO: update websocket in backend
+        // store.deviceData.push(JSON.parse(event.data));
     };
 
     socket.onclose = function (event) {
@@ -19,4 +21,8 @@ export function startSocketClient() {
     socket.onerror = function (error) {
         console.error("WebSocket error:", error);
     };
+}
+
+export async function getHistoryData() {
+    return (await fetchBackend<Page>("api/data/page")).sensors;
 }
