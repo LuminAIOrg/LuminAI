@@ -73,7 +73,7 @@ public class EnergyDataFetcher implements ServiceInterface{
 
         // PV
         SensorData pvData = new SensorData();
-        pvData.setDevice(pvSensor);
+        pvData.setSensor(pvSensor);
         try{
             pvData.setValue((Double) site.get("P_PV"));
             dataList.add(pvData);
@@ -83,7 +83,7 @@ public class EnergyDataFetcher implements ServiceInterface{
 
         // Grid
         SensorData gridData = new SensorData();
-        gridData.setDevice(gridSensor);
+        gridData.setSensor(gridSensor);
         try{
             gridData.setValue((Double) site.get("P_Grid"));
             dataList.add(gridData);
@@ -93,7 +93,7 @@ public class EnergyDataFetcher implements ServiceInterface{
 
         //Akku
         SensorData akkuData = new SensorData();
-        akkuData.setDevice(akkuSensor);
+        akkuData.setSensor(akkuSensor);
         try{
             akkuData.setValue((Double) site.get("P_Akku"));
         }catch (Exception exception){
@@ -111,7 +111,7 @@ public class EnergyDataFetcher implements ServiceInterface{
                 sensor.setGroup(fronius);
 
                 SensorData sensorData = new SensorData();
-                sensorData.setDevice(sensor);
+                sensorData.setSensor(sensor);
                 sensorData.setValue((Double) entryData.get("P"));
                 dataList.add(sensorData);
 
