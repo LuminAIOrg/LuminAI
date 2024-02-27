@@ -2,12 +2,12 @@ package com.data.fetcher.driver.fronius;
 
 import com.data.model.Group;
 import com.data.model.Sensor;
+import com.data.model.SensorData;
 import com.data.spi.FetcherType;
 import com.data.spi.ServiceInterface;
 import com.data.utils.PropLoader;
 import com.data.utils.Store;
 import com.google.gson.Gson;
-import com.data.model.SensorData;
 import io.quarkus.logging.Log;
 
 import java.io.IOException;
@@ -16,13 +16,11 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
-public class EnergyDataFetcher implements ServiceInterface{
-
-    private Store store;
-
-    private Properties properties;
+public class EnergyDataFetcher implements ServiceInterface {
 
     List<SensorData> dataList;
+    private Store store;
+    private Properties properties;
 
     private static String fetchDataFromApi(String apiUrl) throws IOException {
         URL url = new URL(apiUrl);
@@ -30,6 +28,7 @@ public class EnergyDataFetcher implements ServiceInterface{
         connection.setRequestMethod("GET");
 
         int responseCode = connection.getResponseCode();
+
         if (responseCode == HttpURLConnection.HTTP_OK) {
             Scanner scanner = new Scanner(url.openStream());
             StringBuilder response = new StringBuilder();
@@ -70,50 +69,50 @@ public class EnergyDataFetcher implements ServiceInterface{
         // PV
         SensorData pvData = new SensorData();
         pvData.setSensor(pvSensor);
-        try{
+        try {
             pvData.setValue((Double) site.get("P_PV"));
             dataList.add(pvData);
-        }catch (Exception exception){
+        } catch (Exception exception) {
             Log.info("There is no PV-Data in this Fronius API!");
         }
 
         // Grid
         SensorData gridData = new SensorData();
         gridData.setSensor(gridSensor);
-        try{
+        try {
             gridData.setValue((Double) site.get("P_Grid"));
             dataList.add(gridData);
-        }catch (Exception exception){
+        } catch (Exception exception) {
             Log.info("There is no Grid-Data in this Fronius API!");
         }
 
         //Akku
         SensorData akkuData = new SensorData();
         akkuData.setSensor(akkuSensor);
-        try{
+        try {
             akkuData.setValue((Double) site.get("P_Akku"));
-        }catch (Exception exception){
+        } catch (Exception exception) {
             Log.info("There is no Akku-Data in this Fronius API!");
         }
 
         //TODO: try catch in loop
         Map<String, Object> secondaryMeters = (Map<String, Object>) (dataProperty.get("SecondaryMeters"));
         for (Map.Entry<String, Object> entry : secondaryMeters.entrySet()) {
-                Map<String, Object> entryData = (Map<String, Object>) entry.getValue();
-                Map<String, Object> deviceData = new HashMap<>();
+            Map<String, Object> entryData = (Map<String, Object>) entry.getValue();
+            Map<String, Object> deviceData = new HashMap<>();
 
-                //Create or Get Sensor
-                Sensor sensor = new Sensor(String.valueOf(entryData.get("Label")));
-                sensor.setGroup(fronius);
+            //Create or Get Sensor
+            Sensor sensor = new Sensor(String.valueOf(entryData.get("Label")));
+            sensor.setGroup(fronius);
 
-                SensorData sensorData = new SensorData();
-                sensorData.setSensor(sensor);
-                sensorData.setValue((Double) entryData.get("P"));
-                dataList.add(sensorData);
+            SensorData sensorData = new SensorData();
+            sensorData.setSensor(sensor);
+            sensorData.setValue((Double) entryData.get("P"));
+            dataList.add(sensorData);
 
-                //set connections
-                store.getSubject().onNext(sensorData);
-                store.next();
+            //set connections
+            store.getSubject().onNext(sensorData);
+            store.next();
         }
         //return dataList;
     }
@@ -133,7 +132,7 @@ public class EnergyDataFetcher implements ServiceInterface{
     @Override
     public CompletableFuture<Void> invoke() {
         System.out.println("Driver got Invoked");
-        if (properties != null){
+        if (properties != null) {
             System.out.println("properties set");
             return CompletableFuture.runAsync(() -> {
                 try {
@@ -145,6 +144,7 @@ public class EnergyDataFetcher implements ServiceInterface{
         }
         return null;
     }
+
     @Override
     public FetcherType getType() {
         return FetcherType.DRIVER;

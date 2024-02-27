@@ -4,6 +4,7 @@ import com.data.spi.FetcherType;
 import com.data.spi.ServiceInterface;
 import com.data.utils.PropLoader;
 import com.data.utils.Store;
+
 import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 
@@ -28,11 +29,12 @@ public class DriverImpl implements ServiceInterface {
     @Override
     public CompletableFuture<Void> invoke() {
         System.out.println("Driver got Invoked");
-        if (properties != null){
+        if (properties != null) {
             System.out.println("properties set");
         }
         return null;
     }
+
     @Override
     public FetcherType getType() {
         return FetcherType.DRIVER;

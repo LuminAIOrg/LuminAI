@@ -9,14 +9,16 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Properties;
 
-public class PropLoader     {
+public class PropLoader {
 
     private FetcherType type;
     private Properties properties;
+
     public PropLoader() {
 
     }
-    private void findProperties(){
+
+    private void findProperties() {
         String resourceName = type.toString().toLowerCase() + ".properties";
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(Objects.requireNonNull(classLoader.getResource(resourceName)).getFile());
@@ -27,7 +29,7 @@ public class PropLoader     {
         try {
             properties.load(new FileInputStream(absolutePath));
 
-        }catch (IOException e){
+        } catch (IOException e) {
             Log.warn("no file found or can't be loaded: " + e.getMessage());
         }
         this.properties = properties;
@@ -42,7 +44,7 @@ public class PropLoader     {
     }
 
     public Properties getProperties() {
-        if (this.properties == null){
+        if (this.properties == null) {
             findProperties();
         }
         return properties;

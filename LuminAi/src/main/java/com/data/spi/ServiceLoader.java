@@ -3,6 +3,7 @@ package com.data.spi;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.Produces;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+
 import java.nio.file.ProviderNotFoundException;
 
 @ApplicationScoped

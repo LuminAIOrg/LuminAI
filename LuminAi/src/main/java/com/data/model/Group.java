@@ -14,7 +14,7 @@ public class Group {
     @Column(name = "g_id")
     private long id;
 
-    @Column(unique=true)
+    @Column(unique = true)
     private String name;
 
     @ManyToOne
@@ -57,8 +57,8 @@ public class Group {
         return id;
     }
 
-    public void addSensor(Sensor sensor){
-        if (this.sensors == null){
+    public void addSensor(Sensor sensor) {
+        if (this.sensors == null) {
             this.sensors = new ArrayList<>();
         }
         this.sensors.add(sensor);

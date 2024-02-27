@@ -1,6 +1,7 @@
 package com.data.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
 
 
 @Entity
@@ -25,11 +26,11 @@ public class SensorData {
         this.value = value;
     }
 
-    public void setSensor(Sensor sensor) {
-        this.sensorDataId.setSensor(sensor);
-    }
-
     public Sensor getSensor() {
         return this.sensorDataId.getSensor();
+    }
+
+    public void setSensor(Sensor sensor) {
+        this.sensorDataId.setSensor(sensor);
     }
 }

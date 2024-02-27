@@ -14,7 +14,6 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 import io.smallrye.common.annotation.Blocking;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
-
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
@@ -27,20 +26,17 @@ import java.util.concurrent.CountDownLatch;
 @RegisterForReflection
 public class MqttConnection implements ServiceInterface {
 
-    private Properties properties;
-
-    private Store store;
-
     int qos = 0;
-
+    private Properties properties;
+    private Store store;
 
     @Transactional
 
-    public void consume(String topicName, MqttMessage message){
+    public void consume(String topicName, MqttMessage message) {
         ObjectMapper objectMapper = new ObjectMapper();
         String[] topicNameSplit = topicName.split("/");
-        String sensorName = topicNameSplit[topicNameSplit.length-2];
-        String groupName = topicNameSplit[topicNameSplit.length-3];
+        String sensorName = topicNameSplit[topicNameSplit.length - 2];
+        String groupName = topicNameSplit[topicNameSplit.length - 3];
 
         //This unit setting method is temporary
         //sensor.setUnit("°");
@@ -74,24 +70,24 @@ public class MqttConnection implements ServiceInterface {
             store.getSubject().onNext(newSensorData);
 
             store.next();
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.warn("This format is not excepted: " + e.getMessage());
         }
 
     }
 
-    public CompletableFuture<Void> invoke()  {
+    public CompletableFuture<Void> invoke() {
         return CompletableFuture.runAsync(() -> {
             try {
                 System.out.println(this.properties.getProperty("host"));
 
                 String publisherId = "g:luminai";
                 //Todo Only Start when this method is invoked
-                try(MqttClient client = new MqttClient(String.format("tcp://%s:%s", this.properties.getProperty("host"), this.properties.getProperty("port")), publisherId, new MemoryPersistence())) {
+                try (MqttClient client = new MqttClient(String.format("tcp://%s:%s", this.properties.getProperty("host"), this.properties.getProperty("port")), publisherId, new MemoryPersistence())) {
                     CountDownLatch latch = new CountDownLatch(30);
                     MqttConnectOptions options = new MqttConnectOptions();
-                    options.setUserName(this.properties.getProperty("username").toString());
-                    options.setPassword(this.properties.getProperty("password").toString().toCharArray());
+                    options.setUserName(this.properties.getProperty("username"));
+                    options.setPassword(this.properties.getProperty("password").toCharArray());
                     options.setConnectionTimeout(60);
                     options.setKeepAliveInterval(60);
 
@@ -126,7 +122,7 @@ public class MqttConnection implements ServiceInterface {
 
                     latch.await();
 
-                } catch (MqttException e){
+                } catch (MqttException e) {
                     throw new IllegalArgumentException("an error occured while connecting: " + e);
                 } catch (InterruptedException e) {
                     throw new RuntimeException("an error occured while subscribing: " + e);

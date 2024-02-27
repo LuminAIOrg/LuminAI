@@ -11,7 +11,7 @@ import jakarta.websocket.server.ServerEndpoint;
 import java.util.HashSet;
 import java.util.Set;
 
-@ServerEndpoint(value = "/subscribeUpdatessssssssssssssssssssssssss", encoders = { DataEncoder.class })
+@ServerEndpoint(value = "/subscribeUpdatessssssssssssssssssssssssss", encoders = {DataEncoder.class})
 @ApplicationScoped
 public class DataSocket {
     Set<Session> sessions = new HashSet<>();
