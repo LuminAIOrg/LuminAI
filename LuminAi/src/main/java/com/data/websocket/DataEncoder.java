@@ -7,12 +7,12 @@ import jakarta.websocket.EncodeException;
 import jakarta.websocket.Encoder;
 import jakarta.websocket.EndpointConfig;
 
-public class DataEncoder implements Encoder.Text<SensorData> {
+public class DataEncoder implements Encoder.Text<SensorDataWebsocketDto> {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public String encode(SensorData data) throws EncodeException {
+    public String encode(SensorDataWebsocketDto data) throws EncodeException {
         try {
             return objectMapper.writeValueAsString(data);
         } catch (JsonProcessingException e) {
