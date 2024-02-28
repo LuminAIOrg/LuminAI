@@ -5,6 +5,7 @@ import com.data.model.SensorData;
 import com.data.repository.GroupRepository;
 import com.data.repository.SensorDataRepository;
 import com.data.repository.SensorRepository;
+import com.data.websocket.DataSocket;
 import io.quarkus.logging.Log;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
@@ -34,9 +35,11 @@ public class Store {
 
     @Inject
     public Store() {
-
         this.subject = BehaviorSubject.createDefault(new SensorData());
     }
+
+    @Inject
+    DataSocket dataSocket;
 
     public BehaviorSubject<SensorData> getSubject() {
         return subject;
@@ -47,7 +50,8 @@ public class Store {
         if (sensorData == null) {
             Log.warn("Sensor Data SensorData is null");
         } else {
-            persistData(sensorData);
+            checkAndPersistData(sensorData);
+            dataSocket.publish(sensorData);
         }
         //try {
         //    TODO: get Recipient
@@ -70,7 +74,6 @@ public class Store {
     private CompletableFuture<Void> persistData(SensorData sensorData) {
         return CompletableFuture.runAsync(() -> {
             try {
-                checkAndPersistData(sensorData);
             } catch (Exception e) {
                 throw new IllegalArgumentException("data is invalid: " + e.getMessage());
             }

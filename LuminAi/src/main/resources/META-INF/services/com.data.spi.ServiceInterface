@@ -1,2 +1,3 @@
 com.data.fetcher.driver.DriverImpl
 com.data.fetcher.mqtt.MqttConnection
+com.data.fetcher.mock.SampleData

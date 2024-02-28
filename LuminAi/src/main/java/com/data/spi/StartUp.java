@@ -1,6 +1,6 @@
 package com.data.spi;
 
-import com.data.session.DataSocket;
+import com.data.websocket.DataSocket;
 import com.data.utils.Store;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;

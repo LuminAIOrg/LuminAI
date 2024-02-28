@@ -21,6 +21,13 @@ spec:
                 name: luminai-configmap
           ports:
             - containerPort: 8080
+          volumeMounts:
+            - mountPath: /deployments/app/luminai-1.0-SNAPSHOT.jar!/db/migration/
+              name: luminai
+      volumes:
+        - name: luminai
+          persistentVolumeClaim:
+            claimName: luminai-pv-claim-new
 ---
 apiVersion: v1
 kind: Service
@@ -33,6 +40,8 @@ spec:
       targetPort: 8080
       protocol: TCP
       name: http
+  externalIPs:
+    - 192.88.24.114
   selector:
     app: luminai
 ---

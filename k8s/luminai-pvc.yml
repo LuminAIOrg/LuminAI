@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pv-claim
+  name: luminai-pv-claim-new
   namespace: student-m-puchner
   labels:
-    app: postgres
+    app: luminai
 spec:
   storageClassName: standard
   accessModes:
