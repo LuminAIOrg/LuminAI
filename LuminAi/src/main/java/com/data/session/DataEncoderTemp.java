@@ -1,7 +1,6 @@
 package com.data.session;
 
 import com.data.dto.DataDto;
-import com.data.model.SensorData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.websocket.EncodeException;

@@ -1,7 +1,6 @@
 package com.data.session;
 
 import com.data.dto.DataDto;
-import com.data.model.SensorData;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnError;
@@ -12,7 +11,7 @@ import jakarta.websocket.server.ServerEndpoint;
 import java.util.HashSet;
 import java.util.Set;
 
-@ServerEndpoint(value = "/subscribeUpdates", encoders = { DataEncoderTemp.class })
+@ServerEndpoint(value = "/subscribeUpdates", encoders = {DataEncoderTemp.class})
 @ApplicationScoped
 public class DataSocketTemp {
     Set<Session> sessions = new HashSet<>();

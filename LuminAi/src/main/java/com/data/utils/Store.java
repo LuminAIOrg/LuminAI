@@ -1,6 +1,5 @@
 package com.data.utils;
 
-import com.data.model.Group;
 import com.data.model.Sensor;
 import com.data.model.SensorData;
 import com.data.repository.GroupRepository;
@@ -12,7 +11,6 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.context.ManagedExecutor;
-import org.postgresql.util.PSQLException;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -32,23 +30,23 @@ public class Store {
     ManagedExecutor managedExecutor;
 
     BehaviorSubject<SensorData> subject;
+    Consumer<SensorData> recipient;
 
     @Inject
     public Store() {
 
         this.subject = BehaviorSubject.createDefault(new SensorData());
     }
-    Consumer<SensorData> recipient;
 
     public BehaviorSubject<SensorData> getSubject() {
         return subject;
     }
 
-    public void next(){
+    public void next() {
         SensorData sensorData = subject.getValue();
         if (sensorData == null) {
             Log.warn("Sensor Data SensorData is null");
-        }else {
+        } else {
             persistData(sensorData);
         }
         //try {
@@ -59,7 +57,7 @@ public class Store {
         //}
     }
 
-    private void checkAndPersistData(SensorData sensorData){
+    private void checkAndPersistData(SensorData sensorData) {
         System.out.println(sensorData.getValue());
         Sensor mergedSensor = this.sensorRepository.createOrGetSensor(sensorData.getSensor().getName());
         sensorData.setSensor(mergedSensor);
@@ -69,11 +67,11 @@ public class Store {
         this.sensorDataRepository.addData(sensorData);
     }
 
-    private CompletableFuture<Void> persistData(SensorData sensorData){
+    private CompletableFuture<Void> persistData(SensorData sensorData) {
         return CompletableFuture.runAsync(() -> {
             try {
                 checkAndPersistData(sensorData);
-            }catch (Exception e){
+            } catch (Exception e) {
                 throw new IllegalArgumentException("data is invalid: " + e.getMessage());
             }
         }, managedExecutor);

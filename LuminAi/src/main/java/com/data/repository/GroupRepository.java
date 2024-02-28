@@ -21,7 +21,7 @@ public class GroupRepository {
                 .setParameter("groupName", groupName)
                 .getResultList();
 
-        if(group.isEmpty()) {
+        if (group.isEmpty()) {
             Group newGroup = new Group();
             newGroup.setName(groupName);
             em.merge(newGroup);

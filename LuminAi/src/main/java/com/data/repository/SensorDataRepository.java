@@ -42,12 +42,12 @@ public class SensorDataRepository {
                 .getResultList();
         ArrayList<SensorDto> sensors = new ArrayList<>();
         for (SensorWithoutDataDto sensor : sensorIds) {
-             List<DataDto> data = entityManager.createQuery("select new com.data.dto.DataDto(d.sensorDataId.timestamp, d.value) from SensorData d where d.sensorDataId.sensor.id = :id order by sensorDataId.timestamp desc", DataDto.class)
+            List<DataDto> data = entityManager.createQuery("select new com.data.dto.DataDto(d.sensorDataId.timestamp, d.value) from SensorData d where d.sensorDataId.sensor.id = :id order by sensorDataId.timestamp desc", DataDto.class)
                     .setFirstResult(pageId * pageSize)
                     .setMaxResults(pageSize)
-                     .setParameter("id", sensor.id())
+                    .setParameter("id", sensor.id())
                     .getResultList();
-             sensors.add(new SensorDto(sensor.id(), sensor.name(), sensor.unit(), data));
+            sensors.add(new SensorDto(sensor.id(), sensor.name(), sensor.unit(), data));
         }
         return new PageDto(pageId, sensors);
     }

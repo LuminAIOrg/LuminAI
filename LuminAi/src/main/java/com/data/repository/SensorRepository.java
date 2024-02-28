@@ -35,7 +35,7 @@ public class SensorRepository {
                 .setParameter("sensorName", sensorName)
                 .getResultList();
 
-        if(sensor.isEmpty()) {
+        if (sensor.isEmpty()) {
             Sensor newSensor = new Sensor();
             newSensor.setName(sensorName);
             entityManager.merge(newSensor);
