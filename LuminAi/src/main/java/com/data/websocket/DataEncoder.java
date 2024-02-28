@@ -1,18 +1,18 @@
-package com.data.session;
+package com.data.websocket;
 
-import com.data.dto.DataDto;
+import com.data.model.SensorData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.websocket.EncodeException;
 import jakarta.websocket.Encoder;
 import jakarta.websocket.EndpointConfig;
 
-public class DataEncoderTemp implements Encoder.Text<DataDto> {
+public class DataEncoder implements Encoder.Text<SensorData> {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public String encode(DataDto data) throws EncodeException {
+    public String encode(SensorData data) throws EncodeException {
         try {
             return objectMapper.writeValueAsString(data);
         } catch (JsonProcessingException e) {
