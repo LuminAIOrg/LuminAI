@@ -70,13 +70,4 @@ public class Store {
         //sensorData.getSensor().setGroup(mergedGroup);
         this.sensorDataRepository.addData(sensorData);
     }
-
-    private CompletableFuture<Void> persistData(SensorData sensorData) {
-        return CompletableFuture.runAsync(() -> {
-            try {
-            } catch (Exception e) {
-                throw new IllegalArgumentException("data is invalid: " + e.getMessage());
-            }
-        }, managedExecutor);
-    }
 }
