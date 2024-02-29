@@ -1,5 +1,7 @@
 import {fetchBackend} from "@/utils";
 import {Page} from "@/types/Page";
+import {store} from "@/store/Store";
+import {Data} from "@/types/Data";
 
 const socket = new WebSocket(`ws://localhost:8080/subscribeUpdates`);
 
@@ -9,9 +11,21 @@ export function startSocketClient() {
     };
 
     socket.onmessage = function (event) {
-        console.log(event.data)
-        //TODO: update websocket in backend
-        // store.deviceData.push(JSON.parse(event.data));
+        const updateData = JSON.parse(event.data) as SocketDataUpdate
+        const newData: Data = {
+            timestamp: updateData.timestamp,
+            value: updateData.value
+        }
+
+        const sensorToUpdate = store.sensors.find(sensor => sensor.id == updateData.sensorId)
+
+        if(sensorToUpdate != undefined) {
+            sensorToUpdate.data = [newData, ...sensorToUpdate.data]
+            console.log(`Received new Dataset for sensor "${sensorToUpdate.name}" (Id: ${sensorToUpdate.id}`, {
+                time: new Date(newData.timestamp),
+                value: newData.value
+            })
+        }
     };
 
     socket.onclose = function (event) {
