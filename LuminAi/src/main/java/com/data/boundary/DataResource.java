@@ -1,12 +1,12 @@
 package com.data.boundary;
 
+import com.data.dto.DataDto;
 import com.data.dto.PageDto;
 import com.data.repository.SensorDataRepository;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.DefaultValue;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.*;
+
+import java.util.List;
 
 @Path("api/data")
 public class DataResource {
@@ -21,5 +21,15 @@ public class DataResource {
             @DefaultValue("15") @QueryParam("limit") int limit
     ) {
         return dataRepository.getPage(pageNumber, limit);
+    }
+
+    @GET
+    @Path("/inTimeframe/{id}")
+    public List<DataDto> getDataBySensorInTimeframe(
+            @PathParam("id") long sensorId,
+            @QueryParam("from") long from,
+            @QueryParam("to") long to
+    ) {
+        return dataRepository.getDataBySensorInTimeframe(sensorId, from, to);
     }
 }
