@@ -4,6 +4,7 @@ import com.data.spi.FetcherType;
 import com.data.spi.ServiceInterface;
 import com.data.utils.PropLoader;
 import com.data.utils.Store;
+import io.quarkus.logging.Log;
 
 import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
@@ -28,9 +29,9 @@ public class DriverImpl implements ServiceInterface {
 
     @Override
     public CompletableFuture<Void> invoke() {
-        System.out.println("Driver got Invoked");
+        Log.info("Driver got Invoked");
         if (properties != null) {
-            System.out.println("properties set");
+            Log.info("properties set");
         }
         return null;
     }
