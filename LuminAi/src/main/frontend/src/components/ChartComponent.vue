@@ -39,7 +39,7 @@ const pageSize = 10;
 const chartData = computed(() => {
   const startIndex = currentPage.value * pageSize;
   const data = props.chart_data.slice(startIndex, startIndex + pageSize).map(item => ({
-    timestamp: new Date(item.timestamp * 1000).toLocaleTimeString(),
+    timestamp: (new Date(item.timestamp)).toLocaleTimeString(),
     value: item.value
   }));
 
@@ -96,7 +96,7 @@ const isLastPage = computed(() => (currentPage.value + 1) * pageSize >= props.ch
 const currentChartData = computed(() => {
   const startIndex = currentPage.value * pageSize;
   const data = props.chart_data.slice(startIndex, startIndex + pageSize).map(item => ({
-    timestamp: new Date(item.timestamp * 1000).toLocaleTimeString(),
+    timestamp: new Date(item.timestamp).toLocaleTimeString(),
     value: item.value
   }));
 
