@@ -10,6 +10,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.nio.file.ProviderNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @ApplicationScoped
@@ -21,10 +22,10 @@ public class ServiceLoader {
     @Inject
     Store store;
 
-    @Inject
-    EntityManager entityManager;
-
     CompletableFuture<Void> currentService;
+    String currentServiceName;
+    //This is just for debugging and insight
+    ArrayList<CompletableFuture<Void>> threadHist = new ArrayList<>();
 
     @Produces
     public ServiceInterface provider(String serviceName) {
@@ -37,8 +38,10 @@ public class ServiceLoader {
         throw new ProviderNotFoundException("Data provider " + serviceName + " not found");
     }
 
-    //This is just for debugging and insight
-    ArrayList<CompletableFuture<Void>> threadHist = new ArrayList<>();
+    public List<String> getAllServices() {
+        java.util.ServiceLoader<ServiceInterface> loader = java.util.ServiceLoader.load(ServiceInterface.class);
+        return loader.stream().map(curr -> curr.get().getClass().getName()).toList();
+    }
 
     public void loadService(String serviceName) {
         ServiceInterface service = serviceLoader.provider(serviceName);
@@ -50,5 +53,10 @@ public class ServiceLoader {
         }
         threadHist.add(newService);
         currentService = newService;
+        currentServiceName = serviceName;
+    }
+
+    public String getActiveService() {
+        return currentServiceName;
     }
 }
