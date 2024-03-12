@@ -1,9 +1,5 @@
 
 <template>
-  <!-- Do not remove ... under construction -->
-  <div class="opacity-0 hidden">
-    <ChartComponentNew></ChartComponentNew>
-  </div>
   <div class="w-screen relative flex justify-center">
     <div class="columns-2 w-4/5">
       <div v-for="(sensor, index) in store.sensors" :key="index">
@@ -25,19 +21,21 @@
 import {getHistoryData, startSocketClient} from "@/services/PowerService";
 import {store} from "@/store/Store";
 import ChartComponent from "@/components/ChartComponent.vue";
-import {defineComponent} from "vue";
+import {defineComponent, reactive} from "vue";
 
-import ChartComponentNew from "@/components/ChartComponentNew.vue";
 
 export default defineComponent({
   name: 'App',
   async created() {
     startSocketClient()
     let _sensors = await getHistoryData()
+    _sensors.forEach(sensor => {
+      sensor.data = reactive(sensor.data);
+    });
     store.sensors = _sensors
   },
   components: {
-    ChartComponentNew,
+
     ChartComponent,
     //TempComponent,
   },
