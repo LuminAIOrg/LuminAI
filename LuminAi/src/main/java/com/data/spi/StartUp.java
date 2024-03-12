@@ -4,6 +4,7 @@ import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
+import org.eclipse.microprofile.config.ConfigProvider;
 
 @ApplicationScoped
 public class StartUp {
@@ -11,6 +12,7 @@ public class StartUp {
     ServiceLoader serviceLoader;
 
     public void init(@Observes StartupEvent ev) {
-        serviceLoader.loadService("com.data.fetcher.mqtt.MqttConnection");
+        String config = ConfigProvider.getConfig().getValue("defaultDataCollectionMethod", String.class);
+        serviceLoader.loadService(config);
     }
 }
