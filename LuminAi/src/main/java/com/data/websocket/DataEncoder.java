@@ -11,7 +11,7 @@ public class DataEncoder implements Encoder.Text<SensorDataWebsocketDto> {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Override
+
     public String encode(SensorDataWebsocketDto data) throws EncodeException {
         try {
             return objectMapper.writeValueAsString(data);
