@@ -8,17 +8,24 @@ import com.data.spi.ServiceInterface;
 import com.data.utils.Store;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.annotations.RegisterForReflection;
+import io.quarkus.scheduler.Scheduled;
 import io.smallrye.common.annotation.Blocking;
 import jakarta.enterprise.context.ApplicationScoped;
+
+import java.io.IOException;
 import java.time.Instant;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @ApplicationScoped
 @Blocking
 @RegisterForReflection
 public class SampleData implements ServiceInterface {
     private Store store;
+    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
     @Override
     public FetcherType getType() {
@@ -35,37 +42,33 @@ public class SampleData implements ServiceInterface {
         Log.info("This Mocked Data doesnt need Properties");
     }
 
+    public void runDriver() {
+        Log.info("Mocked data supplied");
+
+        SensorData sensorData = new SensorData();
+        SensorDataId sensorDataId = new SensorDataId();
+        Sensor sensor = new Sensor();
+        sensor.setName("MockedSensor");
+        sensor.setUnit("MockedDegrees");
+
+        sensorDataId.setTimestamp(Instant.now().toEpochMilli());
+        sensorDataId.setSensor(sensor);
+        sensorData.setSensorDataId(sensorDataId);
+
+        double min = 50;
+        double max = 300;
+        Random r = new Random();
+        double randomValue = min + (max - min) * r.nextDouble();
+        sensorData.setValue(randomValue);
+
+        store.getSubject().onNext(sensorData);
+        store.next();
+    }
+
     @Override
     public CompletableFuture<Void> invoke() {
         return CompletableFuture.runAsync(() -> {
-            while (true) {
-                try {
-                    Log.info("Mocked data supplied");
-
-                    SensorData sensorData = new SensorData();
-                    SensorDataId sensorDataId = new SensorDataId();
-                    Sensor sensor = new Sensor();
-                    sensor.setName("MockedSensor");
-                    sensor.setUnit("MockedDegrees");
-
-                    sensorDataId.setTimestamp(Instant.now().toEpochMilli());
-                    sensorDataId.setSensor(sensor);
-                    sensorData.setSensorDataId(sensorDataId);
-
-                    double min = 50;
-                    double max = 300;
-                    Random r = new Random();
-                    double randomValue = min + (max - min) * r.nextDouble();
-                    sensorData.setValue(randomValue);
-
-                    store.getSubject().onNext(sensorData);
-                    store.next();
-
-                    Thread.sleep(20000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            scheduler.scheduleAtFixedRate(this::runDriver, 0, 2, TimeUnit.SECONDS);
         });
     }
 }

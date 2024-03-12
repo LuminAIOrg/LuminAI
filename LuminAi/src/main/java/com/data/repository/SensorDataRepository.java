@@ -5,6 +5,7 @@ import com.data.dto.PageDto;
 import com.data.dto.SensorDto;
 import com.data.dto.SensorWithoutDataDto;
 import com.data.model.SensorData;
+import com.data.model.SensorDataId;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -24,8 +25,8 @@ public class SensorDataRepository {
     public void addData(SensorData data) {
         try {
             entityManager.persist(data);
-        } catch (ConstraintViolationException e) {
-            Log.warn("Duplicate Data " + e);
+        } catch (Exception e) {
+            Log.warn("Duplicate Data or other Error: " + e);
         }
     }
 
