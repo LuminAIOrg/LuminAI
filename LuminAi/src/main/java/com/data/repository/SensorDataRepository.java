@@ -52,4 +52,12 @@ public class SensorDataRepository {
         }
         return new PageDto(pageId, sensors);
     }
+
+    public List<DataDto> getDataBySensorInTimeframe(long sensorId, long from, long to) {
+        return entityManager.createQuery("select new com.data.dto.DataDto(d.sensorDataId.timestamp, d.value) from SensorData d where d.sensorDataId.sensor.id = :id and d.id.timestamp between :from and :to order by sensorDataId.timestamp desc", DataDto.class)
+                .setParameter("id", sensorId)
+                .setParameter("from", from)
+                .setParameter("to", to)
+                .getResultList();
+    }
 }
