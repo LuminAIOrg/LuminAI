@@ -33,7 +33,13 @@ public class SensorDataRepository {
     @Transactional
     public void addData(List<SensorData> data) {
         if (data != null) {
-            data.forEach(d -> entityManager.persist(d));
+            data.forEach(d -> {
+                try {
+                    entityManager.persist(d);
+                } catch (Exception e) {
+                    Log.warn("Duplicate Data or other Error: " + e);
+                }
+            });
         }
     }
 
