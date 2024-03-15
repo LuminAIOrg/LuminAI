@@ -18,7 +18,7 @@
 
 
 <script setup>
-import {defineProps, ref, computed} from "vue";
+import {defineProps, ref, computed, watch} from "vue";
 import { LineChart } from "vue-chart-3";
 import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement } from "chart.js/auto";
 
@@ -100,6 +100,8 @@ const currentChartData = computed(() => {
     value: item.value
   }));
 
+  data.reverse();
+
   return {
     ...chartData.value,
     labels: data.map(item => item.timestamp),
@@ -110,6 +112,13 @@ const currentChartData = computed(() => {
       }
     ]
   };
+});
+
+watch(() => props.chart_data, (newData) => {
+  const lastPageIndex = Math.floor((newData.length - 1) / pageSize);
+  if (currentPage.value < lastPageIndex) {
+    currentPage.value = lastPageIndex;
+  }
 });
 </script>
 

@@ -1,15 +1,21 @@
 
 <template>
-  <div class="w-screen relative flex justify-center">
-    <div class="columns-2 w-4/5">
-      <div v-for="(sensor, index) in store.sensors" :key="index">
-        <div class="relative top-16">
-          <ChartComponent
-              :device_name="sensor.name"
-              :device_unit="sensor.unit"
-              :border_color="borderColors[index % borderColors.length]"
-              :chart_data="sensor.data"
-          ></ChartComponent>
+  <div class="flex">
+    <div class="w-3/12">
+      <NavBarComponent></NavBarComponent>
+    </div>
+
+    <div class="w-screen relative flex justify-center">
+      <div class="columns-2 gap-28 w-9/12">
+        <div v-for="(sensor, index) in store.sensors" :key="index">
+          <div class="relative top-16">
+            <ChartComponent
+                :device_name="sensor.name"
+                :device_unit="sensor.unit"
+                :border_color="borderColors[index % borderColors.length]"
+                :chart_data="sensor.data"
+            ></ChartComponent>
+          </div>
         </div>
       </div>
     </div>
@@ -21,6 +27,7 @@
 import {getHistoryData, startSocketClient} from "@/services/PowerService";
 import {store} from "@/store/Store";
 import ChartComponent from "@/components/ChartComponent.vue";
+import NavBarComponent from "@/components/NavBarComponent.vue";
 import {defineComponent, reactive} from "vue";
 
 
@@ -37,6 +44,7 @@ export default defineComponent({
   components: {
 
     ChartComponent,
+    NavBarComponent
     //TempComponent,
   },
   computed: {
