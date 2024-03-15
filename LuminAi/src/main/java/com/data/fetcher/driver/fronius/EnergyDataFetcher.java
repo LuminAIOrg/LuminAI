@@ -56,7 +56,8 @@ public class EnergyDataFetcher implements ServiceInterface {
             dataJson = fetchDataFromApi(apiUrl);
         } catch (IOException e) {
             Log.info("Failed when fetching data from API! Maybe on wrong Network? :) Please Check if you can reach: " + apiUrl);
-            throw new RuntimeException("Failed when fetching data from API: " + e);
+            return;
+            //throw new RuntimeException("Failed when fetching data from API: " + e);
         }
 
         Gson gson = new Gson();
@@ -78,10 +79,6 @@ public class EnergyDataFetcher implements ServiceInterface {
         Sensor gridSensor = new Sensor("Grid");
         Sensor akkuSensor = new Sensor("Akku");
 
-
-        //TODO:ob do oda so wiad nix mehr ausgeführt ka numoi schaun von wo genau
-
-        //TODO:
         pvSensor.setGroup(fronius);
         gridSensor.setGroup(fronius);
         akkuSensor.setGroup(fronius);
@@ -136,6 +133,7 @@ public class EnergyDataFetcher implements ServiceInterface {
             akkuData.setSensor(akkuSensor);
 
             akkuData.setValue((Double) site.get("P_Akku"));
+            dataList.add(akkuData);
         } catch (Exception exception) {
             Log.info("There is no Akku-Data in this Fronius API!");
         }
