@@ -1,6 +1,7 @@
 
 <template>
   <div class="w-full inline-grid relative pb-10">
+    <div class="opacity-0 w-0">{{device_name}}</div>
     <div class="relative bg-white drop-shadow-xl rounded-lg p-4">
       <LineChart
           :chart-data="currentChartData"

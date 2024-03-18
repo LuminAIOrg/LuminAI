@@ -1,4 +1,4 @@
-import {fetchBackend} from "@/utils";
+import {fetchBackend, postBackend} from "@/utils";
 import {Page} from "@/types/Page";
 import {store} from "@/store/Store";
 import {Data} from "@/types/Data";
@@ -40,3 +40,13 @@ export function startSocketClient() {
 export async function getHistoryData() {
     return (await fetchBackend<Page>("api/data/page")).sensors;
 }
+
+export async function getDataCollectionMethod() {
+    return (await fetchBackend<string[]>("api/datacollection/list/"))
+}
+
+export async function postDataCollectionMethod(dataCollectionMethod: string) {
+    const res = await postBackend<never, { serviceName:string }>("api/datacollection/load", {serviceName:dataCollectionMethod}, true)
+    return res.status == 201
+}
+
