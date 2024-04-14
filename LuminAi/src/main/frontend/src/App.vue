@@ -6,11 +6,6 @@
     </div>
 
     <div class="w-screen relative mx-52">
-      <!--
-      <div class="absolute z-0">
-        <img class="bg-cover" src="./assets/shwoosh.png">
-      </div>
-      -->
       <div class="w-full -ml-24 pb-10 z-50">
         <SettingsComponent></SettingsComponent>
       </div>

@@ -1,27 +1,33 @@
 <template>
   <div class="w-full inline-grid relative pb-10">
     <div class="opacity-0 w-0">{{ device_name }}</div>
-    <h1 class="p-1 text-gray-400">Select a Timeframe</h1>
-    <div class="flex justify-evenly mb-4">
-      <div>
-        <h1 class="text-gray-400 text-center">Start:</h1>
-        <input type="datetime-local" id="start-date" v-model="selectedStartDate">
-      </div>
-      <div>
-        <h1 class="text-gray-400 text-center">End:</h1>
-        <input type="datetime-local" id="end-date" v-model="selectedEndDate">
-      </div>
-      <div class="h-full mt-2">
-        <button class="bg-blue-500 text-white hover:text-gray-200 font-bold px-2 py-1 rounded-lg" @click="applyFilter">Apply</button>
-        <button class="bg-gray-500 text-white hover:text-gray-200 font-bold px-2 py-1 rounded-lg ml-2" @click="resetFilter">Reset</button>
-      </div>
-    </div>
 
     <div class="relative bg-white drop-shadow-xl rounded-lg p-4">
+      <h1 class="p-1 text-gray-400">Select a Timeframe</h1>
+      <div class="flex justify-evenly mb-4">
+        <div>
+          <h1 class="text-gray-400 text-center">Start:</h1>
+          <input type="datetime-local" id="start-date" v-model="selectedStartDate">
+        </div>
+        <div>
+          <h1 class="text-gray-400 text-center">End:</h1>
+          <input type="datetime-local" id="end-date" v-model="selectedEndDate">
+        </div>
+        <div class="h-full mt-2">
+          <button class="bg-blue-500 text-white hover:text-gray-200 font-bold px-2 py-1 rounded-lg" @click="applyFilter">Apply</button>
+          <button class="bg-gray-500 text-white hover:text-gray-200 font-bold px-2 py-1 rounded-lg ml-2" @click="resetFilter">Reset</button>
+        </div>
+      </div>
+
       <LineChart v-if="currentChartData" :chart-data="currentChartData" :options="chartOptions"></LineChart>
+
       <div class="flex justify-evenly">
         <button class="cursor-pointer pt-3 text-2xl hover:text-blue-600 duration-150 ease-in-out" type="button" @click="moveBackward" :disabled="isFirstPage">←</button>
         <button class="cursor-pointer pt-3 text-2xl hover:text-blue-600 duration-150 ease-in-out" type="button" @click="moveForward" :disabled="isLastPage">→</button>
+      </div>
+
+      <div class="w-full flex justify-end mr-2 text-gray-400">
+        <h1>{{ currentPage + 1}} of {{ totalPages }}</h1>
       </div>
     </div>
   </div>
@@ -37,7 +43,7 @@ const props = defineProps(["device_name", "device_unit", "border_color", "chart_
 Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement);
 
 const chartData = ref([]);
-const pageSize = 10;
+let pageSize = 10;
 let currentPage = ref(0);
 const selectedStartDate = ref('');
 const selectedEndDate = ref('');
@@ -72,6 +78,12 @@ const isLastPage = computed(() => (currentPage.value + 1) * pageSize >= filtered
 
 const applyFilter = () => {
   if (selectedStartDate.value && selectedEndDate.value) {
+    pageSize = 80;
+  } else {
+    pageSize = 10;
+  }
+
+  if (selectedStartDate.value && selectedEndDate.value) {
     const start = selectedStartDate.value ? new Date(selectedStartDate.value).getTime() : 0;
     const end = selectedEndDate.value ? new Date(selectedEndDate.value).getTime() : Infinity;
     filteredChartData.value = initialData.filter(item => {
@@ -81,7 +93,7 @@ const applyFilter = () => {
   } else {
     filteredChartData.value = [...initialData];
   }
-  currentPage.value = 0; // Reset page to first after applying filter
+  currentPage.value = 0;
 };
 
 const resetFilter = () => {
@@ -93,6 +105,8 @@ const resetFilter = () => {
 const filteredChartData = ref([]);
 
 watch([selectedStartDate, selectedEndDate], applyFilter);
+
+const totalPages = computed(() => Math.ceil(filteredChartData.value.length / pageSize));
 
 const currentChartData = computed(() => {
   const startIndex = currentPage.value * pageSize;
