@@ -1,126 +1,138 @@
-
 <template>
   <div class="w-full inline-grid relative pb-10">
-    <div class="opacity-0 w-0">{{device_name}}</div>
-    <div class="relative bg-white drop-shadow-xl rounded-lg p-4">
-      <LineChart
-          :chart-data="currentChartData"
-          :options="chartOptions"
-      ></LineChart>
-
-        <div class=" flex justify-evenly">
-          <button class="cursor-pointer pt-3 text-2xl hover:text-blue-600 duration-150 ease-in-out" type="button" @click="moveBackward" :disabled="isFirstPage">←</button>
-          <button class=" cursor-pointer pt-3 text-2xl hover:text-blue-600 duration-150 ease-in-out" type="button" @click="moveForward" :disabled="isLastPage">→</button>
-        </div>
+    <div class="opacity-0 w-0">{{ device_name }}</div>
+    <h1 class="p-1 text-gray-400">Select a Timeframe</h1>
+    <div class="flex justify-evenly mb-4">
+      <div>
+        <h1 class="text-gray-400 text-center">Start:</h1>
+        <input type="datetime-local" id="start-date" v-model="selectedStartDate">
+      </div>
+      <div>
+        <h1 class="text-gray-400 text-center">End:</h1>
+        <input type="datetime-local" id="end-date" v-model="selectedEndDate">
+      </div>
+      <div class="h-full mt-2">
+        <button class="bg-blue-500 text-white hover:text-gray-200 font-bold px-2 py-1 rounded-lg" @click="applyFilter">Apply</button>
+        <button class="bg-gray-500 text-white hover:text-gray-200 font-bold px-2 py-1 rounded-lg ml-2" @click="resetFilter">Reset</button>
       </div>
     </div>
 
+    <div class="relative bg-white drop-shadow-xl rounded-lg p-4">
+      <LineChart v-if="currentChartData" :chart-data="currentChartData" :options="chartOptions"></LineChart>
+      <div class="flex justify-evenly">
+        <button class="cursor-pointer pt-3 text-2xl hover:text-blue-600 duration-150 ease-in-out" type="button" @click="moveBackward" :disabled="isFirstPage">←</button>
+        <button class="cursor-pointer pt-3 text-2xl hover:text-blue-600 duration-150 ease-in-out" type="button" @click="moveForward" :disabled="isLastPage">→</button>
+      </div>
+    </div>
+  </div>
 </template>
 
-
 <script setup>
-import {defineProps, ref, computed, watch} from "vue";
+import { defineProps, ref, computed, watch } from "vue";
 import { LineChart } from "vue-chart-3";
 import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement } from "chart.js/auto";
 
+const props = defineProps(["device_name", "device_unit", "border_color", "chart_data"]);
 
-const props = defineProps(['device_name', 'device_unit', 'border_color', 'chart_data']);
+Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement);
 
-Chart.register(
-    LineController,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement
+const chartData = ref([]);
+const pageSize = 10;
+let currentPage = ref(0);
+const selectedStartDate = ref('');
+const selectedEndDate = ref('');
+let initialData = [];
+
+watch(
+    () => props.chart_data,
+    (newData) => {
+      chartData.value = newData.map((item) => ({
+        timestamp: new Date(item.timestamp).getTime(),
+        value: item.value,
+      }));
+      initialData = [...chartData.value];
+      applyFilter();
+    }
 );
 
-const currentPage = ref(0);
-const pageSize = 10;
+const moveForward = () => {
+  if (!isLastPage.value) {
+    currentPage.value++;
+  }
+};
 
-const chartData = computed(() => {
+const moveBackward = () => {
+  if (!isFirstPage.value) {
+    currentPage.value--;
+  }
+};
+
+const isFirstPage = computed(() => currentPage.value === 0);
+const isLastPage = computed(() => (currentPage.value + 1) * pageSize >= filteredChartData.value.length);
+
+const applyFilter = () => {
+  if (selectedStartDate.value && selectedEndDate.value) {
+    const start = selectedStartDate.value ? new Date(selectedStartDate.value).getTime() : 0;
+    const end = selectedEndDate.value ? new Date(selectedEndDate.value).getTime() : Infinity;
+    filteredChartData.value = initialData.filter(item => {
+      const timestamp = item.timestamp;
+      return timestamp >= start && timestamp <= end;
+    });
+  } else {
+    filteredChartData.value = [...initialData];
+  }
+  currentPage.value = 0; // Reset page to first after applying filter
+};
+
+const resetFilter = () => {
+  selectedStartDate.value = '';
+  selectedEndDate.value = '';
+  applyFilter();
+};
+
+const filteredChartData = ref([]);
+
+watch([selectedStartDate, selectedEndDate], applyFilter);
+
+const currentChartData = computed(() => {
   const startIndex = currentPage.value * pageSize;
-  const data = props.chart_data.slice(startIndex, startIndex + pageSize).map(item => ({
-    timestamp: (new Date(item.timestamp)).toLocaleTimeString(),
-    value: item.value
-  }));
-
+  const endIndex = Math.min(startIndex + pageSize, filteredChartData.value.length);
+  const data = filteredChartData.value.slice(startIndex, endIndex);
   return {
-    labels: data.map(item => item.timestamp),
+    labels: data.map((item) => new Date(item.timestamp).toLocaleTimeString()),
     datasets: [
       {
         label: props.device_name,
-        data: data.map(item => item.value),
+        data: data.map((item) => item.value),
         borderColor: props.border_color,
-      }
-    ]
+      },
+    ],
   };
 });
 
 const chartOptions = computed(() => {
   return {
-    type: 'line',
-    data: chartData.value,
+    type: "line",
+    data: currentChartData.value,
     responsive: true,
     tension: 0.2,
-
     scales: {
       x: {
-        type: 'category',
-        position: 'bottom',
+        type: "category",
+        position: "bottom",
         title: {
           display: true,
-          text: 'Date'
-        }
+          text: "Date",
+        },
       },
       y: {
         beginAtZero: true,
         title: {
           display: true,
-          text: props.device_unit
-        }
+          text: props.device_unit,
+        },
       },
     },
   };
 });
-
-const moveForward = () => {
-  currentPage.value++;
-};
-
-const moveBackward = () => {
-  currentPage.value--;
-};
-
-const isFirstPage = computed(() => currentPage.value === 0);
-const isLastPage = computed(() => (currentPage.value + 1) * pageSize >= props.chart_data.length);
-
-const currentChartData = computed(() => {
-  const startIndex = currentPage.value * pageSize;
-  const data = props.chart_data.slice(startIndex, startIndex + pageSize).map(item => ({
-    timestamp: new Date(item.timestamp).toLocaleTimeString(),
-    value: item.value
-  }));
-
-  data.reverse();
-
-  return {
-    ...chartData.value,
-    labels: data.map(item => item.timestamp),
-    datasets: [
-      {
-        ...chartData.value.datasets[0],
-        data: data.map(item => item.value),
-      }
-    ]
-  };
-});
-
-watch(() => props.chart_data, (newData) => {
-  const lastPageIndex = Math.floor((newData.length - 1) / pageSize);
-  if (currentPage.value < lastPageIndex) {
-    currentPage.value = lastPageIndex;
-  }
-});
 </script>
-
-
