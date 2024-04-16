@@ -2,6 +2,7 @@ package com.data.boundary;
 
 import com.data.dto.PageDto;
 import com.data.repository.SensorDataRepository;
+import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
@@ -15,6 +16,7 @@ public class DataResource {
     SensorDataRepository dataRepository;
 
     @GET
+    @Authenticated
     @Path("/page/")
     public PageDto getSensorDataByPage(
             @DefaultValue("0") @QueryParam("pageNumber") int pageNumber,
