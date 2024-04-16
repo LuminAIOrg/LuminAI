@@ -29,7 +29,7 @@
             </div>
 
             <div class="flex p-2 rounded-lg duration-150 hover:bg-blue-600">
-              <a class="w-full flex gap-3" href="../pages/SettingsPage.vue">
+              <a class="w-full flex gap-3" href="">
                 <span class="material-symbols-outlined" style="font-size: 2rem !important;">settings</span>
                 <h1 class="text-2xl">Settings</h1>
               </a>
@@ -47,7 +47,7 @@
             <span class="material-symbols-outlined" style="font-size: 2rem !important;">account_circle</span>
           </div>
           <div class="text-2xl">
-            <h1>Profile</h1>
+            <h1>{{ username }}</h1>
           </div>
         </div>
       </div>
@@ -59,6 +59,11 @@
 
 </style>
 
-<script setup lang="ts">
+<script async setup lang="ts">
+import {getUserName} from "@/services/PowerService";
+
+
+
+const username = await getUserName();
 
 </script>
