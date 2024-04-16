@@ -26,7 +26,7 @@
         <button class="cursor-pointer pt-3 text-2xl hover:text-blue-600 duration-150 ease-in-out" type="button" @click="moveForward" :disabled="isLastPage">→</button>
       </div>
 
-      <div class="w-full flex justify-end mr-2 text-gray-400">
+      <div class="w-full flex mr-2 text-gray-400">
         <h1>{{ currentPage + 1}} of {{ totalPages }}</h1>
       </div>
     </div>
@@ -63,18 +63,19 @@ watch(
 
 const moveForward = () => {
   if (!isLastPage.value) {
-    currentPage.value++;
+    currentPage.value--;
   }
 };
 
 const moveBackward = () => {
   if (!isFirstPage.value) {
-    currentPage.value--;
+    currentPage.value++;
   }
 };
 
-const isFirstPage = computed(() => currentPage.value === 0);
-const isLastPage = computed(() => (currentPage.value + 1) * pageSize >= filteredChartData.value.length);
+
+const isFirstPage = computed(() => (currentPage.value + 1) * pageSize >= filteredChartData.value.length);
+const isLastPage = computed(() => currentPage.value === 0);
 
 const applyFilter = () => {
   if (selectedStartDate.value && selectedEndDate.value) {
