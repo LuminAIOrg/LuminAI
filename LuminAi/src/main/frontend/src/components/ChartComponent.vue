@@ -111,7 +111,7 @@ const totalPages = computed(() => Math.ceil(filteredChartData.value.length / pag
 const currentChartData = computed(() => {
   const startIndex = currentPage.value * pageSize;
   const endIndex = Math.min(startIndex + pageSize, filteredChartData.value.length);
-  const data = filteredChartData.value.slice(startIndex, endIndex);
+  const data = filteredChartData.value.slice(startIndex, endIndex).reverse();
   return {
     labels: data.map((item) => new Date(item.timestamp).toLocaleTimeString()),
     datasets: [
