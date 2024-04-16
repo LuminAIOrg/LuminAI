@@ -3,7 +3,7 @@
     <div class="opacity-0 w-0">{{ device_name }}</div>
 
     <div class="relative bg-white drop-shadow-xl rounded-lg p-4">
-      <h1 class="p-1 text-gray-400">Select a Timeframe</h1>
+      <h1 class="text-gray-400">Select a Timeframe</h1>
       <div class="flex justify-evenly mb-4">
         <div>
           <h1 class="text-gray-400 text-center">Start:</h1>
@@ -14,7 +14,6 @@
           <input type="datetime-local" id="end-date" v-model="selectedEndDate">
         </div>
         <div class="h-full mt-2">
-          <button class="bg-blue-500 text-white hover:text-gray-200 font-bold px-2 py-1 rounded-lg" @click="applyFilter">Apply</button>
           <button class="bg-gray-500 text-white hover:text-gray-200 font-bold px-2 py-1 rounded-lg ml-2" @click="resetFilter">Reset</button>
         </div>
       </div>
@@ -49,28 +48,37 @@ const selectedStartDate = ref('');
 const selectedEndDate = ref('');
 let initialData = [];
 
+//let watchActive = true;
+
 watch(
     () => props.chart_data,
     (newData) => {
-      chartData.value = newData.map((item) => ({
-        timestamp: new Date(item.timestamp).getTime(),
-        value: item.value,
-      }));
-      initialData = [...chartData.value];
-      applyFilter();
+      //if (watchActive) {
+        chartData.value = newData.map((item) => ({
+          timestamp: new Date(item.timestamp).getTime(),
+          value: item.value,
+        }));
+        initialData = [...chartData.value];
+        applyFilter();
+      //}
     }
 );
 
 const moveForward = () => {
   if (!isLastPage.value) {
     currentPage.value--;
+    //watchActive = false;
   }
 };
 
 const moveBackward = () => {
   if (!isFirstPage.value) {
     currentPage.value++;
+    //watchActive = false;
   }
+  //else {
+    //watchActive = true;
+  //}
 };
 
 
