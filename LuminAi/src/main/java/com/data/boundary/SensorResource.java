@@ -2,6 +2,7 @@ package com.data.boundary;
 
 import com.data.dto.SensorWithoutDataDto;
 import com.data.repository.SensorRepository;
+import io.quarkus.security.Authenticated;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -17,6 +18,7 @@ public class SensorResource {
     SensorRepository sensorRepository;
 
     @GET
+    @Authenticated
     @Path("list")
     public List<SensorWithoutDataDto> getAllSensors() {
         return sensorRepository.getAllSensors();
