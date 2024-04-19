@@ -8,11 +8,12 @@
     <div class="relative bg-white drop-shadow-xl rounded-lg p-4">
       <Button @click="toggleDropdown" class="flex bg-blue-500 text-white p-0.5 px-1 rounded-lg opacity-100 hover:drop-shadow-lg duration-300">
         <span class="material-symbols-outlined">filter_list</span>
-        <span class="material-symbols-outlined">expand_more</span>
+        <span v-if="!isDropdownOpen" @click="rotateIcons()" class="material-symbols-outlined">expand_more</span>
+        <span v-if="isDropdownOpen" class="material-symbols-outlined">expand_less</span>
       </Button>
 
       <!-- Timeframe settings -->
-      <div v-if="isDropdownOpen" class="w-3/6 p-2 mt-2 absolute z-10 bg-white drop-shadow-2xl rounded-lg ">
+      <div v-if="isDropdownOpen" class="w-3/6 p-2 px-3 mt-3 absolute z-10 bg-white drop-shadow-2xl rounded-lg animate-popUp">
         <div class="grid grid-cols-1 gap-3">
           <h1 class="text-gray-400">Select a Timeframe!</h1>
 
@@ -182,4 +183,10 @@ const chartOptions = computed(() => {
     },
   };
 });
+
+// Functions
+
+  function rotateIcons() {
+
+  }
 </script>
