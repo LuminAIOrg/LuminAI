@@ -5,6 +5,7 @@
     "tailwindcss": "^3.4.3"
   },
   "dependencies": {
-    "chart.js": "^4.4.1"
+    "chart.js": "^4.4.1",
+    "vue-tailwind": "^2.5.1"
   }
 }

@@ -5,7 +5,7 @@
     <div class="h-screen flex flex-col justify-between  w-full bg-blue-500">
       <div class="w-full flex justify-center">
         <div class="w-3/5 h-full mt-10 flex justify-evenly items-center">
-          <button class="p-2 text-2xl text-white" style="font-size: 4rem !important;">☼</button>
+          <button class="text-white" style="font-size: 4.5rem !important;">☼</button>
           <h1 class="text-3xl text-white font-bold">LuminAi</h1>
         </div>
       </div>
@@ -14,9 +14,9 @@
         <div class="h-full  gap-6 relative items-center text-xl text-white left-2">
           <div class="flex flex-col gap-4 cursor-pointer">
 
-            <div class="flex p-2 rounded-lg duration-150 hover:bg-blue-600">
+            <div class="flex p-2 rounded-lg duration-150 hover:text-gray-200">
               <a class="w-full flex gap-3">
-                <span class="material-symbols-outlined" style="font-size: 2rem !important;">home</span>
+                <span class="material-symbols-outlined" style="font-size: 2rem; !important;">home</span>
                 <h1 class="text-2xl">Home</h1>
               </a>
             </div>
@@ -61,9 +61,6 @@
 
 <script async setup lang="ts">
 import {getUserName} from "@/services/PowerService";
-
-
-
 const username = await getUserName();
 
 </script>

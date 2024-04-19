@@ -25,7 +25,7 @@
         </div>
         <div class="w-full flex justify-center">
 
-          <div class="columns-2 w-full">
+          <div class="columns-2 gap-x-20 w-full">
             <div v-for="(sensor, index) in store.sensors" :key="index">
               <div class="">
                 <ChartComponent
