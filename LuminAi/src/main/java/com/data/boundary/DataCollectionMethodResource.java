@@ -2,7 +2,7 @@ package com.data.boundary;
 
 
 import com.data.spi.ServiceLoader;
-import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -16,21 +16,21 @@ public class DataCollectionMethodResource {
     ServiceLoader serviceLoader;
     
     @POST
-    @Authenticated
+    @RolesAllowed("user")
     @Path("load")
     public void loadDataCollectionMethod(ServiceNameWrapper serviceName) {
         serviceLoader.loadService(serviceName.serviceName());
     }
 
     @GET
-    @Authenticated
+    @RolesAllowed("user")
     @Path("list")
     public List<String> listAllDataCollectionMethods() {
         return serviceLoader.getAllServices();
     }
 
     @GET
-    @Authenticated
+    @RolesAllowed("user")
     @Path("current")
     public String getCurrentDataCollectionMethod() {
         return serviceLoader.getActiveService();
