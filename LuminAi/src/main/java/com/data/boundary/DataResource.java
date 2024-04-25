@@ -3,6 +3,7 @@ package com.data.boundary;
 import com.data.dto.DataDto;
 import com.data.dto.PageDto;
 import com.data.repository.SensorDataRepository;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 
@@ -15,6 +16,7 @@ public class DataResource {
     SensorDataRepository dataRepository;
 
     @GET
+    @RolesAllowed("user")
     @Path("/page/")
     public PageDto getSensorDataByPage(
             @DefaultValue("0") @QueryParam("pageNumber") int pageNumber,
