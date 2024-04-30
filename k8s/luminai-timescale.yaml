@@ -1,0 +1,46 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: luminai-postgres-cluster
+  namespace: luminai
+spec:
+  teamId: luminai
+  volume:
+    size: 200Mi
+  numberOfInstances: 0
+  users:
+    luminai:
+      - superuser
+      - createdb
+  databases:
+    luminai: luminai
+  postgresql:
+    version: "16"
+    parameters:
+      listen: "*"
+      max_wal_senders: "5"
+      unix_socket_directories: "/var/run/postgresql/"
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: luminai-postgres
+  namespace: luminai
+spec:
+  instances: 2
+
+  imageName: timescale/timescaledb-ha:pg16
+
+  bootstrap:
+    initdb:
+      database: luminai
+      owner: luminai
+
+  postgresql:
+    pg_hba:
+      - local all all trust
+      - host all all 127.0.0.1/32 trust
+      - host all all ::1/128 trust
+
+  storage:
+    size: 2Gi
