@@ -1,46 +1,56 @@
-apiVersion: "acid.zalan.do/v1"
-kind: postgresql
+apiVersion: v1
+kind: PersistentVolumeClaim
 metadata:
-  name: luminai-postgres-cluster
-  namespace: luminai
+  name: luminai-pv-claim
 spec:
-  teamId: luminai
-  volume:
-    size: 200Mi
-  numberOfInstances: 0
-  users:
-    luminai:
-      - superuser
-      - createdb
-  databases:
-    luminai: luminai
-  postgresql:
-    version: "16"
-    parameters:
-      listen: "*"
-      max_wal_senders: "5"
-      unix_socket_directories: "/var/run/postgresql/"
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: standard
 ---
-apiVersion: postgresql.cnpg.io/v1
-kind: Cluster
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: luminai-postgres
+  name: timescale-db  # Sets Deployment name
   namespace: luminai
 spec:
-  instances: 2
-
-  imageName: timescale/timescaledb-ha:pg15
-
-  bootstrap:
-    initdb:
-      database: luminai
-      owner: luminai
-
-  postgresql:
-    pg_hba:
-      - local all all trust
-      - host all all 127.0.0.1/32 trust
-      - host all all ::1/128 trust
-
-  storage:
-    size: 2Gi
+  replicas: 1
+  selector:
+    matchLabels:
+      app: timescale-db
+  template:
+    metadata:
+      labels:
+        app: timescale-db
+    spec:
+      containers:
+        - name: timescale-db
+          image: timescale/timescaledb-ha:pg16 # Sets Image
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432  # Exposes container port
+          envFrom:
+            - secretRef:
+                name: timescale-secret
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: luminai
+      volumes:
+        - name: luminai
+          persistentVolumeClaim:
+            claimName: luminai-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: timescale-db
+  labels:
+    name: timescale-db
+spec:
+  type: NodePort
+  selector:
+    app: timescale-db
+  ports:
+    - port: 5432
