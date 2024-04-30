@@ -29,7 +29,7 @@ metadata:
 spec:
   instances: 2
 
-  imageName: timescale/timescaledb:2.14.2-pg15
+  imageName: timescale/timescaledb-ha:pg15
 
   bootstrap:
     initdb:
