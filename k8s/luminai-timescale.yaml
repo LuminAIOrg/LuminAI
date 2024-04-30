@@ -2,6 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: luminai-pv-claim
+  namespace: luminai
 spec:
   accessModes:
     - ReadWriteOnce
