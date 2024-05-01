@@ -15,7 +15,7 @@ spec:
   databases:
     luminai: luminai
   postgresql:
-    version: "16"
+    version: "15"
     parameters:
       listen: "*"
       max_wal_senders: "5"
