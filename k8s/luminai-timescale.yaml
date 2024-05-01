@@ -29,7 +29,7 @@ metadata:
 spec:
   instances: 2
 
-  imageName: ghcr.io/imusmanmalik/timescaledb-postgis:15
+  imageName: ghcr.io/imusmanmalik/timescaledb-postgis:15-3.4-48
 
   bootstrap:
     initdb:
