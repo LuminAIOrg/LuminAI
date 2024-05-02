@@ -14,11 +14,11 @@ spec:
         resources:
           requests:
             storage: 1Gi
-    users:
-      - name: rhino
-        databases:
-          - zoo
-        options: "SUPERUSER"
+  users:
+    - name: rhino
+      databases:
+        - zoo
+      options: "SUPERUSER"
   backups:
     pgbackrest:
       image: registry.developers.crunchydata.com/crunchydata/crunchy-pgbackrest:centos8-2.36-0
