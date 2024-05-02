@@ -2,9 +2,10 @@ apiVersion: postgres-operator.crunchydata.com/v1beta1
 kind: PostgresCluster
 metadata:
   name: luminai-timescale
+  namespace: luminai
 spec:
   image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres:ubi8-15.6-0
-  postgresVersion: 13
+  postgresVersion: 15
   instances:
     - name: instance1
       dataVolumeClaimSpec:
@@ -13,6 +14,11 @@ spec:
         resources:
           requests:
             storage: 1Gi
+    users:
+      - name: rhino
+      databases:
+        - zoo
+      options: "SUPERUSER"
   backups:
     pgbackrest:
       image: registry.developers.crunchydata.com/crunchydata/crunchy-pgbackrest:centos8-2.36-0
