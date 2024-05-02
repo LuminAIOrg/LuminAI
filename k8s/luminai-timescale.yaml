@@ -1,23 +1,33 @@
-apiVersion: postgresql.cnpg.io/v1
-kind: Cluster
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PostgresCluster
 metadata:
-  name: luminai-postgres
-  namespace: luminai
+  name: luminai-timescale
 spec:
-  instances: 2
+  image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres:ubi8-15.6-0
+  postgresVersion: 13
+  instances:
+    - name: instance1
+      dataVolumeClaimSpec:
+        accessModes:
+          - 'ReadWriteOnce'
+        resources:
+          requests:
+            storage: 1Gi
+# backups:
+#   pgbackrest:
+#     image: registry.developers.crunchydata.com/crunchydata/crunchy-pgbackrest:centos8-2.36-0
+#     repos:
+#       - name: repo1
+#         volume:
+#           volumeClaimSpec:
+#             accessModes:
+#               - 'ReadWriteOnce'
+#             resources:
+#               requests:
+#                 storage: 1Gi
+  patroni:
+    dynamicConfiguration:
+      postgresql:
+        parameters:
+          shared_preload_libraries: timescaledb
 
-  imageName: ghcr.io/imusmanmalik/timescaledb-postgis:15-3.4
-
-  bootstrap:
-    initdb:
-      database: luminai
-      owner: luminai
-
-  postgresql:
-    pg_hba:
-      - local all all trust
-      - host all all 127.0.0.1/32 trust
-      - host all all ::1/128 trust
-
-  storage:
-    size: 2Gi
