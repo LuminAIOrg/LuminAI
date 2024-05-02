@@ -15,7 +15,7 @@ spec:
           requests:
             storage: 1Gi
     users:
-      - name: rhino
+    - name: rhino
       databases:
         - zoo
       options: "SUPERUSER"
