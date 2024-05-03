@@ -1,0 +1,26 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: luminai-postgres
+  namespace: luminai
+spec:
+  instances: 2
+
+  imageName: ghcr.io/imusmanmalik/timescaledb-postgis:15-3.4-48
+
+  bootstrap:
+    initdb:
+      database: luminai
+      owner: luminai
+      postInitTemplateSQL:
+        - CREATE EXTENSION timescaledb;
+
+  postgresql:
+    pg_hba:
+      - local all all trust
+      - host all all 127.0.0.1/32 trust
+      - host all all ::1/128 trust
+    shared_preload_libraries:
+      - timescaledb
+  storage:
+    size: 2Gi
