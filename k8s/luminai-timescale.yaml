@@ -1,7 +1,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: luminai-postgres
+  name: luminai-postgres-cluster
   namespace: luminai
 spec:
   instances: 2

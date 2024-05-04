@@ -3,7 +3,7 @@ kind: Cluster
 metadata:
   name: cluster-example
 spec:
-  instances: 1
+  instances: 2
   imageName: ghcr.io/imusmanmalik/timescaledb-postgis:14-3.3
   bootstrap:
     initdb:
@@ -15,7 +15,6 @@ spec:
         - CREATE EXTENSION postgis_tiger_geocoder;
   postgresql:
     parameters:
-      huge_pages: "haxi"
     shared_preload_libraries:
       - timescaledb
   storage:
