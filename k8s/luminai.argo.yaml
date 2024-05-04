@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: luminai
+  name: luminai-argo
   namespace: argocd
 spec:
   project: default
