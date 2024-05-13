@@ -73,18 +73,6 @@ jobs:
             event=tag,type=semver,pattern={{major}}
             type=sha
 
-      - name: Download AMD Build
-        uses: actions/download-artifact@v3
-        with:
-          name: amd64
-          path: linux/amd64
-
-      - name: Download ARM Build
-        uses: actions/download-artifact@v3
-        with:
-          name: arm64
-          path: linux/arm64
-
       - name: Docker Build and push
         uses: docker/build-push-action@v3
         with:
