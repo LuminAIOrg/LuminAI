@@ -54,10 +54,8 @@ jobs:
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
 
-          echo "here"
           # Tag and push ARM image
           if [ "${{ matrix.os }}" == "ubuntu-22.04-arm64" ]; then
-            echo "inside if"
             ARM_IMAGE_ID=$IMAGE_ID-arm
             docker tag $IMAGE_NAME $ARM_IMAGE_ID:$VERSION
             docker push $ARM_IMAGE_ID:$VERSION
