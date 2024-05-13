@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: luminai
-          image: ghcr.io/michi4/lumin-ai:latest
+          image: ghcr.io/luminaiorg/lumin-ai:latest
           envFrom:
             - configMapRef:
                 name: luminai-configmap
