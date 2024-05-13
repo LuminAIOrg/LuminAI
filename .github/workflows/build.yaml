@@ -73,8 +73,8 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          context: ./Luminai/src/main/docker/
-          file: Dockerfile.jvw
+          context: .
+          file: ./LuminAi/Dockerfile
           platforms: linux/amd64,linux/arm64/v8
           builder: ${{ steps.buildx.outputs.name }}
           tags: ${{ steps.metadata.outputs.tags }}
