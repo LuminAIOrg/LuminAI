@@ -74,7 +74,7 @@ jobs:
         with:
           push: true
           context: ./LuminAi
-          file: ./Dockerfile
+          file: ./LuminAi/Dockerfile
           platforms: linux/amd64,linux/arm64/v8
           builder: ${{ steps.buildx.outputs.name }}
           tags: ${{ steps.metadata.outputs.tags }}
