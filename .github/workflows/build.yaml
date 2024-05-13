@@ -44,7 +44,7 @@ jobs:
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
 
-      - name: push backend docker image
+      - name: Push backend docker image
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
@@ -54,15 +54,10 @@ jobs:
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
 
-  done:
-    runs-on: ubuntu-22.04
-    needs:
-      - backend
-    steps:
-      - name: done
-        run: |
-          echo "# Demo Docker images pushed" >> $GITHUB_STEP_SUMMARY
-          echo "## Steps to do" >> $GITHUB_STEP_SUMMARY
-          echo "- do not forget to make **$IMAGE_NAME** public" >> $GITHUB_STEP_SUMMARY
-          echo "- refresh the deployments in your cloud" >> $GITHUB_STEP_SUMMARY
+          # Tag and push ARM image
+          if [ "${{ matrix.os }}" == "ubuntu-22.04-arm64" ]; then
+            ARM_IMAGE_ID=$IMAGE_ID-arm
+            docker tag $IMAGE_NAME $ARM_IMAGE_ID:$VERSION
+            docker push $ARM_IMAGE_ID:$VERSION
+          fi
 
