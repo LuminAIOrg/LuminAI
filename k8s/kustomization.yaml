@@ -4,4 +4,4 @@ kind: Kustomization
 namespace: luminai
 
 resources:
-  - luminai-timescale.yaml
+  - timescale-cluster.yaml
