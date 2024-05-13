@@ -1,12 +1,10 @@
 name: LuminAi
-run-name:  Build Project for ${{ github.repository_owner }} as actor ${{ github.actor }} 🚀
+run-name: Build Project for ${{ github.repository_owner }} as actor ${{ github.actor }} 🚀
 on:
   workflow_dispatch:
-    
   push:
     branches:
-     - "main"
-
+      - "main"
 env:
   GITHUB_USER: ${{ github.repository_owner }}
   IMAGE_NAME: "lumin-ai"
@@ -16,7 +14,7 @@ permissions:
   contents: read
 
 jobs:
-  backend: 
+  backend:
     runs-on: ubuntu-22.04
     env:
       DB_USER: ${{ secrets.DB_USER }}
@@ -38,10 +36,12 @@ jobs:
           ./mvnw -B clean package
           mkdir -p ./target/deploy
           cp ./target/quarkus-app/quarkus-run.jar ./target/deploy/
-          docker build --tag --platform linux/arm64 lumin-ai --file ./src/main/docker/Dockerfile.jvm . --build-arg "DB_USER=${{ secrets.DB_USER }}" --build-arg "DB_PASS=${{ secrets.DB_PASS }}" --build-arg "DB_NAME=${{ secrets.DB_NAME }}"
-#        working-directory: .
+          docker buildx create --use --name mybuilder
+          docker buildx build --platform linux/arm64 --tag lumin-ai --file ./src/main/docker/Dockerfile.jvm . --build-arg "DB_USER=${{ secrets.DB_USER }}" --build-arg "DB_PASS=${{ secrets.DB_PASS }}" --build-arg "DB_NAME=${{ secrets.DB_NAME }}"
+
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+
       - name: push backend docker image
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
@@ -51,11 +51,11 @@ jobs:
           echo VERSION=$VERSION
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
+
   done:
     runs-on: ubuntu-22.04
     needs:
       - backend
-      #- frontend
     steps:
       - name: done
         run: |
@@ -63,3 +63,4 @@ jobs:
           echo "## Steps to do" >> $GITHUB_STEP_SUMMARY
           echo "- do not forget to make **$IMAGE_NAME** public" >> $GITHUB_STEP_SUMMARY
           echo "- refresh the deployments in your cloud" >> $GITHUB_STEP_SUMMARY
+
