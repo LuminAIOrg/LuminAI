@@ -5,5 +5,4 @@ namespace: luminai
 
 resources:
   - timescale-cluster.yaml
-  - luminai-configmap.yml
   - luminai-deployment.yml
