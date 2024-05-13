@@ -40,7 +40,7 @@ jobs:
           cp ./target/quarkus-app/quarkus-run.jar ./target/deploy/
   push:
     name: Build and push Docker image
-    needs: build
+    needs: backend
     runs-on: ubuntu-latest
     steps:
       # we only need the Dockerfile and therefore we'll also only checkout that single file
