@@ -22,10 +22,6 @@ jobs:
       DB_USER: ${{ secrets.DB_USER }}
       DB_PASS: $${{ secrets.DB_PASS }}
       DB_NAME: $${{ secrets.DB_NAME }}
-    strategy:
-      matrix:
-   	platform:
-   	  - linux/arm64
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v3
