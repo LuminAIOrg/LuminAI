@@ -38,7 +38,7 @@ jobs:
           ./mvnw -B clean package
           mkdir -p ./target/deploy
           cp ./target/quarkus-app/quarkus-run.jar ./target/deploy/
-          docker build --tag lumin-ai --file ./src/main/docker/Dockerfile.jvm . --build-arg "DB_USER=${{ secrets.DB_USER }}" --build-arg "DB_PASS=${{ secrets.DB_PASS }}" --build-arg "DB_NAME=${{ secrets.DB_NAME }}"
+          docker build --tag --platform linux/arm64 lumin-ai --file ./src/main/docker/Dockerfile.jvm . --build-arg "DB_USER=${{ secrets.DB_USER }}" --build-arg "DB_PASS=${{ secrets.DB_PASS }}" --build-arg "DB_NAME=${{ secrets.DB_NAME }}"
 #        working-directory: .
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
