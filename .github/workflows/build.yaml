@@ -28,6 +28,9 @@ jobs:
           java-version: '17'
           cache: maven
 
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+        
       - name: Build backend
         run: |
           cd LuminAi
@@ -39,9 +42,6 @@ jobs:
           docker buildx create --name mybuilder
           docker buildx use mybuilder
           docker buildx build --platform linux/arm64 --tag lumin-ai --file ./src/main/docker/Dockerfile.jvm . --build-arg "DB_USER=${{ secrets.DB_USER }}" --build-arg "DB_PASS=${{ secrets.DB_PASS }}" --build-arg "DB_NAME=${{ secrets.DB_NAME }}" --push
-
-      - name: Log in to registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
 
       - name: Push backend docker image
         run: |
