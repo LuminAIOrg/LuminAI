@@ -43,10 +43,6 @@ jobs:
     needs: backend
     runs-on: ubuntu-latest
     steps:
-      # we only need the Dockerfile and therefore we'll also only checkout that single file
-      - name: Checkout
-        uses: actions/checkout@v4
-
       - name: Checkout tools repo
         uses: actions/checkout@v4
       - name: Set up Docker Buildx
@@ -76,9 +72,9 @@ jobs:
       - name: Docker Build and push
         uses: docker/build-push-action@v3
         with:
-          file: ./Luminai/src/main/docker/Dockerfile.jvm
           push: true
-          context: .
+          context: ./Luminai/src/main/docker/
+          file: Dockerfile.jvw
           platforms: linux/amd64,linux/arm64/v8
           builder: ${{ steps.buildx.outputs.name }}
           tags: ${{ steps.metadata.outputs.tags }}
