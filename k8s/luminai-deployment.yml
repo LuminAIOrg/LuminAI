@@ -21,27 +21,18 @@ spec:
                 name: luminai-configmap
           ports:
             - containerPort: 8080
-          volumeMounts:
-            - mountPath: /deployments/app/luminai-1.0-SNAPSHOT.jar!/db/migration/
-              name: luminai
-      volumes:
-        - name: luminai
-          persistentVolumeClaim:
-            claimName: luminai-pv-claim-new
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: luminai-svc
-  namespace: student-m-puchner
+  namespace: luminai
 spec:
   ports:
     - port: 80
       targetPort: 8080
       protocol: TCP
       name: http
-  externalIPs:
-    - 192.88.24.114
   selector:
     app: luminai
 ---
@@ -49,18 +40,24 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: luminai
-  namespace: student-m-puchner
+  namespace: luminai
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    spec.ingressClassName: traefik
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd
 spec:
   rules:
-    - host: student.cloud.htl-leonding.ac.at
+    - host: luminai.stenz.dev
       http:
         paths:
-          - path: /m.puchner/luminai(/|$)(.*)
+          - path: /
             pathType: Prefix
             backend:
               service:
-                name: luminai-svc
+                name: luminai
                 port:
-                  number: 80
+                  number: 8080
+  tls:
+    - secretName: luminai-tls
+      hosts:
+        - luminai.stenz.dev
