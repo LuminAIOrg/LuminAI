@@ -17,8 +17,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      DOCKER:IMAGE_NAME:stenzm/luminai
-      DOCKER_TAG_VERSION:$(echo $GITHUB_RUN_NUMBER)
+      DOCKER_IMAGE_NAME: stenzm/luminai
+      DOCKER_TAG_VERSION: $(echo $GITHUB_RUN_NUMBER)
     steps:
       -
         name: Checkout
