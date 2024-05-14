@@ -1,8 +1,8 @@
 name: keycloak-theme-image
 on:
   push:
-    paths:
-      - k8s/keycloak/**
+#   paths:
+#     - k8s/keycloak/**
 
 env:
   GITHUB_USER: ${{ github.repository_owner }}
