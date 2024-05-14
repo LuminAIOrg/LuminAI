@@ -19,6 +19,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: luminai-configmap
+          command: [ "/bin/bash", "-c", "--" ]
+          args: [ "while true; do sleep 30; done;" ]
           ports:
             - containerPort: 8080
 ---
