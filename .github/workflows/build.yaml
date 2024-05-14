@@ -41,7 +41,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./LuminAi
-          file: ./src/main/docker/Dockerfile.jvw
+          file: .LuminAi/src/main/docker/Dockerfile.jvw
           push: true
           tags: |
             ${{ env.DOCKER_IMAGE_NAME }}:${{ github.run_number }}
