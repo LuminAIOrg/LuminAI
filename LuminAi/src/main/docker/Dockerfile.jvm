@@ -99,7 +99,7 @@ ENV DB_NAME=$DB_NAME
 #ENV MQTT_USERNAME=$MQTT_USERNAME
 #ENV MQTT_PASSWORD=$MQTT_PASSWORD
 
-ENV OIDC_SECRET=$OIDC_SECRET
+ENV OIDC_CREDENTIALS_SECRET=$OIDC_CREDENTIALS_SECRET
 
 # We make four distinct layers so if there are application changes the library layers can be re-used
 COPY --chown=185 target/quarkus-app/lib/ /deployments/lib/
