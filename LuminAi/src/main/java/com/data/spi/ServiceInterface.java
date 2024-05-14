@@ -12,4 +12,6 @@ public interface ServiceInterface {
     void setProperties();
 
     CompletableFuture<Void> invoke();
+
+    boolean stopService();
 }

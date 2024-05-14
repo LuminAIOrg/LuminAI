@@ -3,10 +3,7 @@ package com.data.spi;
 import com.data.utils.Store;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityManager;
 import jakarta.ws.rs.Produces;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.nio.file.ProviderNotFoundException;
 import java.util.ArrayList;
@@ -22,7 +19,9 @@ public class ServiceLoader {
     @Inject
     Store store;
 
-    CompletableFuture<Void> currentService;
+    ServiceInterface currentService;
+
+    CompletableFuture<Void> runningService;
     String currentServiceName;
     //This is just for debugging and insight
     ArrayList<CompletableFuture<Void>> threadHist = new ArrayList<>();
@@ -47,12 +46,25 @@ public class ServiceLoader {
         ServiceInterface service = serviceLoader.provider(serviceName);
         service.setStore(store);
         service.setProperties();
-        CompletableFuture<Void> newService = service.invoke();
-        if (currentService != null) {
-            currentService.cancel(true);
+
+        if (!threadHist.isEmpty()) {
+            System.out.println("trying to switch");
+            System.out.println(currentService.getClass());
+            System.out.println("why no type oida");
+            boolean isDone = currentService.stopService();
+            //runningService.complete(null);
+
+            System.out.println("is Stopped" + isDone);
+            System.out.println("is done" + runningService.isDone());
+            System.out.println("is canceled" + runningService.isCancelled());
+
+            //currentService.completeExceptionally(new IllegalArgumentException("Jo methode fertig dua jetz switchen"));
+
         }
-        threadHist.add(newService);
-        currentService = newService;
+
+        runningService = service.invoke();
+        threadHist.add(runningService);
+        currentService = service;
         currentServiceName = serviceName;
     }
 

@@ -65,8 +65,12 @@ public class SampleData2ElectricBogaloo implements ServiceInterface {
 
     @Override
     public CompletableFuture<Void> invoke() {
-        return CompletableFuture.runAsync(() -> {
-            scheduler.scheduleAtFixedRate(this::runDriver, 0, 2, TimeUnit.SECONDS);
-        });
+        return CompletableFuture.runAsync(() -> scheduler.scheduleAtFixedRate(this::runDriver, 0, 2, TimeUnit.SECONDS));
+    }
+
+    @Override
+    public boolean stopService() {
+        scheduler.shutdownNow();
+        return scheduler.isShutdown();
     }
 }
