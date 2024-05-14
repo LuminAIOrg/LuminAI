@@ -18,7 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      DOCKER_IMAGE_NAME: stenzm/luminai
+      DOCKER_IMAGE_NAME: stenzm/luminai-keycloak
     steps:
       -
         name: Checkout
