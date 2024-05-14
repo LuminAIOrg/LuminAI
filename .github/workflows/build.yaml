@@ -28,7 +28,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Maven Package
-        run: mvn package
+        run: cd LuminAi && mvn package
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
