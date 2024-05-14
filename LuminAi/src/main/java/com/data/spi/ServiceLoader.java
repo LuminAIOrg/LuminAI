@@ -49,16 +49,7 @@ public class ServiceLoader {
 
         if (!threadHist.isEmpty()) {
             System.out.println("trying to switch");
-            System.out.println(currentService.getClass());
-            System.out.println("why no type oida");
-            boolean isDone = currentService.stopService();
-            //runningService.complete(null);
-
-            System.out.println("is Stopped" + isDone);
-            System.out.println("is done" + runningService.isDone());
-            System.out.println("is canceled" + runningService.isCancelled());
-
-            //currentService.completeExceptionally(new IllegalArgumentException("Jo methode fertig dua jetz switchen"));
+            currentService.stopService();
 
         }
 
