@@ -18,7 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOCKER_IMAGE_NAME: stenzm/luminai
-      DOCKER_TAG_VERSION: $(echo $GITHUB_RUN_NUMBER)
     steps:
       -
         name: Checkout
@@ -43,5 +42,5 @@ jobs:
           file: ./src/main/docker/Dockerfile.jvw
           push: true
           tags: |
-            ${{ env.DOCKER_IMAGE_NAME }}:${{ env.DOCKER_TAG_VERSION }}
+            ${{ env.DOCKER_IMAGE_NAME }}:${{ github.run_number }}
             ${{ env.DOCKER_IMAGE_NAME }}:latest
