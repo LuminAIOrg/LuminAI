@@ -50,6 +50,7 @@ jobs:
           context: ./LuminAi
           file: ./LuminAi/src/main/docker/Dockerfile.jvm
           push: true
+          platforms: linux/amd64,linux/arm64/v8
           tags: |
             ${{ env.DOCKER_IMAGE_NAME }}:${{ github.run_number }}
             ${{ env.DOCKER_IMAGE_NAME }}:latest
