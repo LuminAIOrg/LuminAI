@@ -1,4 +1,6 @@
+com.data.fetcher.driver.fronius.EnergyDataFetcher
 com.data.fetcher.driver.DriverImpl
 com.data.fetcher.mqtt.MqttConnection
 com.data.fetcher.mock.SampleData
 com.data.fetcher.mock.SampleData2ElectricBogaloo
+com.data.fetcher.driver.easee.EaseeDriver
