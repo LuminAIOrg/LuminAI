@@ -21,7 +21,6 @@ spec:
                 name: luminai-configmap
           ports:
             - containerPort: 8080
-          args: [ "while true; do sleep 30; done;" ]
 ---
 apiVersion: v1
 kind: Service
