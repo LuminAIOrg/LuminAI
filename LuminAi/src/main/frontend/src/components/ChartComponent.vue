@@ -184,9 +184,5 @@ const chartOptions = computed(() => {
   };
 });
 
-// Functions
 
-  function rotateIcons() {
-
-  }
 </script>
