@@ -4,5 +4,6 @@ kind: Kustomization
 namespace: luminai
 
 resources:
+  - namespace.yaml
   - timescale-cluster.yaml
   - luminai-deployment.yml
