@@ -11,12 +11,15 @@ module.exports = {
     extend: {
       keyframes: {
         popUp: {
-          '0%': {transform: 'scale(0)'},
-          '100%': {transform: 'scale(1)'}
+          '0%': {transform: 'scale(0.9) translateY(-30px)', opacity: 0},
+          '100%': {transform: 'scale(1) translateY(0px)', opacity: 1},
         }
       },
       animation: {
         popUp: 'popUp 0.2s ease-in-out'
+      },
+      spacing: {
+        '1/5': '20%'
       }
     },
   },

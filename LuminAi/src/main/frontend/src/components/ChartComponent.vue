@@ -8,7 +8,7 @@
     <div class="relative bg-white drop-shadow-xl rounded-lg p-4">
       <Button @click="toggleDropdown" class="flex bg-blue-500 text-white p-0.5 px-1 rounded-lg opacity-100 hover:drop-shadow-lg duration-300">
         <span class="material-symbols-outlined">filter_list</span>
-        <span v-if="!isDropdownOpen" @click="rotateIcons()" class="material-symbols-outlined">expand_more</span>
+        <span v-if="!isDropdownOpen" class="material-symbols-outlined">expand_more</span>
         <span v-if="isDropdownOpen" class="material-symbols-outlined">expand_less</span>
       </Button>
 
@@ -162,10 +162,10 @@ const chartOptions = computed(() => {
   return {
     type: "line",
     data: currentChartData.value,
-    responsive: true,
     tension: 0.2,
     scales: {
       x: {
+        responsive: true,
         type: "category",
         position: "bottom",
         title: {
@@ -174,6 +174,7 @@ const chartOptions = computed(() => {
         },
       },
       y: {
+        responsive: true,
         beginAtZero: true,
         title: {
           display: true,

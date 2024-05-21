@@ -12,7 +12,7 @@
           <select name="collectionMethod" class=" py-1.5">
             <option v-for="method in collectionMethods" :key="method">{{ method }}</option>
           </select>
-          <button type="submit" class="px-3 py-1.5 bg-blue-500 rounded-lg font-bold text-white hover:text-gray-100 duration-150 ml-5">Apply</button>
+          <button type="submit" class="px-3 py-1.5 bg-blue-500 rounded-lg font-bold text-white hover:text-gray-200 duration-150 ml-5">Apply</button>
         </form>
       </div>
     </div>
