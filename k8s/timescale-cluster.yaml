@@ -1,0 +1,27 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: luminai-postgres
+  namespace: luminai
+spec:
+  dockerImage: ghcr.io/zalando/spilo-15:2.1-p9
+  teamId: "acid"
+  volume:
+    size: 2Gi
+  numberOfInstances: 2
+  users:
+    luminai:  # database owner
+    - superuser
+    - createdb
+    luminai_user: []  # role for application luminai
+  databases:
+    luminai: luminai  # dbname: owner
+  preparedDatabases:
+    luminai:
+      extensions:
+        timescaledb: "public"
+      schemas:
+        public:
+          defaultRoles: false
+  postgresql:
+    version: "15"

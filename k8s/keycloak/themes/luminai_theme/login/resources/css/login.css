@@ -1,0 +1,121 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* -- Background -- */
+.login-pf body {
+    background: #fff;
+    background-image: url(../img/swoosh.svg);
+    background-repeat: no-repeat;
+    height: 100%;
+}
+
+/* -- Header Text -- */
+.kc-logo-text {
+    font-size: 2rem;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* -- Login Countainer (Header and Card) -- */
+.login-pf-page {
+    display: grid;
+    grid-template-columns: 600px;
+    grid-template-rows: 200px 350px;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+}
+
+.login-pf-header {
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+/* -- Login Card -- */
+.card-pf {
+    border: solid;
+    border-color: transparent;
+    border-radius: 8px;
+    box-shadow: 4.6px 9.1px 9.1px hsl(0deg 0% 0% / 0.36);
+}
+
+
+/* Form */
+/* -- Input Header --*/
+.form-group {
+    font-weight: bold;
+    font-size: 1.25em;
+}
+
+/* -- Input fields -- */
+.pf-c-form-control {
+    border: solid;
+    border-color: rgb(203, 203, 203);
+    border-radius: 8px;
+    font-weight: lighter;
+}
+
+
+/* -- login settings -- */
+.login-pf-settings {
+    height: 100%;
+    align-items: center;
+}
+
+
+/* -- Login Button -- */
+#kc-form-buttons {
+    display: flex;
+    justify-content: center;
+}
+
+#kc-login {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 25%;
+    border: transparent;
+    border-radius: 8px;
+    background-color: #836FFF;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    font-weight: bold;
+}
+
+#kc-login:hover {
+    background-color: rgb(116, 95, 248);
+    transform: translateY(-2px);
+    transition: 150ms ease-in-out;
+}
+
+/* -- Registration Link -- */
+
+#kc-registration {
+    font-weight: bold;
+    text-decoration: none;
+
+}
+
+#kc-registration:hover {
+    text-decoration: none;
+    
+}
+
+
+.pf-c-button.pf-c-button.pf-m-primary {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 25%;
+    border: transparent;
+    border-radius: 8px;
+    background-color: #836FFF;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    font-weight: bold;
+
+}
+
+.pf-c-button.pf-c-button.pf-m-primary:hover {
+    background-color: rgb(116, 95, 248);
+    transform: translateY(-2px);
+    transition: 150ms ease-in-out;
+}

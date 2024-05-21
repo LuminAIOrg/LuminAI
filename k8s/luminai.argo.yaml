@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: luminai
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/LuminAIOrg/LuminAI
+    path: k8s
+    targetRevision: HEAD
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: default
