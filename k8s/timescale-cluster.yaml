@@ -4,7 +4,7 @@ metadata:
   name: luminai-timescale
   namespace: luminai
 spec:
-  instances: 2
+  instances: 1
   imageName: ghcr.io/imusmanmalik/timescaledb-postgis:15-3.4
   bootstrap:
     initdb:     
