@@ -1,5 +1,6 @@
 package com.data.boundary;
 
+import com.data.dto.LatestUseDto;
 import com.data.model.LatestUse;
 import com.data.repository.LatestUseRepository;
 import jakarta.annotation.security.RolesAllowed;
@@ -15,14 +16,14 @@ public class LatestUseResource {
 
     @GET
     @RolesAllowed("user")
-    public List<LatestUse> getLatestUseByUser(){
+    public List<LatestUseDto> getLatestUseByUser(){
         return latestUseRepository.getAllLatestUseOfUser();
     }
 
     @POST
     @RolesAllowed("user")
     @Path("/use/{sensorId}")
-    public LatestUse addNewLatestUse(@PathParam("sensorId") long sensorId){
+    public LatestUseDto addNewLatestUse(@PathParam("sensorId") long sensorId){
         return latestUseRepository.addLatestUse(sensorId);
     }
 
