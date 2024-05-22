@@ -5,8 +5,9 @@ import com.data.repository.SensorRepository;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
@@ -22,5 +23,18 @@ public class SensorResource {
     @Path("list")
     public List<SensorWithoutDataDto> getAllSensors() {
         return sensorRepository.getAllSensors();
+    }
+
+
+    @POST
+    @RolesAllowed("user")
+    @Path("/{id}/unit")
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response setSensorUnit(
+            @PathParam("id") long sensorId,
+            String unit
+    ) {
+        boolean result = sensorRepository.setUnit(sensorId, unit);
+        return Response.ok(result).build();
     }
 }
