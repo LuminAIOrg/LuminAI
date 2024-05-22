@@ -25,6 +25,10 @@ public class Sensor {
     @JsonIgnoreProperties({"sensorDataId.sensor"})
     private List<SensorData> values = new ArrayList<>();
 
+    @OneToMany(mappedBy = "sensor")
+    @JsonIgnoreProperties({"sensor"})
+    private List<LatestUse> latestUse;
+
     public Sensor(String name) {
         this.name = name;
     }
