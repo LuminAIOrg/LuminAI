@@ -6,7 +6,6 @@ metadata:
   labels:
     app: luminai
 spec:
-  storageClassName: standard
   accessModes:
     - ReadWriteMany
   resources:
