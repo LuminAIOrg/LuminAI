@@ -1,27 +1,58 @@
-apiVersion: postgresql.cnpg.io/v1
-kind: Cluster
+apiVersion: v1
+kind: PersistentVolumeClaim
 metadata:
-  name: luminai-timescale
+  name: luminai-pv-claim-new
   namespace: luminai
+  labels:
+    app: luminai
 spec:
-  instances: 1
-  imageName: ghcr.io/stenz123/timescaledb-postgis:15-3.4
-  bootstrap:
-    initdb:     
-      database: luminai
-      owner: luminai
-      postInitTemplateSQL:
-        - CREATE EXTENSION timescaledb;
-        - CREATE EXTENSION postgis;
-        - CREATE EXTENSION postgis_topology;
-        - CREATE EXTENSION fuzzystrmatch;
-        - CREATE EXTENSION postgis_tiger_geocoder;
-  postgresql:
-    shared_preload_libraries:
-      - timescaledb
-    pg_hba:
-      - local all all trust
-      - host all all 127.0.0.1/32 trust
-      - host all all ::1/128 trust
-  storage:
-    size: 2Gi
+  storageClassName: standard
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: timescale-db
+  labels:
+    name: timescale-db
+spec:
+  type: NodePort
+  selector:
+    app: timescale-db
+  ports:
+    - port: 5432
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timescale-db  # Sets Deployment name
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: timescale-db
+  template:
+    metadata:
+      labels:
+        app: timescale-db
+    spec:
+      containers:
+        - name: timescale-db
+          image: timescale/timescaledb-ha:pg16 # Sets Image
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432  # Exposes container port
+          envFrom:
+            - secretRef:
+                name: timescale-secret
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: luminai
+      volumes:
+        - name: luminai
+          persistentVolumeClaim:
+            claimName: luminai-pv-claim-new
