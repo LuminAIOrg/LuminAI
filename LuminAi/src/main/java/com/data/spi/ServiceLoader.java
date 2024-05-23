@@ -3,6 +3,7 @@ package com.data.spi;
 import com.data.utils.Store;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Produces;
 
 import java.nio.file.ProviderNotFoundException;
@@ -46,21 +47,32 @@ public class ServiceLoader {
     }
 
     public boolean revokeInstace(int instanceId) {
-        return serviceInstanceManager.stopSerives(instanceId);
+        return serviceInstanceManager.stopAndDeleteServiceInstance(instanceId);
+    }
+
+    public boolean disableInstance(int instanceId) {
+        return serviceInstanceManager.disableInstance(instanceId);
+    }
+
+    @Transactional
+    public void enableInstance(int instanceId) {
+        serviceInstanceManager.getService(instanceId).setDisabled(false);
+        reinvokeOrphanInstances();
     }
 
     public void reinvokeOrphanInstances() {
-        serviceInstanceManager.getServices().stream().filter(it -> it.getService() == null || it.getThread() == null).forEach(it -> {
-            try {
-                ServiceInterface service = provider(it.getServiceName());
-                service.setStore(store);
-                service.setProperties();
-                it.setService(service);
-                it.setThread(service.invoke());
-                serviceInstanceManager.mergeServiceInstamce(it);
-            } catch (ProviderNotFoundException e) {
-                serviceInstanceManager.removeAllOrphans();
-            }
-        });
+        serviceInstanceManager.getServices().stream()
+                .filter(it -> (it.getService() == null || it.getThread() == null) && !it.isDisabled())
+                .forEach(it -> {
+                    try {
+                        ServiceInterface service = provider(it.getServiceName());
+                        service.setStore(store);
+                        service.setProperties();
+                        it.setService(service);
+                        it.setThread(service.invoke());
+                        serviceInstanceManager.mergeServiceInstamce(it);
+                    } catch (ProviderNotFoundException e) {
+                    }
+                });
     }
 }

@@ -27,9 +27,23 @@ public class DataCollectionMethodResource {
 
     @POST
     @RolesAllowed("user")
-    @Path("revokeInstance/{instanceId}")
-    public boolean revokeInstance(@PathParam("instanceId") int instanceId) {
+    @Path("delete/{instanceId}")
+    public boolean deleteInstance(@PathParam("instanceId") int instanceId) {
         return serviceLoader.revokeInstace(instanceId);
+    }
+
+    @POST
+    @RolesAllowed("user")
+    @Path("disable/{instanceId}")
+    public boolean disableInstance(@PathParam("instanceId") int instanceId) {
+        return serviceLoader.disableInstance(instanceId);
+    }
+
+    @POST
+    @RolesAllowed("user")
+    @Path("enable/{instanceId}")
+    public void enableInstance(@PathParam("instanceId") int instanceId) {
+        serviceLoader.enableInstance(instanceId);
     }
 
     @GET

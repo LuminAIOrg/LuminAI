@@ -24,6 +24,7 @@ public class ServiceInstanceRepository {
         serviceInstance.setService(service);
         serviceInstance.setThread(instance);
         serviceInstance.setServiceName(service.getClass().getName());
+        serviceInstance.setDisabled(false);
         entityManager.persist(serviceInstance);
         serviceInstance.setName(Integer.toString(serviceInstance.getId()));
         serviceInstances.add(serviceInstance);
@@ -44,24 +45,39 @@ public class ServiceInstanceRepository {
         return new HashSet<>(dbSerivices);
     }
 
-    @Transactional
-    public boolean stopSerives(int serviceId) {
+    public ServiceInstance getService(int serviceId) {
         ServiceInstance serviceInstance = getServices().stream().filter(it -> it.getId() == serviceId).findFirst().orElseGet(null);
         if (serviceInstance == null) throw new IllegalArgumentException("serviceInstance not found");
-        boolean successfullyStoped = serviceInstance.getService().stopService();
+        return serviceInstance;
+    }
+
+    @Transactional
+    public boolean stopAndDeleteServiceInstance(int serviceId) {
+        ServiceInstance serviceInstance = getService(serviceId);
+        boolean successfullyStoped = true;
+        if (serviceInstance.getService() != null && serviceInstance.getThread() != null) {
+            successfullyStoped = serviceInstance.getService().stopService();
+        }
         entityManager.remove(serviceInstance);
         serviceInstances.remove(serviceInstance);
         return successfullyStoped;
     }
 
-    public void removeAllOrphans() {
-        getServices().stream().filter(it -> it.getService() == null || it.getThread() == null).forEach(it -> {
-            entityManager.remove(it);
-            serviceInstances.remove(it);
-        });
-    }
-
     public void mergeServiceInstamce(ServiceInstance serviceInstance) {
         serviceInstances.add(serviceInstance);
+    }
+
+    @Transactional
+    public boolean disableInstance(int instanceId) {
+        ServiceInstance serviceInstance = getService(instanceId);
+        serviceInstance.setDisabled(true);
+        serviceInstances.remove(serviceInstance);
+        if (serviceInstance.getThread() != null && serviceInstance.getService() != null) {
+            boolean successfullyStoped = serviceInstance.getService().stopService();
+            serviceInstance.setService(null);
+            serviceInstance.setThread(null);
+            return successfullyStoped;
+        }
+        return true;
     }
 }

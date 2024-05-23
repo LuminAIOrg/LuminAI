@@ -13,12 +13,21 @@ public class ServiceInstance {
     private int id;
     private String name = Integer.toString(id);
     private String serviceName;
+    private boolean disabled;
 
     @Transient
     private ServiceInterface service;
 
     @Transient
     private CompletableFuture<Void> thread;
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
 
     public String getServiceName() {
         return serviceName;
