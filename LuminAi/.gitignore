@@ -48,4 +48,5 @@ nb-configuration.xml
 # Application Properties
 *.properties
 
-http/loadAccessTokenInEnvFile.sh
+http/refreshAccessToken.sh
+http/http-client.private.env.json
