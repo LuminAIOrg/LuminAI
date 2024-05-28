@@ -3,28 +3,21 @@ package com.data.spi;
 import com.data.utils.Store;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Produces;
 
 import java.nio.file.ProviderNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import java.util.Set;
 
 @ApplicationScoped
 public class ServiceLoader {
 
     @Inject
-    ServiceLoader serviceLoader;
-
-    @Inject
     Store store;
 
-    ServiceInterface currentService;
-
-    CompletableFuture<Void> runningService;
-    String currentServiceName;
-    //This is just for debugging and insight
-    ArrayList<CompletableFuture<Void>> threadHist = new ArrayList<>();
+    @Inject
+    ServiceInstanceRepository serviceInstanceManager;
 
     @Produces
     public ServiceInterface provider(String serviceName) {
@@ -42,24 +35,44 @@ public class ServiceLoader {
         return loader.stream().map(curr -> curr.get().getClass().getName()).toList();
     }
 
-    public void loadService(String serviceName) {
-        ServiceInterface service = serviceLoader.provider(serviceName);
+    public void startService(String serviceName) {
+        ServiceInterface service = provider(serviceName);
         service.setStore(store);
         service.setProperties();
-
-        if (!threadHist.isEmpty()) {
-            System.out.println("trying to switch");
-            currentService.stopService();
-
-        }
-
-        runningService = service.invoke();
-        threadHist.add(runningService);
-        currentService = service;
-        currentServiceName = serviceName;
+        serviceInstanceManager.createServiceInstance(service, service.invoke());
     }
 
-    public String getActiveService() {
-        return currentServiceName;
+    public Set<ServiceInstance> getAllServiceInstances() {
+        return serviceInstanceManager.getServices();
+    }
+
+    public boolean revokeInstace(int instanceId) {
+        return serviceInstanceManager.stopAndDeleteServiceInstance(instanceId);
+    }
+
+    public boolean disableInstance(int instanceId) {
+        return serviceInstanceManager.disableInstance(instanceId);
+    }
+
+    @Transactional
+    public void enableInstance(int instanceId) {
+        serviceInstanceManager.getService(instanceId).setDisabled(false);
+        reinvokeOrphanInstances();
+    }
+
+    public void reinvokeOrphanInstances() {
+        serviceInstanceManager.getServices().stream()
+                .filter(it -> (it.getService() == null || it.getThread() == null) && !it.isDisabled())
+                .forEach(it -> {
+                    try {
+                        ServiceInterface service = provider(it.getServiceName());
+                        service.setStore(store);
+                        service.setProperties();
+                        it.setService(service);
+                        it.setThread(service.invoke());
+                        serviceInstanceManager.mergeServiceInstamce(it);
+                    } catch (ProviderNotFoundException e) {
+                    }
+                });
     }
 }

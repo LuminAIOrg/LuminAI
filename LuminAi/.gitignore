@@ -47,3 +47,5 @@ nb-configuration.xml
 
 # Application Properties
 *.properties
+
+http/loadAccessTokenInEnvFile.sh

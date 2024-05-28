@@ -1,0 +1,32 @@
+GET http://localhost:8080/api/datacollection/serviceInstances
+Authorization: Bearer {{access_token}}
+
+###
+POST http://localhost:8080/api/datacollection/load
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "serviceName": "com.data.fetcher.mock.SampleData"
+}
+
+###
+POST http://localhost:8080/api/datacollection/load
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "serviceName": "com.data.fetcher.mock.SampleData2ElectricBogaloo"
+}
+
+###
+POST http://localhost:8080/api/datacollection/disable/1
+Authorization: Bearer {{access_token}}
+
+###
+POST http://localhost:8080/api/datacollection/enable/1
+Authorization: Bearer {{access_token}}
+
+###
+POST http://localhost:8080/api/datacollection/delete/1
+Authorization: Bearer {{access_token}}
