@@ -35,15 +35,15 @@ public class DataCollectionMethodResource {
     @POST
     @RolesAllowed("user")
     @Path("disable/{instanceId}")
-    public boolean disableInstance(@PathParam("instanceId") int instanceId) {
+    public ServiceInstance disableInstance(@PathParam("instanceId") int instanceId) {
         return serviceLoader.disableInstance(instanceId);
     }
 
     @POST
     @RolesAllowed("user")
     @Path("enable/{instanceId}")
-    public void enableInstance(@PathParam("instanceId") int instanceId) {
-        serviceLoader.enableInstance(instanceId);
+    public ServiceInstance enableInstance(@PathParam("instanceId") int instanceId) {
+        return serviceLoader.enableInstance(instanceId);
     }
 
     @GET

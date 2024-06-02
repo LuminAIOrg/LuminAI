@@ -6,13 +6,13 @@
     </div>
 
     <div class="p-5">
-      <h1 class="text-lg font-bold pb-2">Change data Collection</h1>
+      <h1 class="text-lg font-bold pb-2">Add new Data Collection Method</h1>
       <div class="flex gap-10">
         <form @submit.prevent="handleSubmit">
           <select name="collectionMethod" class=" py-1.5">
             <option v-for="method in collectionMethods" :key="method">{{ method }}</option>
           </select>
-          <button type="submit" class="px-3 py-1.5 bg-blue-500 rounded-lg font-bold text-white hover:text-gray-100 duration-150 ml-5">Apply</button>
+          <button type="submit" class="px-3 py-1.5 bg-blue-500 rounded-lg font-bold text-white hover:text-gray-100 duration-150 ml-5">New</button>
         </form>
       </div>
     </div>

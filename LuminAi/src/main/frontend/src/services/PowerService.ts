@@ -21,10 +21,10 @@ export function startSocketClient() {
 
         if(sensorToUpdate != undefined) {
             sensorToUpdate.data = [newData, ...sensorToUpdate.data]
-            console.log(`Received new Dataset for sensor "${sensorToUpdate.name}" (Id: ${sensorToUpdate.id}`, {
-                time: new Date(newData.timestamp),
-                value: newData.value
-            })
+//          console.log(`Received new Dataset for sensor "${sensorToUpdate.name}" (Id: ${sensorToUpdate.id}`, {
+//              time: new Date(newData.timestamp),
+//              value: newData.value
+//          })
         }
     };
 

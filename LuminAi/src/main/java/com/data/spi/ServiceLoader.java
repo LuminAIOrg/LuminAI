@@ -50,29 +50,31 @@ public class ServiceLoader {
         return serviceInstanceManager.stopAndDeleteServiceInstance(instanceId);
     }
 
-    public boolean disableInstance(int instanceId) {
-        return serviceInstanceManager.disableInstance(instanceId);
+    public ServiceInstance disableInstance(int instanceId) {
+        if (serviceInstanceManager.disableInstance(instanceId)) {
+            return serviceInstanceManager.getService(instanceId);
+        }
+        throw new RuntimeException("Error while disabling Instance");
     }
 
     @Transactional
-    public void enableInstance(int instanceId) {
+    public ServiceInstance enableInstance(int instanceId) {
         serviceInstanceManager.getService(instanceId).setDisabled(false);
         reinvokeOrphanInstances();
+        return serviceInstanceManager.getService(instanceId);
     }
 
     public void reinvokeOrphanInstances() {
         serviceInstanceManager.getServices().stream()
                 .filter(it -> (it.getService() == null || it.getThread() == null) && !it.isDisabled())
                 .forEach(it -> {
-                    try {
-                        ServiceInterface service = provider(it.getServiceName());
-                        service.setStore(store);
-                        service.setProperties();
-                        it.setService(service);
-                        it.setThread(service.invoke());
-                        serviceInstanceManager.mergeServiceInstamce(it);
-                    } catch (ProviderNotFoundException e) {
-                    }
+                    ServiceInterface service = provider(it.getServiceName());
+                    service.setStore(store);
+                    service.setProperties();
+                    it.setService(service);
+                    it.setThread(service.invoke());
+                    serviceInstanceManager.mergeServiceInstamce(it);
+
                 });
     }
 }
