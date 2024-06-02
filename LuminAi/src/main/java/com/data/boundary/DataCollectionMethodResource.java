@@ -21,8 +21,8 @@ public class DataCollectionMethodResource {
     @POST
     @RolesAllowed("user")
     @Path("load")
-    public void loadDataCollectionMethod(ServiceNameWrapper serviceName) {
-        serviceLoader.startService(serviceName.serviceName());
+    public ServiceInstance loadDataCollectionMethod(ServiceNameWrapper serviceName) {
+        return serviceLoader.startService(serviceName.serviceName());
     }
 
     @POST

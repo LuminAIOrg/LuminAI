@@ -19,7 +19,7 @@ public class ServiceInstanceRepository {
     Set<ServiceInstance> serviceInstances = new HashSet<>();
 
     @Transactional
-    public void createServiceInstance(ServiceInterface service, CompletableFuture<Void> instance) {
+    public ServiceInstance createServiceInstance(ServiceInterface service, CompletableFuture<Void> instance) {
         ServiceInstance serviceInstance = new ServiceInstance();
         serviceInstance.setService(service);
         serviceInstance.setThread(instance);
@@ -28,6 +28,7 @@ public class ServiceInstanceRepository {
         entityManager.persist(serviceInstance);
         serviceInstance.setName(Integer.toString(serviceInstance.getId()));
         serviceInstances.add(serviceInstance);
+        return serviceInstance;
     }
 
     public Set<ServiceInstance> getServices() {

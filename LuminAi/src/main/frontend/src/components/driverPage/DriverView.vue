@@ -7,7 +7,6 @@ import DataCollectionInstance from "@/components/driverPage/DataCollectionInstan
 
 onMounted(() => {
   fetchDriverInstances();
-  console.log(store.driverInstances)
 });
 </script>
 

@@ -35,11 +35,11 @@ public class ServiceLoader {
         return loader.stream().map(curr -> curr.get().getClass().getName()).toList();
     }
 
-    public void startService(String serviceName) {
+    public ServiceInstance startService(String serviceName) {
         ServiceInterface service = provider(serviceName);
         service.setStore(store);
         service.setProperties();
-        serviceInstanceManager.createServiceInstance(service, service.invoke());
+        return serviceInstanceManager.createServiceInstance(service, service.invoke());
     }
 
     public Set<ServiceInstance> getAllServiceInstances() {

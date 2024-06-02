@@ -13,6 +13,10 @@ function updateDriverInstanceInStore(id: number, updatedInstance: DriverInstance
     }
 }
 
+function addDriverInstane(driverInstance: DriverInstance) {
+    store.driverInstances.push(driverInstance)
+}
+
 function removeDriverInstanceFromStore(id: number) {
     const index = store.driverInstances.findIndex(driver => driver.id === id);
     if (index !== -1) {
@@ -26,6 +30,11 @@ async function extractDriverInstance(response: DriverInstance | Response): Promi
         return data as DriverInstance;
     }
     return response;
+}
+
+export async function newDriverInstane(dataCollectionMethod: string) {
+    const response = await postBackend<DriverInstance | Response, { serviceName:string }> ("api/datacollection/load", {serviceName:dataCollectionMethod}, true)
+    addDriverInstane(await extractDriverInstance(response))
 }
 
 export async function stopDriverInstance(id: number) {
