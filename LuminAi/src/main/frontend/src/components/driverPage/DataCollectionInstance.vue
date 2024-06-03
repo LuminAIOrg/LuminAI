@@ -9,29 +9,29 @@ const props = defineProps(["dataCollectionInstance"]);
   <!--  -->
 <template>
   <div class="rounded-lg drop-shadow-lg mt-3 mb-3 bg-white">
-    <div class="flex py-6 justify-evenly">
-      <div class="text-left">
+    <div class="flex py-6 min-w-fit mx-10">
+      <div class="w-3/12">
         <h1 class="text-gray-400">Status</h1>
         <h2 class="text-xl font-bold text-red-500" v-if="props.dataCollectionInstance.disabled">Stopped</h2>
         <h2 class="text-xl font-bold text-green-500" v-else>Running</h2>
       </div>
 
-      <div>
+      <div class="w-3/12">
         <h1 class="text-gray-400">#</h1>
         <h2>{{ props.dataCollectionInstance.name }}</h2>
       </div>
 
-      <div>
-        <h1 class="text-gray-400">Type</h1>
+      <div class="w-full">
+        <h1 class="text-gray-400 ">Type</h1>
         <h2>{{ props.dataCollectionInstance.serviceName }}</h2>
       </div>
 
-      <div class="">
+      <div class="w-2/12 ">
         <div>
           <h1 class="text-gray-400">Controls</h1>
         </div>
 
-        <div class="flex justify-between gap-x-2">
+        <div class="flex gap-x-2">
           <button class="bg-orange-400 rounded-lg px-2 py-1 text-white" v-if="!props.dataCollectionInstance.disabled" @click="stopDriverInstance(props.dataCollectionInstance.id)">
             Stop
           </button>
