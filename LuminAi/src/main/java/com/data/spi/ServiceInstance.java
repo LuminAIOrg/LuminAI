@@ -1,6 +1,7 @@
 package com.data.spi;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -16,9 +17,11 @@ public class ServiceInstance {
     private boolean disabled;
 
     @Transient
+    @JsonIgnore
     private ServiceInterface service;
 
     @Transient
+    @JsonIgnore
     private CompletableFuture<Void> thread;
 
     public boolean isDisabled() {
