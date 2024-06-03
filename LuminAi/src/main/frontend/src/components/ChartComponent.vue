@@ -31,7 +31,6 @@
             </div>
           </div>
         </div>
-
       </div>
 
       <!-- Chart -->
@@ -49,8 +48,10 @@
   </div>
 </template>
 
+
+
 <script setup>
-import { defineProps, ref, computed, watch } from "vue";
+import {defineProps, ref, computed, watch} from "vue";
 import { LineChart } from "vue-chart-3";
 import { Chart, LineController, CategoryScale, LinearScale, PointElement, LineElement } from "chart.js/auto";
 
@@ -58,20 +59,20 @@ const props = defineProps(["device_name", "device_unit", "border_color", "chart_
 
 Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement);
 
-// Dropdown State
-const isDropdownOpen = ref(false);
-const toggleDropdown = () => {
-  isDropdownOpen.value = !isDropdownOpen.value;
-};
-
-
 const chartData = ref([]);
 let pageSize = 10;
 let currentPage = ref(0);
 const selectedStartDate = ref('');
 const selectedEndDate = ref('');
 let initialData = [];
+const filteredChartData = ref([]);
+//const isFirstPageActive = ref(true)
 
+// Dropdown State
+const isDropdownOpen = ref(false);
+const toggleDropdown = () => {
+  isDropdownOpen.value = !isDropdownOpen.value;
+};
 
 watch(
     () => props.chart_data,
@@ -82,6 +83,7 @@ watch(
         }));
         initialData = [...chartData.value];
         applyFilter();
+        currentPage.value = 0;
     }
 );
 
@@ -132,14 +134,13 @@ const resetFilter = () => {
   applyFilter();
 };
 
-const filteredChartData = ref([]);
 
 watch([selectedStartDate, selectedEndDate], applyFilter);
 
 const totalPages = computed(() => Math.ceil(filteredChartData.value.length / pageSize));
 
-
 // Current Chart data
+
 const currentChartData = computed(() => {
   const startIndex = currentPage.value * pageSize;
   const endIndex = Math.min(startIndex + pageSize, filteredChartData.value.length);
@@ -163,9 +164,9 @@ const chartOptions = computed(() => {
     type: "line",
     data: currentChartData.value,
     tension: 0.2,
+    responsive: true,
     scales: {
       x: {
-        responsive: true,
         type: "category",
         position: "bottom",
         title: {
@@ -174,7 +175,6 @@ const chartOptions = computed(() => {
         },
       },
       y: {
-        responsive: true,
         beginAtZero: true,
         title: {
           display: true,
