@@ -1,34 +1,28 @@
-name: LuminAi
+name: keycloak-theme-image
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - "main"
+    paths:
+      - k8s/keycloak/**
 
 env:
   GITHUB_USER: ${{ github.repository_owner }}
-  IMAGE_NAME: "lumin-ai"
+  IMAGE_NAME: "lumin-keycloak"
+
 
 permissions:
   packages: write
   contents: read
 
+
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      DOCKER_IMAGE_NAME: stenzm/luminai
+      DOCKER_IMAGE_NAME: stenzm/luminai-keycloak
     steps:
       -
         name: Checkout
         uses: actions/checkout@v2
-      -
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-      - name: Maven Package
-        run: cd LuminAi && mvn package
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -47,8 +41,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ./LuminAi
-          file: ./LuminAi/src/main/docker/Dockerfile.jvm
+          context: ./k8s/keycloak
           push: true
           platforms: linux/amd64,linux/arm64/v8
           tags: |

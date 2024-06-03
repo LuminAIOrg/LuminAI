@@ -27,8 +27,11 @@ import java.util.concurrent.CountDownLatch;
 public class MqttConnection implements ServiceInterface {
 
     int qos = 0;
+
     private Properties properties;
     private Store store;
+
+    private MqttClient client;
 
     @Transactional
 
@@ -77,13 +80,17 @@ public class MqttConnection implements ServiceInterface {
     }
 
     public CompletableFuture<Void> invoke() {
+
         return CompletableFuture.runAsync(() -> {
             try {
                 System.out.println(this.properties.getProperty("host"));
 
                 String publisherId = "g:luminai";
                 //Todo Only Start when this method is invoked
-                try (MqttClient client = new MqttClient(String.format("tcp://%s:%s", this.properties.getProperty("host"), this.properties.getProperty("port")), publisherId, new MemoryPersistence())) {
+
+                try {
+                    MqttClient client = new MqttClient(String.format("tcp://%s:%s", this.properties.getProperty("host"), this.properties.getProperty("port")), publisherId, new MemoryPersistence());
+                    this.client = client;
                     CountDownLatch latch = new CountDownLatch(30);
                     MqttConnectOptions options = new MqttConnectOptions();
                     options.setUserName(this.properties.getProperty("username"));
@@ -100,11 +107,10 @@ public class MqttConnection implements ServiceInterface {
                         }
 
                         @Override
-                        public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
+                        public void messageArrived(String topic, MqttMessage mqttMessage){
                             System.out.println("topic: " + topic);
                             //System.out.println("Qos: " + mqttMessage.getQos());
                             //System.out.println("message content: " + new String(mqttMessage.getPayload()));
-                            //TODO: add consume
                             consume(topic, mqttMessage);
                             latch.countDown();
                         }
@@ -127,8 +133,12 @@ public class MqttConnection implements ServiceInterface {
                 } catch (InterruptedException e) {
                     throw new RuntimeException("an error occured while subscribing: " + e);
                 }
+                finally {
+                    client.disconnect();
+                    this.client.disconnect();
+                }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.warn(e.getMessage());
             }
         });
 
@@ -149,5 +159,16 @@ public class MqttConnection implements ServiceInterface {
         PropLoader propLoader = new PropLoader();
         propLoader.setType(this.getType());
         this.properties = propLoader.getProperties();
+    }
+
+    @Override
+    public boolean stopService(){
+        try {
+            client.disconnect();
+            return true;
+        }catch (MqttException e){
+            return false;
+        }
+
     }
 }

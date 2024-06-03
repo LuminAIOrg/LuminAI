@@ -15,24 +15,17 @@
           <div class="flex flex-col gap-4 cursor-pointer">
 
             <div class="flex p-2 rounded-lg duration-150 hover:bg-blue-600">
-              <a class="w-full flex gap-3">
+              <RouterLink class="w-full flex gap-3" to="/">
                 <span class="material-symbols-outlined" style="font-size: 2rem; !important;">home</span>
                 <h1 class="text-2xl">Home</h1>
-              </a>
+              </RouterLink>
             </div>
 
             <div class="flex p-2 rounded-lg duration-150 hover:bg-blue-600">
-              <a class="w-full flex gap-3">
+              <RouterLink class="w-full flex gap-3" to="/driver">
                 <span class="material-symbols-outlined  " style="font-size: 2rem !important;">stacks</span>
                 <h1 class="text-2xl">Devices</h1>
-              </a>
-            </div>
-
-            <div class="flex p-2 rounded-lg duration-150 hover:bg-blue-600">
-              <a class="w-full flex gap-3" href="">
-                <span class="material-symbols-outlined" style="font-size: 2rem !important;">settings</span>
-                <h1 class="text-2xl">Settings</h1>
-              </a>
+              </RouterLink>
             </div>
           </div>
 

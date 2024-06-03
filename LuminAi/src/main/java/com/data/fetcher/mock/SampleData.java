@@ -8,11 +8,9 @@ import com.data.spi.ServiceInterface;
 import com.data.utils.Store;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import io.quarkus.scheduler.Scheduled;
 import io.smallrye.common.annotation.Blocking;
 import jakarta.enterprise.context.ApplicationScoped;
 
-import java.io.IOException;
 import java.time.Instant;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
@@ -67,8 +65,12 @@ public class SampleData implements ServiceInterface {
 
     @Override
     public CompletableFuture<Void> invoke() {
-        return CompletableFuture.runAsync(() -> {
-            scheduler.scheduleAtFixedRate(this::runDriver, 0, 2, TimeUnit.SECONDS);
-        });
+        return CompletableFuture.runAsync(() -> scheduler.scheduleAtFixedRate(this::runDriver, 0, 2, TimeUnit.SECONDS));
+    }
+
+    @Override
+    public boolean stopService() {
+        scheduler.shutdownNow();
+        return scheduler.isShutdown();
     }
 }
