@@ -74,6 +74,7 @@ const toggleDropdown = () => {
   isDropdownOpen.value = !isDropdownOpen.value;
 };
 
+
 watch(
     () => props.chart_data,
     (newData) => {
@@ -83,9 +84,13 @@ watch(
         }));
         initialData = [...chartData.value];
         applyFilter();
-        currentPage.value = 0;
+
+        if (currentPage.value === 0) {
+          currentPage.value = 0;
+        }
     }
 );
+
 
 // Arrow Buttons
 const moveForward = () => {
@@ -123,7 +128,10 @@ const applyFilter = () => {
   } else {
     filteredChartData.value = [...initialData];
   }
-  currentPage.value = 0;
+
+  if (currentPage.value === 0) {
+    currentPage.value = 0;
+  }
 };
 
 

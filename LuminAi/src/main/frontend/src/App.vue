@@ -27,9 +27,10 @@ export default defineComponent({
     startSocketClient()
 
     let _sensors = await getHistoryData()
-    _sensors.forEach(sensor => {
+    for(let sensor of _sensors) {
       sensor.data = reactive(sensor.data);
-    });
+      //sensor.unit = await getDeviceUnit(sensor.id)
+    }
     console.log(_sensors)
     store.sensors = _sensors
   },

@@ -49,3 +49,8 @@ export async function getUserName() {
     return (await fetchBackendText("api/user/username"))
 }
 
+/*
+export async function setDeviceUnit(sensorId : number, unit: string) {
+    return (await postBackend(`api/sensor/${sensorId}/unit`, unit))
+}
+ */

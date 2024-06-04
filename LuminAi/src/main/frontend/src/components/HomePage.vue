@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup async lang="ts">
 let borderColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF']
 
 import {store} from "@/store/Store";
