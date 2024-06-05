@@ -60,7 +60,7 @@ const props = defineProps(["device_name", "device_unit", "border_color", "chart_
 Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement);
 
 const chartData = ref([]);
-let pageSize = 10;
+let pageSize = 10 ;
 let currentPage = ref(0);
 const selectedStartDate = ref('');
 const selectedEndDate = ref('');
@@ -115,7 +115,7 @@ const applyFilter = () => {
   if (selectedStartDate.value && selectedEndDate.value) {
     pageSize = 80;
   } else {
-    pageSize = 10;
+    pageSize = 20;
   }
 
   if (selectedStartDate.value && selectedEndDate.value) {
@@ -170,6 +170,7 @@ const currentChartData = computed(() => {
 const chartOptions = computed(() => {
   return {
     type: "line",
+    animations: false,
     data: currentChartData.value,
     tension: 0.2,
     responsive: true,
