@@ -1,6 +1,7 @@
 package com.data.spi;
 
 
+import com.data.model.Driver;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -13,7 +14,10 @@ public class ServiceInstance {
     @GeneratedValue
     private int id;
     private String name = Integer.toString(id);
-    private String serviceName;
+
+    @ManyToOne
+    @JoinColumn(name = "serviceid")
+    private Driver serviceId;
     private boolean disabled;
 
     @Transient
@@ -24,20 +28,16 @@ public class ServiceInstance {
     @JsonIgnore
     private CompletableFuture<Void> thread;
 
+    public ServiceInstanceDto toDto() {
+        return new ServiceInstanceDto(this.id, this.name, this.serviceId.getName(), this.disabled);
+    }
+
     public boolean isDisabled() {
         return disabled;
     }
 
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
-    }
-
-    public String getServiceName() {
-        return serviceName;
-    }
-
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
     }
 
     public int getId() {
@@ -68,6 +68,14 @@ public class ServiceInstance {
         this.thread = thread;
     }
 
+    public Driver getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(Driver serviceId) {
+        this.serviceId = serviceId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -79,5 +87,9 @@ public class ServiceInstance {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    public String getServiceName() {
+        return this.serviceId.getName();
     }
 }

@@ -46,7 +46,7 @@ public class SampleData2ElectricBogaloo implements ServiceInterface {
         SensorData sensorData = new SensorData();
         SensorDataId sensorDataId = new SensorDataId();
         Sensor sensor = new Sensor();
-        sensor.setName("MockedSensor2");
+        sensor.setName(Integer.toString(this.hashCode()));
         sensor.setUnit("MockedDegrees");
 
         sensorDataId.setTimestamp(Instant.now().toEpochMilli());

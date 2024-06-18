@@ -1,5 +1,7 @@
 package com.data.spi;
 
+import com.data.model.Driver;
+import com.data.model.Sensor;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -12,7 +14,6 @@ import java.util.concurrent.CompletableFuture;
 
 @ApplicationScoped
 public class ServiceInstanceRepository {
-
     @Inject
     EntityManager entityManager;
 
@@ -23,7 +24,17 @@ public class ServiceInstanceRepository {
         ServiceInstance serviceInstance = new ServiceInstance();
         serviceInstance.setService(service);
         serviceInstance.setThread(instance);
-        serviceInstance.setServiceName(service.getClass().getName());
+        Driver driver = new Driver(service.getClass().getName());
+
+        List<Driver> drivers = entityManager.createQuery("SELECT d FROM Driver d WHERE d.name = :driverName", Driver.class)
+                .setParameter("driverName", driver.getName())
+                .getResultList();
+        if (drivers.isEmpty()) {
+            entityManager.persist(driver);
+        } else {
+            driver = drivers.get(0);
+        }
+        serviceInstance.setServiceId(driver);
         serviceInstance.setDisabled(false);
         entityManager.persist(serviceInstance);
         serviceInstance.setName(Integer.toString(serviceInstance.getId()));

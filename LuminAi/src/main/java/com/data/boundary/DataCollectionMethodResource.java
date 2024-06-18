@@ -2,6 +2,7 @@ package com.data.boundary;
 
 
 import com.data.spi.ServiceInstance;
+import com.data.spi.ServiceInstanceDto;
 import com.data.spi.ServiceLoader;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -12,6 +13,7 @@ import jakarta.ws.rs.PathParam;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Path("api/datacollection")
 public class DataCollectionMethodResource {
@@ -56,8 +58,8 @@ public class DataCollectionMethodResource {
     @GET
     @RolesAllowed("user")
     @Path("serviceInstances")
-    public Set<ServiceInstance> debug() {
-        return serviceLoader.getAllServiceInstances();
+    public Set<ServiceInstanceDto> debug() {
+        return serviceLoader.getAllServiceInstances().stream().map(ServiceInstance::toDto).collect(Collectors.toSet());
     }
 }
 

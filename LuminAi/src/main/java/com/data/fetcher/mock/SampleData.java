@@ -46,7 +46,7 @@ public class SampleData implements ServiceInterface {
         SensorData sensorData = new SensorData();
         SensorDataId sensorDataId = new SensorDataId();
         Sensor sensor = new Sensor();
-        sensor.setName("MockedSensor");
+        sensor.setName(Integer.toString(this.hashCode()));
         sensor.setUnit("MockedDegrees");
 
         sensorDataId.setTimestamp(Instant.now().toEpochMilli());
