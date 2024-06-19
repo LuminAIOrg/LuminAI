@@ -1,12 +1,12 @@
 
 <template>
   <div class="">
-    <div class="">
+    <div class="w-full -ml-24">
       <h1 class="text-5xl py-3 relative font-bold">Settings</h1>
     </div>
 
-    <div class="p-5">
-      <h1 class="text-lg font-bold pb-2">Change data Collection</h1>
+    <div class="p-5 -ml-5">
+      <h1 class="text-lg font-bold pb-2 ">Change data Collection</h1>
       <div class="flex gap-10">
         <form @submit.prevent="handleSubmit">
           <select name="collectionMethod" class=" py-1.5">
@@ -20,8 +20,9 @@
 </template>
 
 <script lang="ts">
-import {getDataCollectionMethod, postDataCollectionMethod} from "@/services/PowerService";
+import {getDataCollectionMethod} from "@/services/PowerService";
 import { ref, onMounted } from "vue";
+import {newDriverInstane} from "@/services/DriverInstanceService";
 
 
 export default {
@@ -37,11 +38,7 @@ export default {
   methods: {
     async handleSubmit(event: any) {
       console.log(event.target.elements.collectionMethod.value)
-      const isSuccessful = await postDataCollectionMethod(event.target.elements.collectionMethod.value)
-
-      if (!isSuccessful) {
-        console.log("Something went wrong!")
-      }
+      await newDriverInstane(event.target.elements.collectionMethod.value)
     }
   }
 }

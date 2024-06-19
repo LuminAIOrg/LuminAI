@@ -1,4 +1,4 @@
-import {fetchBackend, fetchBackendText, postBackend} from "@/utils";
+import {fetchBackend, fetchBackendText} from "@/utils";
 import {Page} from "@/types/Page";
 import {store} from "@/store/Store";
 import {Data} from "@/types/Data";
@@ -21,10 +21,10 @@ export function startSocketClient() {
 
         if(sensorToUpdate != undefined) {
             sensorToUpdate.data = [newData, ...sensorToUpdate.data]
-            console.log(`Received new Dataset for sensor "${sensorToUpdate.name}" (Id: ${sensorToUpdate.id}`, {
-                time: new Date(newData.timestamp),
-                value: newData.value
-            })
+//          console.log(`Received new Dataset for sensor "${sensorToUpdate.name}" (Id: ${sensorToUpdate.id}`, {
+//              time: new Date(newData.timestamp),
+//              value: newData.value
+//          })
         }
     };
 
@@ -45,12 +45,12 @@ export async function getDataCollectionMethod() {
     return (await fetchBackend<string[]>("api/datacollection/list/"))
 }
 
-export async function postDataCollectionMethod(dataCollectionMethod: string) {
-    const res = await postBackend<never, { serviceName:string }>("api/datacollection/load", {serviceName:dataCollectionMethod}, true)
-    return res.status == 201
-}
-
 export async function getUserName() {
     return (await fetchBackendText("api/user/username"))
 }
 
+/*
+export async function setDeviceUnit(sensorId : number, unit: string) {
+    return (await postBackend(`api/sensor/${sensorId}/unit`, unit))
+}
+ */

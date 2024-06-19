@@ -195,6 +195,12 @@ public class EnergyDataFetcher implements ServiceInterface {
     }
 
     @Override
+    public boolean stopService() {
+        scheduler.shutdownNow();
+        return scheduler.isShutdown();
+    }
+
+    @Override
     public FetcherType getType() {
         return FetcherType.DRIVER;
     }

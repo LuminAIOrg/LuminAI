@@ -37,6 +37,11 @@ public class DriverImpl implements ServiceInterface {
     }
 
     @Override
+    public boolean stopService() {
+        return false;
+    }
+
+    @Override
     public FetcherType getType() {
         return FetcherType.DRIVER;
     }
