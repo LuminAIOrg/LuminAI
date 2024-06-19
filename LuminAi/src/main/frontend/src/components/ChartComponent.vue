@@ -34,7 +34,7 @@
       </div>
 
       <!-- Chart -->
-      <h2 class="text-xl text-center -ml-28 font-bold">{{Math.round(currentChartData.datasets[0].data[currentChartData.datasets[0].data.length-1]*100)/100 || 0}}</h2>
+      <h2 class="text-xl text-center font-bold">{{Math.round(currentChartData.datasets[0].data[currentChartData.datasets[0].data.length-1]*100)/100 || 0}} {{device_unit}}</h2>
       <LineChart v-if="currentChartData" :chart-data="currentChartData" :options="chartOptions"></LineChart>
 
       <div class="flex justify-evenly">
