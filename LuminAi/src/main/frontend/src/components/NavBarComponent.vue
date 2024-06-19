@@ -7,7 +7,9 @@
       <RouterLink class="w-full flex gap-3" to="/">
         <div class="w-full flex justify-center">
           <div class="w-3/5 h-full mt-10 flex justify-evenly items-center">
-            <button class="text-white" style="font-size: 4.5rem !important;">☼</button>
+            <button class="text-white" style="font-size: 4.5rem !important;">
+              <img class="h-16 w-16 text-white"  style="filter: invert(100%) sepia(0%) saturate(7489%) hue-rotate(295deg) brightness(109%) contrast(99%);" src="../assets/Logo.svg" alt="luminai logo">
+            </button>
             <h1 class="text-3xl text-white font-bold">LuminAi</h1>
           </div>
         </div>
