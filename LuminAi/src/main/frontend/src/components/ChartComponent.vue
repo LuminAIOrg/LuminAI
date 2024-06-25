@@ -6,11 +6,16 @@
 
     <!-- Filter Button -->
     <div class="relative bg-white drop-shadow-xl rounded-lg p-4">
-      <Button @click="toggleDropdown" class="flex bg-blue-500 text-white p-0.5 px-1 rounded-lg opacity-100 hover:drop-shadow-lg duration-300">
-        <span class="material-symbols-outlined">filter_list</span>
-        <span v-if="!isDropdownOpen" class="material-symbols-outlined">expand_more</span>
-        <span v-if="isDropdownOpen" class="material-symbols-outlined">expand_less</span>
-      </Button>
+      <div class="flex relative">
+        <Button @click="toggleDropdown" class="flex bg-blue-500 text-white p-0.5 px-1 rounded-lg opacity-100 hover:drop-shadow-lg duration-300">
+          <span class="material-symbols-outlined">filter_list</span>
+          <span v-if="!isDropdownOpen" class="material-symbols-outlined">expand_more</span>
+          <span v-if="isDropdownOpen" class="material-symbols-outlined">expand_less</span>
+        </Button>
+        <div class="flex-1">
+          <h2 class="text-xl text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-bold">{{Math.round(currentChartData.datasets[0].data[currentChartData.datasets[0].data.length-1]*100)/100 || 0}} {{device_unit}}</h2>
+        </div>
+      </div>
 
       <!-- Timeframe settings -->
       <div v-if="isDropdownOpen" class="w-3/6 p-2 px-3 mt-3 absolute z-10 bg-white drop-shadow-2xl rounded-lg animate-popUp">
@@ -32,7 +37,6 @@
           </div>
         </div>
       </div>
-
       <!-- Chart -->
       <LineChart v-if="currentChartData" :chart-data="currentChartData" :options="chartOptions"></LineChart>
 
