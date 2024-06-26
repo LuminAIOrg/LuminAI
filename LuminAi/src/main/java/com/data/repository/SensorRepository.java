@@ -4,6 +4,7 @@ import com.data.dto.DataDto;
 import com.data.dto.SensorWithoutDataDto;
 import com.data.model.Sensor;
 import com.data.utils.MostActiveSensorsTracker;
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -47,6 +48,22 @@ public class SensorRepository {
             return newSensor;
         }
         return sensor.get(0);
+    }
+
+
+    @Transactional
+    public boolean setUnit(long sensorId, String unit) {
+        try {
+            Sensor sensor = entityManager.find(Sensor.class, sensorId);
+            if (sensor == null) return false; // Sensor not found
+
+            sensor.setUnit(unit);
+            entityManager.merge(sensor); // Update the sensor in the database
+            return true;
+        } catch (Exception e) {
+            Log.warn(e.getMessage());
+            return false;
+        }
     }
 
     public List<Sensor> getManusFuckingMostHappeningInEndpointSoHeDoesntCry(){
