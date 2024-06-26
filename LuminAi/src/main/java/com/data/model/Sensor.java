@@ -1,6 +1,9 @@
 package com.data.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
@@ -8,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Sensor {
     @Id
     @GeneratedValue
@@ -21,8 +25,8 @@ public class Sensor {
     @JoinColumn(name = "g_id")
     @JsonIgnoreProperties({"sensors"})
     private Group group;
-    @OneToMany(mappedBy = "sensorDataId.sensor")
-    @JsonIgnoreProperties({"sensorDataId.sensor"})
+    @OneToMany(mappedBy = "sensorDataId.sensor", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"sensorDataId.sensor", "sensorDataId.timestamp"})
     private List<SensorData> values = new ArrayList<>();
 
     public Sensor(String name) {

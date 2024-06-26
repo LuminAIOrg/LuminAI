@@ -1,6 +1,8 @@
 package com.data.boundary;
 
 import com.data.dto.SensorWithoutDataDto;
+import com.data.model.Sensor;
+import com.data.model.SensorData;
 import com.data.repository.SensorRepository;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -22,5 +24,12 @@ public class SensorResource {
     @Path("list")
     public List<SensorWithoutDataDto> getAllSensors() {
         return sensorRepository.getAllSensors();
+    }
+
+    @GET
+    @RolesAllowed("user")
+    @Path("most-happening")
+    public List<Sensor> getMostHappening() {
+        return sensorRepository.getManusFuckingMostHappeningInEndpointSoHeDoesntCry();
     }
 }

@@ -3,6 +3,7 @@ package com.data.repository;
 import com.data.dto.DataDto;
 import com.data.dto.SensorWithoutDataDto;
 import com.data.model.Sensor;
+import com.data.utils.MostActiveSensorsTracker;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -15,6 +16,9 @@ public class SensorRepository {
 
     @Inject
     EntityManager entityManager;
+
+    @Inject
+    MostActiveSensorsTracker mostActiveSensorsTracker;
 
     public List<SensorWithoutDataDto> getAllSensors() {
         return this.entityManager
@@ -43,5 +47,9 @@ public class SensorRepository {
             return newSensor;
         }
         return sensor.get(0);
+    }
+
+    public List<Sensor> getManusFuckingMostHappeningInEndpointSoHeDoesntCry(){
+        return  mostActiveSensorsTracker.getSortedSensors();
     }
 }

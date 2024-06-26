@@ -7,6 +7,7 @@ import com.data.repository.GroupRepository;
 import com.data.repository.SensorDataRepository;
 import com.data.repository.SensorRepository;
 import com.data.websocket.DataSocket;
+import com.data.websocket.SensorWebSocket;
 import io.quarkus.logging.Log;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
@@ -45,6 +46,12 @@ public class Store {
 
     @Inject
     DataSocket dataSocket;
+
+    @Inject
+    MostActiveSensorsTracker mostActiveSensorsTracker;
+
+    @Inject
+    SensorWebSocket sensorWebSocket;
 
     public BehaviorSubject<SensorData> getSubject() {
         return subject;
@@ -94,19 +101,14 @@ public class Store {
     private void checkAndPersistData(SensorData sensorData) {
         Sensor mergedSensor = this.sensorRepository.createOrGetSensor(sensorData.getSensor().getName());
         sensorData.setSensor(mergedSensor);
-        //TODO: Add group support
-        //Group mergedGroup = this.groupRepository.createOrGetGroup(sensorData.getSensor().getGroup().getName());
-        //sensorData.getSensor().setGroup(mergedGroup);
-        //System.out.println("gibts eh scho oda soÖLSDKJFSLÖDFJDFÖLS: " + mergedSensor.getValues().stream().anyMatch(sd -> sd.getSensorDataId().getTimestamp() == sensorData.getSensorDataId().getTimestamp()));
         this.sensorDataRepository.addData(sensorData);
-        /*
-        if (!mergedSensor.getValues().stream()
-                .anyMatch(sd -> sd.getSensorDataId().getTimestamp() == sensorData.getSensorDataId().getTimestamp())) {
-            System.out.println("SensorData added! TODO: check timestamp only.");
 
-        } else {
-            System.out.println("SensorData already exists! TODO: check timestamp only.");
-        }
-        */
+        // Update the most active sensors tracker
+        mostActiveSensorsTracker.update(mergedSensor, sensorData.getValue());
+        System.out.println("checked if new most active");
+        System.out.println(mostActiveSensorsTracker.getMostActiveSensor().toString());
+        // Broadcast the update via WebSocket
+        System.out.println("trying to send");
+        sensorWebSocket.broadcastSensorUpdate();
     }
 }
