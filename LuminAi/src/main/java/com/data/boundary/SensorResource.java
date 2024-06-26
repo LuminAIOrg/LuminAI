@@ -30,6 +30,7 @@ public class SensorResource {
     @RolesAllowed("user")
     @Path("most-happening")
     public List<Sensor> getMostHappening() {
+        System.out.println("request accepted");
         return sensorRepository.getManusFuckingMostHappeningInEndpointSoHeDoesntCry();
     }
 }

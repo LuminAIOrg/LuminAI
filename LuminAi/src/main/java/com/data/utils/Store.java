@@ -106,7 +106,7 @@ public class Store {
         // Update the most active sensors tracker
         mostActiveSensorsTracker.update(mergedSensor, sensorData.getValue());
         System.out.println("checked if new most active");
-        System.out.println(mostActiveSensorsTracker.getMostActiveSensor().toString());
+        System.out.println(mostActiveSensorsTracker.getMostActiveSensor().getName() );
         // Broadcast the update via WebSocket
         System.out.println("trying to send");
         sensorWebSocket.broadcastSensorUpdate();

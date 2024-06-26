@@ -50,6 +50,8 @@ public class SensorRepository {
     }
 
     public List<Sensor> getManusFuckingMostHappeningInEndpointSoHeDoesntCry(){
-        return  mostActiveSensorsTracker.getSortedSensors();
+        List<Sensor> mostHappening = mostActiveSensorsTracker.getSortedSensors();
+        System.out.println(mostHappening.get(0).getName());
+        return mostHappening;
     }
 }
